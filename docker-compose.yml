@@ -1,0 +1,23 @@
+version: "1.0"
+services:
+  web:
+    build: .
+    depends_on:
+      - postgres
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+  postgres:
+    image: "postgres:latest"
+    restart: unless-stopped
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=dev
+      
