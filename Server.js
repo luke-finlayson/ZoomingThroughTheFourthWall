@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const https = require('https');
 const fs = require('fs');
-const port = 3000;
+const port = 8080;
 
 // Get the key and certificate require for HTTPS
 const credentials = {
