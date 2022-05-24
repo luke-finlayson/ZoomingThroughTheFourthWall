@@ -4,6 +4,7 @@ const https = require('https');
 const fs = require('fs');
 const port = 8080;
 const SocketEvents = require('./socketevents')
+const production = false;
 
 // Get the key and certificate require for HTTPS
 const credentials = {
@@ -16,8 +17,15 @@ const server = https.createServer(credentials, app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 
+if (production == true)
+  app.use(express.static(path.join(__dirname, '/public/build')));
+
+// Serve different responses depending on whether production is enabled or not
 app.get('/', (_request, response) => {
-    response.send('The server is indeed working.')
+    if (production == false)
+        response.send('The server is indeed working.')
+    else
+        response.send(path.join(__dirname, '/public/build/index.html'))
 });
 
 io.on(SocketEvents.Connection, (socket) => {
@@ -29,5 +37,5 @@ io.on(SocketEvents.Connection, (socket) => {
 });
 
 app.listen(port, () => {
-    console.log('Fourth Wall listening on port ${port}')
+    console.log(`Fourth Wall listening on port ${port}`)
 }); 
