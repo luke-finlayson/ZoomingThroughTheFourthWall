@@ -3,8 +3,6 @@ class SocketEvents {
     static Connection = "connection";
     static Disconnect = "disconnect";
     static NewMessage = "new message";
-
-    // Default static initialiser
-    static { }
 }
 
+module.exports = SocketEvents;

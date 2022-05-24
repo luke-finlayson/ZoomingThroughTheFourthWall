@@ -3,6 +3,7 @@ const app = express();
 const https = require('https');
 const fs = require('fs');
 const port = 8080;
+const SocketEvents = require('./socketevents')
 
 // Get the key and certificate require for HTTPS
 const credentials = {
@@ -11,7 +12,7 @@ const credentials = {
 };
 
 // Create an HTTPS server with the given credentials and Express instance
-const server = https.createServer(credentials, app).listen(port);
+const server = https.createServer(credentials, app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 
