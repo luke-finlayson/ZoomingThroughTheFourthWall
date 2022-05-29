@@ -3,7 +3,7 @@ import VideoButtons from './VideoButtons';
 
 const VideoSection = () => {
 
-    // Room will be set by Socket (?)
+    // Room will be set by backend server
     const [room, setRoom] = useState();
 
   return (
