@@ -2,13 +2,14 @@
   "dependencies": {
     "express": "^4.18.1",
     "nodemon": "^2.0.16",
+    "peer": "^0.6.1",
     "socket.io": "^4.5.1"
   },
   "scripts": {
     "server": "nodemon server.js",
     "client": "cd public && npm start",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "build" : "npm run build --prefix client"
+    "build": "npm run build --prefix client"
   },
   "name": "fourthwall",
   "description": "",
