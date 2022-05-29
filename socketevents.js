@@ -3,6 +3,11 @@ class SocketEvents {
     static Connection = "connection";
     static Disconnect = "disconnect";
     static NewMessage = "new message";
+    static CreateRoom = "create room";
+    static JoinRoom = "join room";
+    static LeaveRoom = "leave room";
+    static UserJoinedRoom = "user-joined-room";
+    static UserLeftRoom = "user-left-room";
 }
 
 module.exports = SocketEvents;
