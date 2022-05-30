@@ -7,16 +7,18 @@ import LeaveRoomButton from './LeaveRoomButton';
 
 const VideoButtons = (props) => {
 
-    const {room, connectOnlyWithAudio } = props;
-    
+    const {room, connectOnlyWithAudio, setIsScreenSharingActive } = props;
+
 
   return (
     <div className="video_buttons_container">
         <MicButton />
         {!connectOnlyWithAudio && <CameraButton room={room} />}
         <LeaveRoomButton room={room} />
-        <SwitchToScreenSharingButton room={room} />
-      
+        <SwitchToScreenSharingButton
+          room={room}
+        />
+
     </div>
   )
 }

@@ -1,16 +1,16 @@
 import React from 'react'
 
-const LeaveRoomButton = ({room}) => {
-  
+const LeaveRoomButton = () => {
+
   const handleRoomDisconnection = () => {
     // handle disconnection with room through backend
     const siteUrl = window.location.origin;
     window.location.href = siteUrl;
   }
-  
+
   return (
     <div className='video_button_container'>
-      <button className='video_button_end' 
+      <button className='video_button_end'
       onClick={handleRoomDisconnection}>
         Leave Room
       </button>
