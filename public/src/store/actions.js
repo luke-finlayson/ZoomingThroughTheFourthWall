@@ -3,6 +3,7 @@ const Actions = { // Constant values for redux functions
     SET_IS_ROOM_HOST: 'SET_IS_ROOM_HOST',
     SET_IDENTITY: 'SET_IDENTITY',
     SET_CONNTECT_ONLY_WITH_AUDIO: 'SET_CONNTECT_ONLY_WITH_AUDIO',
+    SET_SCREEN_SHARING: 'SET_SCREEN_SHARING',
 
 } // Changes state in our store
 
@@ -28,6 +29,13 @@ export const setConnectOnlyWithAudio = (onlyWithAudio) =>{
         type: Actions.SET_CONNTECT_ONLY_WITH_AUDIO,
         onlyWithAudio,
     }
+}
+
+export const setScreenSharing = (isScreenSharing) => {
+  return {
+    type: Actions.SET_SCREEN_SHARING,
+    isScreenSharing
+  }
 }
 
 export default Actions;

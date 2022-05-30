@@ -3,7 +3,8 @@ import Actions from "./actions"
 const initState = {
     identity: "",
     isRoomHost: false,
-    connectOnlyWithAudio: false
+    connectOnlyWithAudio: false,
+    isScreenSharing: false
 };
 
 // Catches changes in the actions, which will allow us to modify which component to output
@@ -25,6 +26,11 @@ const reducer = (state = initState, action) => {
                 ...state,
                 connectOnlyWithAudio: action.onlyWithAudio
             }
+        case Actions.SET_SCREEN_SHARING:
+          return {
+            ...state,
+            isScreenSharing: action.payload
+          }
 
 
         default:

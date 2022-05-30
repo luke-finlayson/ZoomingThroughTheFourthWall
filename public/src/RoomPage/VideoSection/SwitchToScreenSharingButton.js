@@ -1,13 +1,14 @@
 import React, {useState} from 'react'
-
-import SwitchImg from '../../resources/images/switchToScreenSharing.svg'
+import SwitchImg from '../../resources/images/switchToScreenSharing.svg';
+import {store} from '../../store/store';
 
 const SwitchToScreenSharingButton = () => {
-  
-  const [isScreenSharingActive, setIsScreenSharingActive] = useState(false);
-  
+
   const handleScreenSharingEnable = () => {
-    // enable screen sharing logic here
+    // Get states from store
+    const state = store.getState();
+    // Toggle value of screen sharing
+    store.dispatch({ type: 'SET_SCREEN_SHARING', payload: !state.isScreenSharing })
   }
 
   return (

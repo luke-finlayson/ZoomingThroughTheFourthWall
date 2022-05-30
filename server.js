@@ -7,6 +7,8 @@ const SocketEvents = require('./socketevents');
 const { Server } = require('socket.io');
 const { ExpressPeerServer } = require('peer');
 const production = false;
+const cors = require('cors');
+app.use(cors());
 
 // Get the key and certificate require for HTTPS
 const credentials = {
@@ -17,7 +19,13 @@ const credentials = {
 // Create an HTTPS server with the given credentials and Express instance
 const server = https.createServer(credentials, app);
 const peerServer = ExpressPeerServer(server, { debug: true});
-const io = new Server(server);
+
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
 
 if (production == true)
   app.use(express.static(path.join(__dirname, '/public/build')));
@@ -52,22 +60,22 @@ io.on(SocketEvents.Connection, (socket) => {
       callback({ status: "Failed", error: "Room with that name already exists." });
       return;
     }
-    
+
     // Join creates a new room if one doesn't already exist with this name
     socket.join(roomName)
   })
-  
+
   socket.on(SocketEvents.JoinRoom, (roomID) => {
     if (!roomID) {
       callback({ status: "Failed", error: "RoomID not provided." })
       return;
     }
-    
+
     socket.join(roomID)
   });
 
   socket.on(SocketEvents.LeaveRoom, () => {
-    
+
   });
 
   socket.on(SocketEvents.NewMessage, (author, message) => {
@@ -83,7 +91,7 @@ io.of("/").adapter.on("join-room", (room, id) => {
   // Do not notify room members if it is the socket's default room
   if (room === id)
     return;
-  
+
   io.to(room).emit(SocketEvents.UserJoinedRoom, id)
 });
 
@@ -92,10 +100,10 @@ io.of("/").adapter.on("leave-room", (room, id) => {
   // Do not notify room members if it is the socket's default room
   if (room === id)
     return;
-  
+
   io.to(room).emit(SocketEvents.UserLeftRoom, id)
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
-}); 
+});
