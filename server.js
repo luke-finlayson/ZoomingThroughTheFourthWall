@@ -6,6 +6,7 @@ const port = 8080;
 const SocketEvents = require('./socketevents');
 const { Server } = require('socket.io');
 const { ExpressPeerServer } = require('peer');
+const TextRecognition = require("./textRecognition");
 const production = false;
 
 // Get the key and certificate require for HTTPS
@@ -18,6 +19,9 @@ const credentials = {
 const server = https.createServer(credentials, app);
 const peerServer = ExpressPeerServer(server, { debug: true});
 const io = new Server(server);
+
+// Create text recognition tool
+const textRecognition = new TextRecognition();
 
 if (production == true)
   app.use(express.static(path.join(__dirname, '/public/build')));
@@ -76,6 +80,22 @@ io.on(SocketEvents.Connection, (socket) => {
 
     callback({ status: "accepted" })
   });
+
+  socket.on(SocketEvents.FindImageText, async (image64) => {
+    if (!image64) {
+      callback({ status: "Failed", error: "Image not provided." })
+      return;
+    }
+
+    try {
+      var result = await textRecognition.getTextData(image64);
+      callback({ status : "ok", response : result })
+    }
+    catch (error) {
+      console.log(error);
+      callback({ status : "Failed", error : "Could not successfully perform text recognition."})
+    }
+  })
 });
 
 // Notify members of given room when client joins
