@@ -1,19 +1,19 @@
 const Actions = { // Constant values for redux functions
 
     SET_IS_ROOM_HOST: 'SET_IS_ROOM_HOST',
-    SET_IDENTITY: 'SET_IDENTITY',
+    SET_USER_ID: 'SET_USER_ID',
     SET_CONNTECT_ONLY_WITH_AUDIO: 'SET_CONNTECT_ONLY_WITH_AUDIO',
-    SET_SCREEN_SHARING: 'SET_SCREEN_SHARING',
+    SET_SCREEN_SHARING: 'SET_SCREEN_SHARING'
 
 } // Changes state in our store
 
 // Helper functions.
 // If our store can change values, we can render different components
 // depending on the VALUES passed
-export const setIdentity = (identity) => {
+export const setUserId = (userId) => {
     return {
-        type: Actions.SET_IDENTITY,
-        identity
+        type: Actions.SET_USER_ID,
+        userId
     }
 }
 

@@ -1,44 +1,59 @@
-import React, {useState, useEffect} from 'react';
-import {store} from '../../store/store';
+import React, { useState, useEffect } from 'react';
+import { store } from '../../store/store';
+import { useInterval } from './useInterval';
 
 const VideoFrame = ({stream, userId}) => {
 
-  // Place stream into state so it can be changed between camera and screen
-  const [thisStream, setStream] = useState();
+  const [isScreenSharing, setScreenSharing] = useState(false);
 
-  // Subscribe to store updates
-  const unsubscribe = store.subscribe(() => {
-    // Get state of store
+  // Check status of screen s
+  useInterval(() => {
+    // Get the state of the store
     const state = store.getState();
 
-    if (state.isScreenSharing) {
-      // Get display stream
-      navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: true,
-      }).then((displayStream) => {
-        setStream(displayStream);
-      })
-    }
-    else {
-      // If screen charing was disabled, switch back to the original stream
-      setStream(stream);
-    }
+    // Only do something if the state of screen sharing has changed
+    if (isScreenSharing != state.isScreenSharing) {
+      // Toggle screen sharing
+      setScreenSharing(state.isScreenSharing);
 
-    console.log(thisStream);
-  });
+      if(!isScreenSharing) {
+        // Get stream from screen
+        navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true
+        }).then((stream) => {
+          // Attach stream to video element
+          const video = document.getElementById(userId);
+          video.srcObject = stream;
+          // Ensure video is not flipped
+          video.style.transform = "rotateY(0deg)"
+          video.addEventListener('loadedmetadata', () => {
+            video.play();
+          });
+        });
+
+        console.log("Now sharing screen");
+      }
+      else {
+        // Attach stream to video element
+        const video = document.getElementById(userId);
+        video.srcObject = stream;
+        // Flip video
+        video.style.transform = "rotateY(180deg)"
+        video.addEventListener('loadedmetadata', () => {
+          video.play();
+        });
+      }
+    }
+  }, 1000);
 
   useEffect(() => {
-    // Move stream to state
-    setStream(stream);
-
     // Attach stream to video element
     const video = document.getElementById(userId);
-    video.srcObject = thisStream;
+    video.srcObject = stream;
     video.addEventListener('loadedmetadata', () => {
       video.play();
-    })
-
+    });
   });
 
   // Display message until the stream is ready

@@ -3,25 +3,24 @@ import VideoButtons from './VideoButtons';
 import VideoFrame from './VideoFrame';
 import * as uuid from 'uuid';
 import io from 'socket.io-client';
+import {store} from '../../store/store';
 
 const VideoSection = () => {
 
   // Room will be set by backend server
+  const userId = store.getState().userId;
   const [myStream, setMyStream] = useState();
-  // Need screen sharing state to be accessible by video section
-  const [isScreenSharingActive, setIsScreenSharingActive] = useState(false);
-  const userStream = true;
-  const userId = uuid.v4();
 
-  navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: true
-  }).then((stream) => {
-    // Attach stream to video element
-    if(myStream == null) {
+  if (myStream == null) {
+    // Get the webcam and audio stream from the user device
+    navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
+    }).then((stream) => {
+      // Attach stream to video element
       setMyStream(stream);
-    }
-  })
+    })
+  }
 
   /*useEffect(() => {
     const socket = io("http://localhost:8080/");
@@ -35,12 +34,6 @@ const VideoSection = () => {
       });
     });
   });*/
-
-  // Function to pass to buttons to allow for changing state of screen sharing
-  const setScreenSharing = () => {
-    setIsScreenSharingActive(!isScreenSharingActive);
-    console.log("Screen sharing: " + isScreenSharingActive);
-  }
 
   return (
     <div className="video_section_container">

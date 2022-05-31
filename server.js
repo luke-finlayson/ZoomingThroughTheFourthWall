@@ -67,7 +67,7 @@ io.on(SocketEvents.Connection, (socket) => {
 
     // Join creates a new room if one doesn't already exist with this name
     socket.join(roomName)
-  })
+  });
 
   socket.on(SocketEvents.JoinRoom, (roomID) => {
     if (!roomID) {
