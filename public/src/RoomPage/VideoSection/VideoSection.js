@@ -22,19 +22,6 @@ const VideoSection = () => {
     })
   }
 
-  /*useEffect(() => {
-    const socket = io("http://localhost:8080/");
-    console.log(socket);
-
-    /*import('peerjs').then(() => {
-      const peer = new Peer(userId, {
-        host: 'localhost',
-        port: 8080,
-        path: '/peerjs'
-      });
-    });
-  });*/
-
   return (
     <div className="video_section_container">
       <VideoFrame

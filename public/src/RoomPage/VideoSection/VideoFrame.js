@@ -4,9 +4,43 @@ import { useInterval } from './useInterval';
 
 const VideoFrame = ({stream, userId}) => {
 
+  // Current value of screen sharing.
+  // (For some weird reason this will actually be the opposite of the true value idk whats up)
   const [isScreenSharing, setScreenSharing] = useState(false);
 
-  // Check status of screen s
+  // Changes the video elements source to a given media stream.
+  const setVideoSource = (source, flipped) => {
+    // Attach stream to video element
+    const video = document.getElementById(userId);
+    video.srcObject = source;
+
+    // Determine video orientation (Webcam streams should be flipped, screen shares shouldn't be)
+    if (flipped) {
+      video.style.transform = "rotateY(180deg)";
+    } else {
+      video.style.transform = "rotateY(0deg)";
+    }
+
+    // Add event listener to play video once stream has loaded
+    // (Even though technically react discourages event listeners like this,
+    // it's still the simplest way to go about it)
+    video.addEventListener('loadedmetadata', () => {
+      video.play();
+    });
+
+    // Add event listener to switch video source back to original stream when
+    // screen sharing ends
+    video.addEventListener('ended', () => {
+      if (!isScreenSharing) {
+        // Switch stream back to default stream
+        setVideoSource(stream, true);
+        // Screen sharing has ended
+        store.dispatch({ type: "SET_SCREEN_SHARING", payload: !store.getState().isScreenSharing });
+      }
+    })
+  }
+
+  // Use polling to check status of screen sharing
   useInterval(() => {
     // Get the state of the store
     const state = store.getState();
@@ -21,30 +55,17 @@ const VideoFrame = ({stream, userId}) => {
         navigator.mediaDevices.getDisplayMedia({
           video: true,
           audio: true
-        }).then((stream) => {
-          // Attach stream to video element
-          const video = document.getElementById(userId);
-          video.srcObject = stream;
-          // Ensure video is not flipped
-          video.style.transform = "rotateY(0deg)"
-          video.addEventListener('loadedmetadata', () => {
-            video.play();
-          });
+        }).then((displayStream) => {
+          // Change video source to display stream
+          setVideoSource(displayStream, false);
         });
-
-        console.log("Now sharing screen");
       }
       else {
-        // Attach stream to video element
-        const video = document.getElementById(userId);
-        video.srcObject = stream;
-        // Flip video
-        video.style.transform = "rotateY(180deg)"
-        video.addEventListener('loadedmetadata', () => {
-          video.play();
-        });
+        // Change video source back to webcam
+        setVideoSource(stream, true);
       }
     }
+
   }, 1000);
 
   useEffect(() => {
