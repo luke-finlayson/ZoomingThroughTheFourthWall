@@ -316,6 +316,7 @@
 }
 
 video {
+  transform: rotateY(180deg);
   border-radius: 5px;
 }
 
