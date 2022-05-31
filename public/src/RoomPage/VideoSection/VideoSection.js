@@ -15,30 +15,17 @@ const VideoSection = () => {
   const [socket, setSocket] = useState(null);
   const [peer, setPeer] = useState(null);
 
+  // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
-    // If user stream hasn't been set, get it
-    if (myStream === null) {
-      // Get the webcam and audio stream from the user device
-      navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: true
-      }).then((stream) => {
-        // Attach stream to video element
-        setMyStream(stream);
-      })
-    }
-
     // Establish the socket connection
     if (socket === null) {
       // Attempt to create socket connection
       const socket = io("https://localhost:8080/");
       setSocket(socket);
-
-      
     }
 
     // Establish the peer connection
-    if (peer === null) {
+    if (peer === null && socket != null) {
       // Attempt peerjs connection
       const peer = new Peer(userId, {
         host: 'localhost',
@@ -50,6 +37,20 @@ const VideoSection = () => {
 
       peer.on('open', (id) => {
         socket.emit('join-room', 'test-room', userId);
+      })
+    }
+
+    // In order for peer calls to work, need to get media after connections
+    // been made, which will cause a slight delay before the user's camera
+    // feed is displayed. May revisit how this works later to improve UX
+    if (myStream === null && peer != null) {
+      // Get the webcam and audio stream from the user device
+      navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true
+      }).then((stream) => {
+        // Attach stream to video element
+        setMyStream(stream);
       })
     }
 
