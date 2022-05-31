@@ -70,11 +70,7 @@ const VideoFrame = ({stream, userId}) => {
 
   useEffect(() => {
     // Attach stream to video element
-    const video = document.getElementById(userId);
-    video.srcObject = stream;
-    video.addEventListener('loadedmetadata', () => {
-      video.play();
-    });
+    setVideoSource(stream, true);
   });
 
   // Display message until the stream is ready

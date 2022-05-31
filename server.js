@@ -19,7 +19,10 @@ const credentials = {
 
 // Create an HTTPS server with the given credentials and Express instance
 const server = https.createServer(credentials, app);
-const peerServer = ExpressPeerServer(server, { debug: true});
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+  secure: true
+});
 
 const io = new Server(server, {
   cors: {
@@ -41,8 +44,6 @@ app.get('/', (_request, response) => {
     else
         response.send(path.join(__dirname, '/public/build/index.html'))
 });
-
-app.use('/peerjs', peerServer);
 
 io.on(SocketEvents.Connection, (socket) => {
   console.log('A user has connected.');
@@ -127,3 +128,14 @@ io.of("/").adapter.on("leave-room", (room, id) => {
 server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
 });
+
+app.use('/peerjs', peerServer);
+
+// Log peer connections
+peerServer.on('connection', (client) => {
+  console.log("User connected to peer server with id: " + client.id);
+})
+
+peerServer.on('disconnect', (client) => {
+  console.log("User disconnected from peer server: " + client.id);
+})

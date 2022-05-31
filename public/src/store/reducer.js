@@ -5,7 +5,8 @@ const initState = {
     userId: uuid.v4(),
     isRoomHost: false,
     connectOnlyWithAudio: false,
-    isScreenSharing: false
+    isScreenSharing: false,
+    socket: null,
 };
 
 // Catches changes in the actions, which will allow us to modify which component to output
@@ -31,6 +32,11 @@ const reducer = (state = initState, action) => {
           return {
             ...state,
             isScreenSharing: action.payload
+          }
+        case Actions.SET_SOCKET:
+          return {
+            ...state,
+            socket: action.payload
           }
 
         default:
