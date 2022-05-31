@@ -14,7 +14,7 @@ const JoinRoomContent = (props) => {
     const [roomIdValue, setRoomIdValue] = useState("");
     const [nameValue, setNameValue] = useState("");
     const navigate = useNavigate();
-    
+
     // Checks if the room exists or not using setShowRoomNotFoundMessage
     const [showRoomNotFoundMessage, setShowRoomNotFoundMessage] = useState(false);
 
@@ -24,7 +24,15 @@ const JoinRoomContent = (props) => {
         navigate('/room');
     }
 
-  
+    // Handle enter key press
+    const handleKeyPress = (e) => {
+      console.log(e);
+      // If enter key was press, navigate to room
+      if (e.key === "Enter") {
+        handleJoinToRoom();
+      }
+    }
+
     return (
      <>
          <JoinRoomInputs
@@ -32,14 +40,15 @@ const JoinRoomContent = (props) => {
             setRoomIdValue={setRoomIdValue}
             nameValue={nameValue}
             setNameValue={setNameValue}
-            isRoomHost={isRoomHost} 
+            isRoomHost={isRoomHost}
+            handleEnter={handleKeyPress}
          />
          {/* Connect only with audio */}
-        <OnlyWithAudioCheckbox 
+        <OnlyWithAudioCheckbox
             setConnectOnlyWithAudio = {setConnectOnlyWithAudioAction}
             connectOnlyWithAudio = {connectOnlyWithAudio}
         />
-        <RoomNotFoundMessage 
+        <RoomNotFoundMessage
             showRoomNotFoundMessage={showRoomNotFoundMessage}
         />
 
