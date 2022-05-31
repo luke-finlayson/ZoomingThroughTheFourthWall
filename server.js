@@ -61,6 +61,8 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.join(roomName)
   })
   
+  // Join the room with the given roomID. Provide joining user with details of
+  // other users in that room.
   socket.on(SocketEvents.JoinRoom, (roomID) => {
     if (!roomID) {
       callback({ status: "Failed", error: "RoomID not provided." })
@@ -81,6 +83,8 @@ io.on(SocketEvents.Connection, (socket) => {
     callback({ status: "accepted" })
   });
 
+  // Receive a base-64 encoded image, decode it and then perform text recognition on it
+  // and return the extracted text and the vertices for each extraction
   socket.on(SocketEvents.FindImageText, async (image64) => {
     if (!image64) {
       callback({ status: "Failed", error: "Image not provided." })
