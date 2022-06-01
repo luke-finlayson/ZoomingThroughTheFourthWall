@@ -5,5 +5,5 @@ WORKDIR /app
 COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install --production
 COPY . .
-RUN cd public && npm install && npm run build
+RUN npm run build
 CMD node server.js
