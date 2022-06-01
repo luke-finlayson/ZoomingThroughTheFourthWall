@@ -4,10 +4,10 @@ import React, {useState} from 'react'
 import CameraButtonImg from '../../resources/images/camera.svg'
 import CameraButtonImgOff from '../../resources/images/cameraOff.svg'
 
-const CameraButton = ({room}) => {
-  
+const CameraButton = () => {
+
   const[isLocalVideoTrackDisabled, setIsLocalVideoTrackDisabled] = useState(false);
-  
+
   const handleCameraButtonPressed = () => {
     isLocalVideoTrackDisabled ? stopVideo() : startVideo();
 
@@ -22,10 +22,10 @@ const CameraButton = ({room}) => {
     // Logic to stop camera video to other users
   }
 
-  
+
   return (
     <div className='video_button_container'>
-      <img src={isLocalVideoTrackDisabled ? CameraButtonImgOff : CameraButtonImg} alt="" 
+      <img src={isLocalVideoTrackDisabled ? CameraButtonImgOff : CameraButtonImg} alt=""
       className='video_button_image'
       onClick={handleCameraButtonPressed}/>
     </div>

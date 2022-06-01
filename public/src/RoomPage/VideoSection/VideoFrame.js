@@ -46,7 +46,7 @@ const VideoFrame = ({stream, userId, muted}) => {
     const state = store.getState();
 
     // Only do something if the state of screen sharing has changed
-    if (isScreenSharing != state.isScreenSharing) {
+    if (isScreenSharing !== state.isScreenSharing) {
       // Toggle screen sharing
       setScreenSharing(state.isScreenSharing);
 
@@ -66,7 +66,7 @@ const VideoFrame = ({stream, userId, muted}) => {
       }
     }
 
-  }, 1000);
+  }, 500);
 
   useEffect(() => {
     // Attach stream to video element

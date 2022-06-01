@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import io from 'socket.io-client';
 import { store } from '../../store/store';
 import { useInterval } from '../VideoSection/useInterval';
 
@@ -24,7 +23,7 @@ const Message = ({author, content, sameAuthor, messageCreatedByMe}) => {
 
 const Messages = ({ socket }) => {
 
-  // Incresae counter to trigger re-render of messages array
+  // Store messages as a state so that new messages are rendered as they are added
   const [messagesState, setMessages] = useState(messages.slice());
   // To ensure socket event listener is only created once
   const [socketSetup, setSocketSetup] = useState(false);
@@ -38,7 +37,7 @@ const Messages = ({ socket }) => {
 
         var messageCreatedByMe = false;
         // Determine if the message was sent by this user
-        if (id == store.getState().userId) {
+        if (id === store.getState().userId) {
           messageCreatedByMe = true;
         }
         // Add the message to the list of messages
@@ -48,9 +47,8 @@ const Messages = ({ socket }) => {
           content: message,
           messageCreatedByMe: messageCreatedByMe
         });
+        // Update messages state
         setMessages(messages.slice());
-        console.log(messages);
-        console.log(messagesState);
       });
 
       // Ensure this is never called again

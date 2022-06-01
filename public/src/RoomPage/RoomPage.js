@@ -7,13 +7,12 @@ import ChatSection from './ChatSection/ChatSection';
 import io from 'socket.io-client';
 import { store } from '../store/store';
 import { useInterval } from './VideoSection/useInterval';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Entry point and interface of our room page
 const RoomPage = () => {
 
   // Get user id from the store
-  const userId = store.getState().userId;
   const [socket, setSocket] = useState(null);
   const navigate = useNavigate();
 
@@ -33,8 +32,12 @@ const RoomPage = () => {
       // Attempt to create socket connection
       const socket = io("https://localhost:8080/");
       setSocket(socket);
+
+      socket.on('connect', () => {
+        console.log("Connected to socket with id: " + socket.id);
+      })
     }
-  }, 1000);
+  }, 500);
 
   return (
     <div className="room_container">

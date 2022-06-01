@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import VideoButtons from './VideoButtons';
 import VideoFrame from './VideoFrame';
-import * as uuid from 'uuid';
-import io from 'socket.io-client';
 import { store } from '../../store/store';
 import { useInterval } from './useInterval';
 import { Peer } from 'peerjs';
 
-const VideoSection = ({socket}) => {
+const VideoSection = ({ socket }) => {
 
   // Unique id of this user
   const userId = store.getState().userId;
@@ -46,7 +44,7 @@ const VideoSection = ({socket}) => {
       })
     }
 
-  }, 1000);
+  }, 500);
 
   return (
     <div className="video_section_container">
@@ -55,7 +53,7 @@ const VideoSection = ({socket}) => {
         userId={userId}
         muted={true}
       />
-      <VideoButtons />
+      <VideoButtons socket={socket} peer={peer} />
     </div>
   )
 }
