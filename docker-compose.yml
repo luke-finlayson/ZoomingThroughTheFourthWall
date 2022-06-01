@@ -1,4 +1,4 @@
-version: "1.0"
+version: "3.9"
 services:
   web:
     build: .
@@ -8,6 +8,10 @@ services:
       - 8080
     ports:
       - 8080:8080
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/public/build
     restart: unless-stopped
   postgres:
     image: "postgres:latest"
@@ -20,4 +24,6 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=postgres
       - POSTGRES_DB=dev
+    volumes:
+      - ./startup.sql:/docker-entrypoint-initdb.d/startup.sql
       
