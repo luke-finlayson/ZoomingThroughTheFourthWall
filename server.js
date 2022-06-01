@@ -31,6 +31,8 @@ const io = new Server(server, {
   }
 });
 
+app.use('/peerjs', peerServer);
+
 // Create text recognition tool
 const textRecognition = new TextRecognition();
 
@@ -90,6 +92,8 @@ io.on(SocketEvents.Connection, (socket) => {
     });
   });
 
+  // Receive a base-64 encoded image, decode it and then perform text recognition on it
+  // and return the extracted text and the vertices for each extraction
   socket.on(SocketEvents.FindImageText, async (image64) => {
     if (!image64) {
       callback({ status: "Failed", error: "Image not provided." })
@@ -128,8 +132,6 @@ io.of("/").adapter.on("leave-room", (room, id) => {
 server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
 });
-
-app.use('/peerjs', peerServer);
 
 // Log peer connections
 peerServer.on('connection', (client) => {
