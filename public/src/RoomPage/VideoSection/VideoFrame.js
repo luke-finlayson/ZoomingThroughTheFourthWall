@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { store } from '../../store/store';
 import { useInterval } from './useInterval';
 
-const VideoFrame = ({stream, userId}) => {
+const VideoFrame = ({stream, userId, muted}) => {
 
   // Current value of screen sharing.
   // (For some weird reason this will actually be the opposite of the true value idk whats up)
@@ -75,7 +75,7 @@ const VideoFrame = ({stream, userId}) => {
 
   // Display message until the stream is ready
   return (
-    <video id={userId} />
+    <video id={userId} muted={muted} />
   );
 }
 
