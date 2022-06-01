@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const https = require('https');
 const fs = require('fs');
+const path = require('path');
 const port = 8080;
 const SocketEvents = require('./socketevents');
 const { Server } = require('socket.io');
@@ -36,15 +37,15 @@ app.use('/peerjs', peerServer);
 // Create text recognition tool
 const textRecognition = new TextRecognition();
 
-if (production == true)
+if (production == true) 
   app.use(express.static(path.join(__dirname, '/public/build')));
 
 // Serve different responses depending on whether production is enabled or not
 app.get('/', (_request, response) => {
-    if (production == false)
-        response.send('The server is indeed working.')
-    else
-        response.send(path.join(__dirname, '/public/build/index.html'))
+  if (production == false)
+    response.send('The server is indeed working.')
+  else
+    response.sendFile(path.join(__dirname, '/public/build/index.html'));
 });
 
 io.on(SocketEvents.Connection, (socket) => {
