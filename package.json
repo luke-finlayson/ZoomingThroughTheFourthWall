@@ -12,7 +12,7 @@
     "server": "nodemon server.js",
     "client": "cd public && npm start",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "build": "npm run build --prefix client"
+    "build": "cd public && npm install && npm run build"
   },
   "name": "fourthwall",
   "description": "",
