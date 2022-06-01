@@ -2,6 +2,7 @@ const Actions = { // Constant values for redux functions
 
     SET_IS_ROOM_HOST: 'SET_IS_ROOM_HOST',
     SET_USER_ID: 'SET_USER_ID',
+    SET_USER_NAME: 'SET_USER_NAME',
     SET_CONNTECT_ONLY_WITH_AUDIO: 'SET_CONNTECT_ONLY_WITH_AUDIO',
     SET_SCREEN_SHARING: 'SET_SCREEN_SHARING',
     SET_SOCKET: 'SET_SOCKET',
@@ -15,6 +16,13 @@ export const setUserId = (userId) => {
     return {
         type: Actions.SET_USER_ID,
         userId
+    }
+}
+
+export const setUserName = (userName) => {
+    return {
+        type: Actions.SET_USER_NAME,
+        userName
     }
 }
 
@@ -33,17 +41,17 @@ export const setConnectOnlyWithAudio = (onlyWithAudio) =>{
 }
 
 export const setScreenSharing = (isScreenSharing) => {
-  return {
-    type: Actions.SET_SCREEN_SHARING,
-    isScreenSharing
-  }
+    return {
+        type: Actions.SET_SCREEN_SHARING,
+        isScreenSharing
+    }
 }
 
 export const setSocket = (socket) => {
-  return {
-    type: Actions.SET_SOCKET,
-    socket
-  }
+    return {
+        type: Actions.SET_SOCKET,
+        socket
+    }
 }
 
 export default Actions;

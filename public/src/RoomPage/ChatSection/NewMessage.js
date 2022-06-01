@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import SendMessageButton from "../../resources/images/sendMessageButton.svg"
+import { store } from '../../store/store';
 
-const NewMessage = () => {
+const NewMessage = ({ socket }) => {
 
     const [message, setMessage] = useState("");
 
     const sendMessage = () => {
-        // Send message to other users!! Back end thing
+        // Send message to server
+        socket.emit("new-message", store.getState().userName, message);
+
         // This currently only sends message to the console
-        console.log(message);
+        console.log("Sent message: " + message);
         setMessage('');
     }
 

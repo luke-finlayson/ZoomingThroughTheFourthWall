@@ -7,24 +7,16 @@ import { store } from '../../store/store';
 import { useInterval } from './useInterval';
 import { Peer } from 'peerjs';
 
-const VideoSection = () => {
+const VideoSection = ({socket}) => {
 
   // Unique id of this user
   const userId = store.getState().userId;
   const [myStream, setMyStream] = useState(null);
-  const [socket, setSocket] = useState(null);
   const [peer, setPeer] = useState(null);
 
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
-    // Establish the socket connection
-    if (socket === null) {
-      // Attempt to create socket connection
-      const socket = io("https://localhost:8080/");
-      setSocket(socket);
-    }
-
-    // Establish the peer connection
+    // Establish the peer connection if it hasn't already
     if (peer === null && socket != null) {
       // Attempt peerjs connection
       const peer = new Peer(userId, {
@@ -61,6 +53,7 @@ const VideoSection = () => {
       <VideoFrame
         stream={myStream}
         userId={userId}
+        muted={true}
       />
       <VideoButtons />
     </div>
