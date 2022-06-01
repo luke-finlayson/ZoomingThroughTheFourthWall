@@ -51,6 +51,19 @@ const Messages = ({ socket }) => {
         setMessages(messages.slice());
       });
 
+      // // Get new user connnections
+      // socket.on("user-joined-room", (userName) => {
+      //   // Add the message to the list of messages
+      //   messages.push({
+      //     userId: '-1',
+      //     author: 'Server',
+      //     content: userName + ' joined the call.',
+      //     messageCreatedByMe: false
+      //   });
+      //   // Update messages state
+      //   setMessages(messages.slice());
+      // });
+
       // Ensure this is never called again
       setSocketSetup(true);
     }

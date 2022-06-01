@@ -49,7 +49,7 @@ app.get('/', (_request, response) => {
 });
 
 io.on(SocketEvents.Connection, (socket) => {
-  console.log('A user has connected: ' + socket.id);
+  console.log('A user has connected');
 
   // This can be used as SocketEvents.LeaveRoom instead
   socket.on(SocketEvents.Disconnect, () => {
@@ -74,7 +74,7 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.join(roomName)
   });
 
-  socket.on(SocketEvents.JoinRoom, (roomID, userId) => {
+  socket.on(SocketEvents.JoinRoom, (roomID, userId, userName) => {
     if (!roomID) {
       callback({ status: "Failed", error: "RoomID not provided." })
       return;
@@ -83,11 +83,11 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.join(roomID);
     socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId);
 
-    socket.on(SocketEvents.NewMessage, (author, message) => {
+    socket.on(SocketEvents.NewMessage, (message) => {
       // Save message to database and notify all other clients in room
-      io.to(roomID).emit(SocketEvents.NewMessage, author, message, userId);
+      io.to(roomID).emit(SocketEvents.NewMessage, userName, message, userId);
 
-      console.log("Message received from " + author + ": " + message);
+      console.log("Message received from " + userName + ": " + message);
     });
 
     socket.on(SocketEvents.LeaveRoom, () => {

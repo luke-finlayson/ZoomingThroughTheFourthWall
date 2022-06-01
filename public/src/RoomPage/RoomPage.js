@@ -20,7 +20,7 @@ const RoomPage = () => {
     // Get the state of the store
     const state = store.getState();
     // Return to home page if user has no username
-    if (state.userName === null || state.userName === "") {
+    if (state.username === null || state.username === "") {
       navigate("/");
     }
   })
@@ -32,20 +32,14 @@ const RoomPage = () => {
       // Attempt to create socket connection
       const socket = io("https://localhost:8080/");
       setSocket(socket);
-
-      socket.on('connect', () => {
-        console.log("Connected to socket with id: " + socket.id);
-      })
     }
-  }, 500);
+  }, 100);
 
   return (
     <div className="room_container">
-      {/* Consists of three components */}
       <ParticipantsSection />
       <VideoSection socket={socket} />
       <ChatSection socket={socket}/>
-
     </div>
   )
 }

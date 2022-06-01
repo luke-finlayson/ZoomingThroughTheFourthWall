@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
-const LeaveRoomButton = ({ socket, peer }) => {
+const LeaveRoomButton = ({ socket, peer, stream }) => {
 
   const navigate = useNavigate();
 
   const handleRoomDisconnection = () => {
+    // End the stream
+    stream.getTracks().forEach(track => track.stop());
+    console.log(stream);
     // Disconnect from the socket
     socket.disconnect();
     // Disconnect from the peer connection
