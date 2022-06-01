@@ -1,19 +1,22 @@
-import Actions from "./actions"
+import Actions from "./actions";
+import * as uuid from 'uuid';
 
 const initState = {
-    identity: "",
+    userId: uuid.v4(),
     isRoomHost: false,
-    connectOnlyWithAudio: false
+    connectOnlyWithAudio: false,
+    isScreenSharing: false,
+    socket: null,
 };
 
 // Catches changes in the actions, which will allow us to modify which component to output
 // based on the button pressed.
 const reducer = (state = initState, action) => {
     switch (action.type){
-        case Actions.SET_IDENTITY:
+        case Actions.SET_USER_ID:
             return {
                 ...state,
-                identity: action.identity
+                userId: action.payload
             }
         case Actions.SET_IS_ROOM_HOST:
             return {
@@ -25,7 +28,16 @@ const reducer = (state = initState, action) => {
                 ...state,
                 connectOnlyWithAudio: action.onlyWithAudio
             }
-
+        case Actions.SET_SCREEN_SHARING:
+          return {
+            ...state,
+            isScreenSharing: action.payload
+          }
+        case Actions.SET_SOCKET:
+          return {
+            ...state,
+            socket: action.payload
+          }
 
         default:
             return state;

@@ -8,6 +8,8 @@ const { Server } = require('socket.io');
 const { ExpressPeerServer } = require('peer');
 const TextRecognition = require("./textRecognition");
 const production = false;
+const cors = require('cors');
+app.use(cors());
 
 // Get the key and certificate require for HTTPS
 const credentials = {
@@ -17,8 +19,17 @@ const credentials = {
 
 // Create an HTTPS server with the given credentials and Express instance
 const server = https.createServer(credentials, app);
-const peerServer = ExpressPeerServer(server, { debug: true});
-const io = new Server(server);
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+  secure: true
+});
+
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
 
 // Create text recognition tool
 const textRecognition = new TextRecognition();
@@ -33,8 +44,6 @@ app.get('/', (_request, response) => {
     else
         response.send(path.join(__dirname, '/public/build/index.html'))
 });
-
-app.use('/peerjs', peerServer);
 
 io.on(SocketEvents.Connection, (socket) => {
   console.log('A user has connected.');
@@ -56,10 +65,10 @@ io.on(SocketEvents.Connection, (socket) => {
       callback({ status: "Failed", error: "Room with that name already exists." });
       return;
     }
-    
+
     // Join creates a new room if one doesn't already exist with this name
     socket.join(roomName)
-  })
+  });
   
   // Join the room with the given roomID. Provide joining user with details of
   // other users in that room.
@@ -68,12 +77,12 @@ io.on(SocketEvents.Connection, (socket) => {
       callback({ status: "Failed", error: "RoomID not provided." })
       return;
     }
-    
+
     socket.join(roomID)
   });
 
   socket.on(SocketEvents.LeaveRoom, () => {
-    
+
   });
 
   socket.on(SocketEvents.NewMessage, (author, message) => {
@@ -107,7 +116,7 @@ io.of("/").adapter.on("join-room", (room, id) => {
   // Do not notify room members if it is the socket's default room
   if (room === id)
     return;
-  
+
   io.to(room).emit(SocketEvents.UserJoinedRoom, id)
 });
 
@@ -116,10 +125,21 @@ io.of("/").adapter.on("leave-room", (room, id) => {
   // Do not notify room members if it is the socket's default room
   if (room === id)
     return;
-  
+
   io.to(room).emit(SocketEvents.UserLeftRoom, id)
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
-}); 
+});
+
+app.use('/peerjs', peerServer);
+
+// Log peer connections
+peerServer.on('connection', (client) => {
+  console.log("User connected to peer server with id: " + client.id);
+})
+
+peerServer.on('disconnect', (client) => {
+  console.log("User disconnected from peer server: " + client.id);
+})

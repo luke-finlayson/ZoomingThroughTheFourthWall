@@ -316,8 +316,7 @@
 }
 
 video {
-  width: 98%;
-  height: 98%;
+  border-radius: 5px;
 }
 
 .room_label {

@@ -1,4 +1,6 @@
-# ZoomingThroughTheFourthWall
+# Fourth wall
+A video conferencing application built on React Redux and Node.js. Uses WebRTC via peerjs for video streaming between devices.
+
 
 ## API docs
 
