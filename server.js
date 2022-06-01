@@ -31,6 +31,8 @@ const io = new Server(server, {
   }
 });
 
+app.use('/peerjs', peerServer);
+
 // Create text recognition tool
 const textRecognition = new TextRecognition();
 
@@ -132,8 +134,6 @@ io.of("/").adapter.on("leave-room", (room, id) => {
 server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
 });
-
-app.use('/peerjs', peerServer);
 
 // Log peer connections
 peerServer.on('connection', (client) => {
