@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './RoomPage.css';
 import './RoomPage.css';
 import ParticipantsSection from './ParticipantsSection/ParticipantsSection';
@@ -7,6 +7,7 @@ import ChatSection from './ChatSection/ChatSection';
 import io from 'socket.io-client';
 import { store } from '../store/store';
 import { useInterval } from './VideoSection/useInterval';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 // Entry point and interface of our room page
 const RoomPage = () => {
@@ -14,6 +15,16 @@ const RoomPage = () => {
   // Get user id from the store
   const userId = store.getState().userId;
   const [socket, setSocket] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get the state of the store
+    const state = store.getState();
+    // Return to home page if user has no username
+    if (state.userName === null || state.userName === "") {
+      navigate("/");
+    }
+  })
 
   // Use polling to establish socket connection
   useInterval(() => {
