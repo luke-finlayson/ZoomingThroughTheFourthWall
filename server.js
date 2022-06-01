@@ -49,10 +49,11 @@ app.get('/', (_request, response) => {
 });
 
 io.on(SocketEvents.Connection, (socket) => {
-  console.log('A user has connected.');
+  console.log('A user has connected: ' + socket.id);
 
+  // This can be used as SocketEvents.LeaveRoom instead
   socket.on(SocketEvents.Disconnect, () => {
-    console.log('A user has disconnected.')
+    console.log('A user has disconnected.');
   });
 
   socket.on(SocketEvents.CreateRoom, (roomName) => {
@@ -72,27 +73,26 @@ io.on(SocketEvents.Connection, (socket) => {
     // Join creates a new room if one doesn't already exist with this name
     socket.join(roomName)
   });
-  
-  // Join the room with the given roomID. Provide joining user with details of
-  // other users in that room.
-  socket.on(SocketEvents.JoinRoom, (roomID) => {
+
+  socket.on(SocketEvents.JoinRoom, (roomID, userId) => {
     if (!roomID) {
       callback({ status: "Failed", error: "RoomID not provided." })
       return;
     }
 
-    socket.join(roomID)
-  });
+    socket.join(roomID);
+    socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId);
 
-  socket.on(SocketEvents.LeaveRoom, () => {
+    socket.on(SocketEvents.NewMessage, (author, message) => {
+      // Save message to database and notify all other clients in room
+      io.to(roomID).emit(SocketEvents.NewMessage, author, message, userId);
 
-  });
+      console.log("Message received from " + author + ": " + message);
+    });
 
-  socket.on(SocketEvents.NewMessage, (author, message) => {
-    // Save message to database and notify all other clients in room
-    socket.broadcast.emit(SocketEvents.NewMessage, author, message)
-
-    callback({ status: "accepted" })
+    socket.on(SocketEvents.LeaveRoom, () => {
+      socket.disconnect();
+    })
   });
 
   // Receive a base-64 encoded image, decode it and then perform text recognition on it
@@ -113,24 +113,6 @@ io.on(SocketEvents.Connection, (socket) => {
     }
   })
 });
-
-// Notify members of given room when client joins
-io.of("/").adapter.on("join-room", (room, id) => {
-  // Do not notify room members if it is the socket's default room
-  if (room === id)
-    return;
-
-  io.to(room).emit(SocketEvents.UserJoinedRoom, id)
-});
-
-// Notify members of given room when client leaves
-io.of("/").adapter.on("leave-room", (room, id) => {
-  // Do not notify room members if it is the socket's default room
-  if (room === id)
-    return;
-
-  io.to(room).emit(SocketEvents.UserLeftRoom, id)
-})
 
 server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)

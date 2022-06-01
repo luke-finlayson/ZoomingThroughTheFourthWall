@@ -6,6 +6,7 @@ import JoinRoomInputs from './JoinRoomInputs';
 import OnlyWithAudioCheckbox from './OnlyWithAudioCheckbox';
 import RoomNotFoundMessage from './RoomNotFoundMessage';
 import JoinRoomButtons from './JoinRoomButtons';
+import { store } from '../store/store';
 
 const JoinRoomContent = (props) => {
     const { isRoomHost, setConnectOnlyWithAudioAction, connectOnlyWithAudio } = props;
@@ -19,14 +20,15 @@ const JoinRoomContent = (props) => {
     const [showRoomNotFoundMessage, setShowRoomNotFoundMessage] = useState(false);
 
     const handleJoinToRoom = () => {
-        // add logic to join a room
-        // temporarily navigate to the room -- this has no backend logic yet.
+        // Set Username
+        store.dispatch({ type: 'SET_USER_NAME', payload: nameValue })
+
+        // Navigate to the room
         navigate('/room');
     }
 
     // Handle enter key press
     const handleKeyPress = (e) => {
-      console.log(e);
       // If enter key was press, navigate to room
       if (e.key === "Enter") {
         handleJoinToRoom();

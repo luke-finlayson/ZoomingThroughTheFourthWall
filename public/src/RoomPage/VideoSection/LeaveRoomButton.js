@@ -1,11 +1,16 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
-const LeaveRoomButton = () => {
+const LeaveRoomButton = ({ socket, peer }) => {
+
+  const navigate = useNavigate();
 
   const handleRoomDisconnection = () => {
-    // handle disconnection with room through backend
-    const siteUrl = window.location.origin;
-    window.location.href = siteUrl;
+    // Disconnect from the socket
+    socket.disconnect();
+    // Disconnect from the peer connection
+    peer.disconnect();
+    // Return to introduction page
+    navigate("/");
   }
 
   return (

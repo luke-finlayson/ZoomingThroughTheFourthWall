@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { store } from '../../store/store';
 import { useInterval } from './useInterval';
 
-const VideoFrame = ({stream, userId}) => {
+const VideoFrame = ({stream, userId, muted}) => {
 
   // Current value of screen sharing.
   // (For some weird reason this will actually be the opposite of the true value idk whats up)
@@ -46,7 +46,7 @@ const VideoFrame = ({stream, userId}) => {
     const state = store.getState();
 
     // Only do something if the state of screen sharing has changed
-    if (isScreenSharing != state.isScreenSharing) {
+    if (isScreenSharing !== state.isScreenSharing) {
       // Toggle screen sharing
       setScreenSharing(state.isScreenSharing);
 
@@ -66,7 +66,7 @@ const VideoFrame = ({stream, userId}) => {
       }
     }
 
-  }, 1000);
+  }, 500);
 
   useEffect(() => {
     // Attach stream to video element
@@ -75,7 +75,7 @@ const VideoFrame = ({stream, userId}) => {
 
   // Display message until the stream is ready
   return (
-    <video id={userId} />
+    <video id={userId} muted={muted} />
   );
 }
 

@@ -1,34 +1,11 @@
-import React from 'react'
+import { useState } from 'react';
+import { store } from '../../store/store';
+import { useInterval } from '../VideoSection/useInterval';
 
-const dummyMessages = [
-  {
-    identity: "Luke",
-    content: "Hello. Everything is okay ?",
-  },
-  {
-    identity: "Isaac",
-    content: "Do you need my help ?",
-  },
-  {
-    content: "Everything is okay",
-    messageCreatedByMe: true,
-    identity: "me",
-  },
-  {
-    content: "No help needed",
-    messageCreatedByMe: true,
-    identity: "me",
-  },
-  {
-    identity: "Caleb",
-    content: "Hello nice to meet you",
-  },
-  {
-    identity: "Caleb",
-    content: "No worries",
-  },
-];
+// Holds a list of all the messages
+const messages = [];
 
+// Returns a div element formatted as a message with the given data
 const Message = ({author, content, sameAuthor, messageCreatedByMe}) => {
     const alignClass  = messageCreatedByMe ? 'message_align_right' : 'message_align_left';
 
@@ -44,23 +21,56 @@ const Message = ({author, content, sameAuthor, messageCreatedByMe}) => {
     )
 }
 
-const Messages = () => {
+const Messages = ({ socket }) => {
+
+  // Store messages as a state so that new messages are rendered as they are added
+  const [messagesState, setMessages] = useState(messages.slice());
+  // To ensure socket event listener is only created once
+  const [socketSetup, setSocketSetup] = useState(false);
+
+  // Poll to create listener
+  useInterval(() => {
+    // Ensure socket connection has been made
+    if (socket !== null && !socketSetup) {
+      // Create a new message on message received
+      socket.on("new-message", (author, message, id) => {
+
+        var messageCreatedByMe = false;
+        // Determine if the message was sent by this user
+        if (id === store.getState().userId) {
+          messageCreatedByMe = true;
+        }
+        // Add the message to the list of messages
+        messages.push({
+          userId: id,
+          author: author,
+          content: message,
+          messageCreatedByMe: messageCreatedByMe
+        });
+        // Update messages state
+        setMessages(messages.slice());
+      });
+
+      // Ensure this is never called again
+      setSocketSetup(true);
+    }
+  }, 1000);
+
   return (
     <div className="messages_container">
-        {/* This needs to be changed in order to integrate database for the chat option */}
-      {dummyMessages.map((message, index) => {
-          const sameAuthor =
-          index > 0 && message.identity === dummyMessages[index-1].identity;
-          return (
-              <Message
-              key={index}
-              author={message.identity}
-              content={message.content}
-              sameAuthor={sameAuthor}
-              messageCreatedByMe={message.messageCreatedByMe}
-              />
-          )
-      })}
+    {messagesState.map((message, index) => {
+        const sameAuthor =
+        index > 0 && message.userId === messages[index-1].userId;
+        return (
+            <Message
+            key={index}
+            author={message.author}
+            content={message.content}
+            sameAuthor={sameAuthor}
+            messageCreatedByMe={message.messageCreatedByMe}
+            />
+        )
+    })}
     </div>
   )
 }
