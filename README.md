@@ -1,6 +1,14 @@
 # Fourth wall
 A video conferencing application built on React Redux and Node.js. Uses WebRTC via peerjs for video streaming between devices.
 
+## Building and running on a local machine (production)
+
+### Requirements
+[Install Docker](https://docs.docker.com/get-docker/)
+
+1. Clone the repository into a local folder with `git clone https://github.com/qwertyhpp/ZoomingThroughTheFourthWall`.
+2. With your terminal navigated to the cloned folder, run `docker compose build`.
+3. Run `docker compose up`.
 
 ## API docs
 
