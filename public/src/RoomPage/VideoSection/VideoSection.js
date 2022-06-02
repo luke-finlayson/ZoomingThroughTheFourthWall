@@ -11,6 +11,14 @@ const VideoSection = ({ socket }) => {
   const userId = store.getState().userId;
   const [myStream, setMyStream] = useState(null);
   const [peer, setPeer] = useState(null);
+  const [secondStream, setSecondStream] = useState(null);
+
+  const connectToNewUser = (newUserId, stream) => {
+    const call = peer.call(newUserId, stream);
+    call.on("stream", (newUserStream) => {
+      setSecondStream(newUserStream);
+    });
+  }
 
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
@@ -26,8 +34,8 @@ const VideoSection = ({ socket }) => {
       setPeer(peer);
 
       peer.on('open', (id) => {
-        socket.emit('join-room', 'test-room', userId);
-      })
+        socket.emit('join-room', 'test-room', userId, store.getState().username);
+      });
     }
 
     // In order for peer calls to work, need to get media after connections
@@ -41,10 +49,22 @@ const VideoSection = ({ socket }) => {
       }).then((stream) => {
         // Attach stream to video element
         setMyStream(stream);
-      })
+
+        peer.on('call', (call) => {
+          // Answer media call
+          call.answer(stream);
+          call.on('stream', (newStream) => {
+            setSecondStream(newStream);
+          });
+        });
+
+        socket.on("user-joined-room", (newUserId) => {
+          connectToNewUser(newUserId, stream);
+        });
+      });
     }
 
-  }, 500);
+  }, 100);
 
   return (
     <div className="video_section_container">
@@ -53,7 +73,12 @@ const VideoSection = ({ socket }) => {
         userId={userId}
         muted={true}
       />
-      <VideoButtons socket={socket} peer={peer} />
+      <VideoFrame
+        stream={secondStream}
+        userId={11}
+        muted={false}
+      />
+      <VideoButtons socket={socket} peer={peer} stream={myStream} />
     </div>
   )
 }

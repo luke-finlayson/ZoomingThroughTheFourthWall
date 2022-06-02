@@ -3,11 +3,10 @@ import * as uuid from 'uuid';
 
 const initState = {
     userId: uuid.v4(),
-    userName: null,
+    username: null,
     isRoomHost: false,
     connectOnlyWithAudio: false,
-    isScreenSharing: false,
-    socket: null,
+    isScreenSharing: false
 };
 
 // Catches changes in the actions, which will allow us to modify which component to output
@@ -22,7 +21,7 @@ const reducer = (state = initState, action) => {
         case Actions.SET_USER_NAME:
             return {
                 ...state,
-                userName: action.payload
+                username: action.payload
             }
         case Actions.SET_IS_ROOM_HOST:
             return {
@@ -38,11 +37,6 @@ const reducer = (state = initState, action) => {
             return {
                 ...state,
                 isScreenSharing: action.payload
-            }
-        case Actions.SET_SOCKET:
-            return {
-                ...state,
-                socket: action.payload
             }
 
         default:

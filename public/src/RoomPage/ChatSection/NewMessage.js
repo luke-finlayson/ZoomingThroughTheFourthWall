@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import SendMessageButton from "../../resources/images/sendMessageButton.svg"
-import { store } from '../../store/store';
+import SendMessageButton from "../../resources/images/sendMessageButton.svg";
 
 const NewMessage = ({ socket }) => {
 
@@ -8,7 +7,7 @@ const NewMessage = ({ socket }) => {
 
     const sendMessage = () => {
         // Send message to server
-        socket.emit("new-message", store.getState().userName, message);
+        socket.emit("new-message", message);
 
         // This currently only sends message to the console
         console.log("Sent message: " + message);
@@ -38,7 +37,7 @@ const NewMessage = ({ socket }) => {
       type="text"
       onKeyDown={handleKeyPressed}
        />
-       <img className="new_message_button" src={SendMessageButton} onClick={sendMessage} />
+       <img className="new_message_button" src={SendMessageButton} onClick={sendMessage} alt="Send"/>
     </div>
   )
 }
