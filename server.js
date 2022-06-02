@@ -8,7 +8,6 @@ const SocketEvents = require('./socketevents');
 const { Server } = require('socket.io');
 const { ExpressPeerServer } = require('peer');
 const TextRecognition = require("./textRecognition");
-const production = false;
 const cors = require('cors');
 app.use(cors());
 
@@ -37,7 +36,7 @@ app.use('/peerjs', peerServer);
 // Create text recognition tool
 const textRecognition = new TextRecognition();
 
-if (production == true) 
+if (process.env.NODE_ENV === "production") 
   app.use(express.static(path.join(__dirname, '/public/build')));
 
 // Serve different responses depending on whether production is enabled or not
