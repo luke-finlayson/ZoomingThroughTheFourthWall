@@ -1,5 +1,5 @@
 FROM node:latest
-EXPOSE 8080
+EXPOSE 443
 ENV NODE_ENV=production
 WORKDIR /app
 COPY ["package.json", "package-lock.json*", "./"]

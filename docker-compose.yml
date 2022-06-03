@@ -5,9 +5,9 @@ services:
     depends_on:
       - postgres
     expose:
-      - 8080
+      - 443
     ports:
-      - 8080:8080
+      - 443:443
     volumes:
       - ./:/app
       - /app/node_modules
