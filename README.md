@@ -9,6 +9,7 @@ A video conferencing application built on React Redux and Node.js. Uses WebRTC v
 1. Clone the repository into a local folder with `git clone https://github.com/qwertyhpp/ZoomingThroughTheFourthWall`.
 2. With your terminal navigated to the cloned folder, run `docker compose build`.
 3. Run `docker compose up`.
+4. You should now be able to access the web app via https://localhost
 
 ## API docs
 
