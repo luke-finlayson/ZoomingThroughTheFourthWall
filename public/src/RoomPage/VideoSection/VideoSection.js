@@ -6,19 +6,37 @@ import { useInterval } from './useInterval';
 import { Peer } from 'peerjs';
 const SocketEvents = require('../socketevents');
 
+const streams = [];
+
 const VideoSection = ({ socket }) => {
 
   // Unique id of this user
   const userId = store.getState().userId;
-  const [myStream, setMyStream] = useState(null);
+  const [getStream, setStream] = useState(true);
   const [peer, setPeer] = useState(null);
-  const [secondStream, setSecondStream] = useState(null);
+  const [streamState, setStreams] = useState(streams.slice());
 
   const connectToNewUser = (newUserId, stream) => {
+    // Call second user
     const call = peer.call(newUserId, stream);
+    // Set second user stream on call answered
     call.on("stream", (newUserStream) => {
-      setSecondStream(newUserStream);
+      //(newUserStream);
     });
+  }
+
+  // Adds a video stream to the list of video streams
+  const addVideoStream = (newUserId, newStream, muted) => {
+    // Add new stream to list of streams
+    streams.push({
+      userId: newUserId,
+      stream: newStream,
+      muted: muted
+    });
+    setStreams(streams.slice())
+
+    console.log("Added stream: " + newUserId + ",");
+    console.log(newStream);
   }
 
   // Need to use polling to ensure only single instances of connections are created
@@ -42,36 +60,38 @@ const VideoSection = ({ socket }) => {
     // In order for peer calls to work, need to get media after connections
     // been made, which will cause a slight delay before the user's camera
     // feed is displayed. May revisit how this works later to improve UX
-    if (myStream === null && peer != null) {
+    if (getStream && peer != null) {
       // Get the webcam and audio stream from the user device
       navigator.mediaDevices.getUserMedia({
         audio: true,
         video: true
       }).then((stream) => {
         // Attach stream to video element
-        setMyStream(stream);
+        addVideoStream(userId, stream, true);
 
         socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
           connectToNewUser(newUserId, stream);
         });
       });
+
+      setStream(false);
     }
 
   }, 100);
 
   return (
     <div className="video_section_container">
-      <VideoFrame
-        stream={myStream}
-        userId={userId}
-        muted={true}
-      />
-      <VideoFrame
-        stream={secondStream}
-        userId={11}
-        muted={false}
-      />
-      <VideoButtons socket={socket} peer={peer} stream={myStream} />
+      {streamState.map((stream, index) => {
+          return (
+              <VideoFrame
+              key={index}
+              stream={stream.stream}
+              userId={stream.userId}
+              muted={stream.muted}
+              />
+          )
+      })}
+      <VideoButtons socket={socket} peer={peer} stream={streams[0]} />
     </div>
   )
 }
