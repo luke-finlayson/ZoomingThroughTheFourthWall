@@ -6,7 +6,9 @@ const initState = {
     username: null,
     isRoomHost: false,
     connectOnlyWithAudio: false,
-    isScreenSharing: false
+    isScreenSharing: false,
+    // Change this to the address of the production server
+    serverUrl: 'localhost'
 };
 
 // Catches changes in the actions, which will allow us to modify which component to output

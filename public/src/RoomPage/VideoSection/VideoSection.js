@@ -26,7 +26,7 @@ const VideoSection = ({ socket }) => {
     if (peer === null && socket != null) {
       // Attempt peerjs connection
       const peer = new Peer(userId, {
-        host: 'localhost',
+        host: store.getState().serverUrl,
         port: 443,
         path: '/peerjs',
         secure: true,
