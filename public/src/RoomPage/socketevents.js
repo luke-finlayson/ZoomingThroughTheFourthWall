@@ -9,6 +9,7 @@ class SocketEvents {
     static UserJoinedRoom = "user-joined-room";
     static UserLeftRoom = "user-left-room";
     static FindImageText = "find-image-text";
+    static PeerReady = "peer-ready";
 }
 
 module.exports = SocketEvents;

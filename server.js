@@ -77,7 +77,7 @@ io.on(SocketEvents.Connection, (socket) => {
 
     // Only announce to connected clients the existence of this client when it
     // is ready for peer calls
-    socket.on("ready", () => {
+    socket.on(SocketEvents.PeerReady, () => {
       // Broadcast to members of room
       socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId);
     })
@@ -89,6 +89,7 @@ io.on(SocketEvents.Connection, (socket) => {
       console.log("Message received from " + userName + ": " + message);
     });
 
+    // Disconnect socket when leave room button is pressed
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
     });
@@ -97,11 +98,6 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.on(SocketEvents.Disconnect, () => {
       // Notify other users that the user disconnected
       socket.to(roomID).emit(SocketEvents.UserLeftRoom, userId);
-    });
-
-    // This can be used as SocketEvents.LeaveRoom instead
-    socket.on(SocketEvents.Disconnect, () => {
-      console.log('A user has disconnected.');
     });
   });
 

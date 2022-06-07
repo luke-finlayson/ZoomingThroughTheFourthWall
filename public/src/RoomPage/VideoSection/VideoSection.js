@@ -7,7 +7,7 @@ import { Peer } from 'peerjs';
 const SocketEvents = require('../socketevents');
 
 // Array to keep track of all connected streams
-const streams = [];
+var streams = [];
 
 const VideoSection = ({ socket }) => {
 
@@ -15,6 +15,8 @@ const VideoSection = ({ socket }) => {
   const userId = store.getState().userId;
   // Used to ensure user stream is only fetched once
   const [getStream, setStream] = useState(true);
+  // Pointer to local stream
+  const [myStream, setMyStream] = useState();
   // Holds the peer connection object
   const [peer, setPeer] = useState(null);
   // Stores the list of streams as a state so that UI updates with new streams
@@ -26,7 +28,7 @@ const VideoSection = ({ socket }) => {
     const call = peer.call(newUserId, stream);
     // Set second user stream on call answered
     call.on("stream", (newStream) => {
-      console.log("Call answered");
+      // Add new stream to the list of streams
       addVideoStream(newUserId, newStream, false);
     });
   }
@@ -58,8 +60,9 @@ const VideoSection = ({ socket }) => {
       });
       setPeer(peer);
 
+      // Open peer connection, and join the room once connected
       peer.on('open', (id) => {
-        socket.emit('join-room', 'test-room', userId, store.getState().username);
+        socket.emit(SocketEvents.JoinRoom, 'test-room', userId, store.getState().username);
       });
     }
 
@@ -74,27 +77,40 @@ const VideoSection = ({ socket }) => {
       }).then((stream) => {
         // Attach stream to video element
         addVideoStream(userId, stream, true);
+        // Update pointer
+        setMyStream(stream);
 
+        // Setup peer event to receive calls
         peer.on("call", (call) => {
           // Answer the call with the stream and userId
           call.answer(stream, userId);
+          // Setup peer event to receive media streams
           call.on("stream", (newStream) => {
             addVideoStream(call.peer, newStream, false);
           });
         });
 
         // Announce to server that this client is ready to recieve peer calls
-        socket.emit("ready");
+        socket.emit(SocketEvents.PeerReady);
 
+        // Setup socket event to connect new room members
         socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
           // Connect to new user
           connectToNewUser(newUserId, stream);
         });
-      });
 
+        // Setup socket event to remove disconnected room members
+        socket.on(SocketEvents.UserLeftRoom, (disconnectedUser) => {
+          // Filter out streams matching disconnected id
+          streams = streams.filter((e) => {
+            return e.userId !== disconnectedUser;
+          })
+          setStreams(streams);
+        });
+      });
+      // Ensure media stream isn't requested again
       setStream(false);
     }
-
   }, 100);
 
   return (
@@ -109,7 +125,7 @@ const VideoSection = ({ socket }) => {
               />
           )
       })}
-      <VideoButtons socket={socket} peer={peer} stream={streams[0]} />
+      <VideoButtons socket={socket} peer={peer} stream={myStream} />
     </div>
   )
 }

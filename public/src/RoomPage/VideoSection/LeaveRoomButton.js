@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+const SocketEvents = require('../socketevents');
 
 const LeaveRoomButton = ({ socket, peer, stream }) => {
 
@@ -8,6 +9,7 @@ const LeaveRoomButton = ({ socket, peer, stream }) => {
     // End the stream
     stream.getTracks().forEach(track => track.stop());
     console.log(stream);
+    socket.emit(SocketEvents.LeaveRoom);
     // Disconnect from the socket
     socket.disconnect();
     // Disconnect from the peer connection
