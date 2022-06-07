@@ -4,6 +4,7 @@ import VideoFrame from './VideoFrame';
 import { store } from '../../store/store';
 import { useInterval } from './useInterval';
 import { Peer } from 'peerjs';
+const SocketEvents = require('../socketevents');
 
 const VideoSection = ({ socket }) => {
 
@@ -50,15 +51,7 @@ const VideoSection = ({ socket }) => {
         // Attach stream to video element
         setMyStream(stream);
 
-        peer.on('call', (call) => {
-          // Answer media call
-          call.answer(stream);
-          call.on('stream', (newStream) => {
-            setSecondStream(newStream);
-          });
-        });
-
-        socket.on("user-joined-room", (newUserId) => {
+        socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
           connectToNewUser(newUserId, stream);
         });
       });

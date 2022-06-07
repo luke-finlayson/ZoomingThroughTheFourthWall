@@ -8,6 +8,7 @@ import io from 'socket.io-client';
 import { store } from '../store/store';
 import { useInterval } from './VideoSection/useInterval';
 import { useNavigate } from 'react-router-dom';
+const SocketEvents = require('./socketevents');
 
 // Entry point and interface of our room page
 const RoomPage = () => {
@@ -30,7 +31,7 @@ const RoomPage = () => {
     // Establish the socket connection if it hasn't already
     if (socket === null) {
       // Attempt to create socket connection
-      const socket = io(store.getState().serverUrl + ':443/');
+      const socket = io("https://" + store.getState().serverUrl + ':443/');
       setSocket(socket);
     }
   }, 100);

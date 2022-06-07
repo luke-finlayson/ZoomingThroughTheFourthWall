@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import SendMessageButton from "../../resources/images/sendMessageButton.svg";
+const SocketEvents = require('../socketevents');
 
 const NewMessage = ({ socket }) => {
 
@@ -7,10 +8,11 @@ const NewMessage = ({ socket }) => {
 
     const sendMessage = () => {
         // Send message to server
-        socket.emit("new-message", message);
+        socket.emit(SocketEvents.NewMessage, message);
 
         // This currently only sends message to the console
-        console.log("Sent message: " + message);
+        console.log("Sent message: " + message + "; to:");
+        console.log(socket);
         setMessage('');
     }
 

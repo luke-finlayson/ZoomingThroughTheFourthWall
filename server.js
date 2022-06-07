@@ -41,14 +41,13 @@ if (process.env.NODE_ENV === "production")
 
 // Serve different responses depending on whether production is enabled or not
 app.get('/', (_request, response) => {
-  if (production == false)
+  if (process.env.NODE_ENV !== "production")
     response.send('The server is indeed working.')
   else
     response.sendFile(path.join(__dirname, '/public/build/index.html'));
 });
 
 io.on(SocketEvents.Connection, (socket) => {
-  console.log('A user has connected');
 
   // This can be used as SocketEvents.LeaveRoom instead
   socket.on(SocketEvents.Disconnect, () => {
@@ -78,6 +77,8 @@ io.on(SocketEvents.Connection, (socket) => {
       callback({ status: "Failed", error: "RoomID not provided." })
       return;
     }
+
+    console.log(userName + " joined " + roomID + " with id: " + userId);
 
     socket.join(roomID);
     socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId);
