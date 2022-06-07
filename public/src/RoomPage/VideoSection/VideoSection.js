@@ -12,8 +12,11 @@ const VideoSection = ({ socket }) => {
 
   // Unique id of this user
   const userId = store.getState().userId;
+  // Used to ensure user stream is only fetched once
   const [getStream, setStream] = useState(true);
+  // Holds the peer connection object
   const [peer, setPeer] = useState(null);
+  // Stores the list of streams as a state so that UI updates with new streams
   const [streamState, setStreams] = useState(streams.slice());
 
   const connectToNewUser = (newUserId, stream) => {
@@ -21,7 +24,7 @@ const VideoSection = ({ socket }) => {
     const call = peer.call(newUserId, stream);
     // Set second user stream on call answered
     call.on("stream", (newUserStream) => {
-      //(newUserStream);
+      addVideoStream(newUserId, stream, false)
     });
   }
 
@@ -68,6 +71,14 @@ const VideoSection = ({ socket }) => {
       }).then((stream) => {
         // Attach stream to video element
         addVideoStream(userId, stream, true);
+
+        peer.on("call", (call) => {
+          // Answer the call with the stream and userId
+          call.answer(stream);
+          call.on("stream", (newStream) => {
+            addVideoStream(streams.length + 1, newStream, false);
+          });
+        });
 
         socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
           connectToNewUser(newUserId, stream);
