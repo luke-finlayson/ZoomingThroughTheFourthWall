@@ -27,7 +27,7 @@ const VideoSection = ({ socket }) => {
       // Attempt peerjs connection
       const peer = new Peer(userId, {
         host: 'localhost',
-        port: 8080,
+        port: 443,
         path: '/peerjs',
         secure: true,
       });

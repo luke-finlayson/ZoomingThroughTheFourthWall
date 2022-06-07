@@ -36,7 +36,7 @@ app.use('/peerjs', peerServer);
 // Create text recognition tool
 const textRecognition = new TextRecognition();
 
-if (process.env.NODE_ENV === "production") 
+if (process.env.NODE_ENV === "production")
   app.use(express.static(path.join(__dirname, '/public/build')));
 
 // Serve different responses depending on whether production is enabled or not

@@ -30,7 +30,7 @@ const RoomPage = () => {
     // Establish the socket connection if it hasn't already
     if (socket === null) {
       // Attempt to create socket connection
-      const socket = io("https://localhost:8080/");
+      const socket = io("https://localhost:443/");
       setSocket(socket);
     }
   }, 100);
