@@ -34,7 +34,6 @@ const Messages = ({ socket }) => {
     if (socket !== null && !socketSetup) {
       // Create a new message on message received
       socket.on("new-message", (author, message, id) => {
-
         var messageCreatedByMe = false;
         // Determine if the message was sent by this user
         if (id === store.getState().userId) {

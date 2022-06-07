@@ -6,6 +6,7 @@ import { useInterval } from './useInterval';
 import { Peer } from 'peerjs';
 const SocketEvents = require('../socketevents');
 
+// Array to keep track of all connected streams
 const streams = [];
 
 const VideoSection = ({ socket }) => {
@@ -19,27 +20,29 @@ const VideoSection = ({ socket }) => {
   // Stores the list of streams as a state so that UI updates with new streams
   const [streamState, setStreams] = useState(streams.slice());
 
+  // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
     // Call second user
     const call = peer.call(newUserId, stream);
     // Set second user stream on call answered
-    call.on("stream", (newUserStream) => {
-      addVideoStream(newUserId, stream, false)
+    call.on("stream", (newStream) => {
+      console.log("Call answered");
+      addVideoStream(newUserId, newStream, false);
     });
   }
 
   // Adds a video stream to the list of video streams
   const addVideoStream = (newUserId, newStream, muted) => {
-    // Add new stream to list of streams
-    streams.push({
-      userId: newUserId,
-      stream: newStream,
-      muted: muted
-    });
-    setStreams(streams.slice())
-
-    console.log("Added stream: " + newUserId + ",");
-    console.log(newStream);
+    if(!streams.some(e => e.stream === newStream)) {
+      // Add new stream to list of streams if it isn't already
+      streams.push({
+        userId: newUserId,
+        stream: newStream,
+        muted: muted
+      });
+      // Update the streams state
+      setStreams(streams.slice())
+    }
   }
 
   // Need to use polling to ensure only single instances of connections are created
@@ -74,13 +77,17 @@ const VideoSection = ({ socket }) => {
 
         peer.on("call", (call) => {
           // Answer the call with the stream and userId
-          call.answer(stream);
+          call.answer(stream, userId);
           call.on("stream", (newStream) => {
-            addVideoStream(streams.length + 1, newStream, false);
+            addVideoStream(call.peer, newStream, false);
           });
         });
 
+        // Announce to server that this client is ready to recieve peer calls
+        socket.emit("ready");
+
         socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
+          // Connect to new user
           connectToNewUser(newUserId, stream);
         });
       });

@@ -49,11 +49,6 @@ app.get('/', (_request, response) => {
 
 io.on(SocketEvents.Connection, (socket) => {
 
-  // This can be used as SocketEvents.LeaveRoom instead
-  socket.on(SocketEvents.Disconnect, () => {
-    console.log('A user has disconnected.');
-  });
-
   socket.on(SocketEvents.CreateRoom, (roomName) => {
     if (!roomName) {
       callback({ status: "Failed", error: "Room name not provided." })
@@ -78,10 +73,14 @@ io.on(SocketEvents.Connection, (socket) => {
       return;
     }
 
-    console.log(userName + " joined " + roomID + " with id: " + userId);
-
     socket.join(roomID);
-    socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId);
+
+    // Only announce to connected clients the existence of this client when it
+    // is ready for peer calls
+    socket.on("ready", () => {
+      // Broadcast to members of room
+      socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId);
+    })
 
     socket.on(SocketEvents.NewMessage, (message) => {
       // Save message to database and notify all other clients in room
@@ -92,7 +91,18 @@ io.on(SocketEvents.Connection, (socket) => {
 
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
-    })
+    });
+
+    // This can be used as SocketEvents.LeaveRoom instead
+    socket.on(SocketEvents.Disconnect, () => {
+      // Notify other users that the user disconnected
+      socket.to(roomID).emit(SocketEvents.UserLeftRoom, userId);
+    });
+
+    // This can be used as SocketEvents.LeaveRoom instead
+    socket.on(SocketEvents.Disconnect, () => {
+      console.log('A user has disconnected.');
+    });
   });
 
   // Receive a base-64 encoded image, decode it and then perform text recognition on it
@@ -117,12 +127,3 @@ io.on(SocketEvents.Connection, (socket) => {
 server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
 });
-
-// Log peer connections
-peerServer.on('connection', (client) => {
-  console.log("User connected to peer server with id: " + client.id);
-})
-
-peerServer.on('disconnect', (client) => {
-  console.log("User disconnected from peer server: " + client.id);
-})

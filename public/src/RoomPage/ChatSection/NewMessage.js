@@ -11,8 +11,7 @@ const NewMessage = ({ socket }) => {
         socket.emit(SocketEvents.NewMessage, message);
 
         // This currently only sends message to the console
-        console.log("Sent message: " + message + "; to:");
-        console.log(socket);
+        console.log("Sent message: " + message);
         setMessage('');
     }
 
