@@ -8,7 +8,7 @@ const ChatSection = ({ socket }) => {
 
   return (
     <div className="chat_section_container">
-        <p class="room-id">{store.getState().roomId}</p>
+        <p className="room-id">{store.getState().roomId}</p>
         <ChatLabel />
         <Messages socket={socket} />
         <NewMessage socket={socket} />

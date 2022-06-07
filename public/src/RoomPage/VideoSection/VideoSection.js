@@ -117,16 +117,18 @@ const VideoSection = ({ socket }) => {
 
   return (
     <div className="video_section_container">
-      {streamState.map((stream, index) => {
-          return (
-              <VideoFrame
-              key={index}
-              stream={stream.stream}
-              userId={stream.userId}
-              muted={stream.muted}
-              />
-          )
-      })}
+      <div className="video-stream-container">
+        {streamState.map((stream, index) => {
+            return (
+                <VideoFrame
+                key={index}
+                stream={stream.stream}
+                userId={stream.userId}
+                muted={stream.muted}
+                />
+            )
+        })}
+      </div>
       <VideoButtons socket={socket} peer={peer} stream={myStream} />
     </div>
   )
