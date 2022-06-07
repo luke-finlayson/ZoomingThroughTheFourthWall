@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import {connect} from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setConnectOnlyWithAudio } from '../store/actions';
 import JoinRoomInputs from './JoinRoomInputs';
 import OnlyWithAudioCheckbox from './OnlyWithAudioCheckbox';
 import RoomNotFoundMessage from './RoomNotFoundMessage';
 import JoinRoomButtons from './JoinRoomButtons';
 import { store } from '../store/store';
+import * as uuid from 'uuid';
+import SocketEvents from '../RoomPage/socketevents';
 
-const JoinRoomContent = (props) => {
-    const { isRoomHost, setConnectOnlyWithAudioAction, connectOnlyWithAudio } = props;
+const JoinRoomContent = ({ isRoomHost, socket,
+  connectOnlyWithAudio, setConnectOnlyWithAudioAction }) => {
 
     // Default values when website is first rendered
     const [roomIdValue, setRoomIdValue] = useState("");
@@ -21,10 +23,29 @@ const JoinRoomContent = (props) => {
 
     const handleJoinToRoom = () => {
         // Set Username
-        store.dispatch({ type: 'SET_USER_NAME', payload: nameValue })
+        store.dispatch({ type: 'SET_USER_NAME', payload: nameValue });
+        // Set new user id
+        store.dispatch({ type: 'SET_USER_ID', payload:  uuid.v4() });
 
-        // Navigate to the room
-        navigate('/room');
+        // If the user is the host, create room ID
+        if (isRoomHost) {
+          store.dispatch({ type: 'SET_ROOM_ID', payload: uuid.v4() });
+          navigate('/room');
+        }
+        else {
+          // Otherwise, check if room id exists
+          socket.emit(SocketEvents.CheckRoomId, roomIdValue, (response) => {
+            // Only navigate to room if check was successful
+            if (response.status === "Success") {
+              store.dispatch({ type: 'SET_ROOM_ID', payload: roomIdValue });
+              navigate('/room');
+            }
+            else {
+              // Otherwise, display the error
+              alert(response.error);
+            }
+          })
+        }
     }
 
     // Handle enter key press

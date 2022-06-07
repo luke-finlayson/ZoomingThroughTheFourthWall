@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { store } from '../../store/store';
-import { useInterval } from '../VideoSection/useInterval';
+import { useInterval } from '../useInterval';
 
 // Holds a list of all the messages
 const messages = [];

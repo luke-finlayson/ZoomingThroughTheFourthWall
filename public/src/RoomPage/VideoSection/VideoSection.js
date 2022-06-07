@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import VideoButtons from './VideoButtons';
 import VideoFrame from './VideoFrame';
 import { store } from '../../store/store';
-import { useInterval } from './useInterval';
+import { useInterval } from '../useInterval';
 import { Peer } from 'peerjs';
-const SocketEvents = require('../socketevents');
+import SocketEvents from '../socketevents';
 
 // Array to keep track of all connected streams
 var streams = [];
@@ -62,7 +62,9 @@ const VideoSection = ({ socket }) => {
 
       // Open peer connection, and join the room once connected
       peer.on('open', (id) => {
-        socket.emit(SocketEvents.JoinRoom, 'test-room', userId, store.getState().username);
+        // Get the state of the store
+        const state = store.getState();
+        socket.emit(SocketEvents.JoinRoom, state.roomId, userId, state.username);
       });
     }
 

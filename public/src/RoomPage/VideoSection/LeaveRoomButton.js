@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-const SocketEvents = require('../socketevents');
+import SocketEvents from '../socketevents';
 
 const LeaveRoomButton = ({ socket, peer, stream }) => {
 

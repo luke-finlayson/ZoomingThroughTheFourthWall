@@ -49,30 +49,29 @@ app.get('/', (_request, response) => {
 
 io.on(SocketEvents.Connection, (socket) => {
 
-  socket.on(SocketEvents.CreateRoom, (roomName) => {
-    if (!roomName) {
+  socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
+
+    // Get array of existing rooms
+    const rooms = io.of("/").adapter.rooms;
+
+    // Return error if room id wasn't provided
+    if (!roomId) {
       callback({ status: "Failed", error: "Room name not provided." })
       return;
     }
-
-    const rooms = io.of("/").adapter.rooms;
-
-    // Return error if room duplication attempted.
-    if (!rooms.has(roomName)) {
-      callback({ status: "Failed", error: "Room with that name already exists." });
+    // Return error if room doesn't exist.
+    if (!rooms.has(roomId)) {
+      callback({ status: "Failed", error: "Room doesn't exist." });
       return;
     }
 
-    // Join creates a new room if one doesn't already exist with this name
-    socket.join(roomName)
+    // Otherwise, room with that ID exists
+    callback({ status: "Success" })
+
   });
 
   socket.on(SocketEvents.JoinRoom, (roomID, userId, userName) => {
-    if (!roomID) {
-      callback({ status: "Failed", error: "RoomID not provided." })
-      return;
-    }
-
+    // Join the room with room id
     socket.join(roomID);
 
     // Only announce to connected clients the existence of this client when it

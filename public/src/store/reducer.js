@@ -4,11 +4,12 @@ import * as uuid from 'uuid';
 const initState = {
     userId: uuid.v4(),
     username: null,
-    isRoomHost: false,
-    connectOnlyWithAudio: false,
+    roomId: null,
     isScreenSharing: false,
+    isRoomHost: false,
     // Change this to the address of the production server
-    serverUrl: 'localhost'
+    serverUrl: 'localhost',
+    connectOnlyWithAudio: false
 };
 
 // Catches changes in the actions, which will allow us to modify which component to output
@@ -25,20 +26,25 @@ const reducer = (state = initState, action) => {
                 ...state,
                 username: action.payload
             }
-        case Actions.SET_IS_ROOM_HOST:
+        case Actions.SET_ROOM_ID:
             return {
                 ...state,
-                isRoomHost: action.isRoomHost
-            }
-        case Actions.SET_CONNTECT_ONLY_WITH_AUDIO:
-            return {
-                ...state,
-                connectOnlyWithAudio: action.onlyWithAudio
+                roomId: action.payload
             }
         case Actions.SET_SCREEN_SHARING:
             return {
                 ...state,
                 isScreenSharing: action.payload
+            }
+        case Actions.SET_ROOM_HOST:
+            return {
+                ...state,
+                isRoomHost: action.isRoomHost
+            }
+        case Actions.SET_ONLY_AUDIO:
+            return {
+                ...state,
+                connectOnlyWithAudio: action.connectOnlyWithAudio
             }
 
         default:

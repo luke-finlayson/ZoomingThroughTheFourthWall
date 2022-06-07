@@ -3,7 +3,7 @@ class SocketEvents {
     static Connection = "connection";
     static Disconnect = "disconnect";
     static NewMessage = "new-message";
-    static CreateRoom = "create-room";
+    static CheckRoomId = "check-room-id";
     static JoinRoom = "join-room";
     static LeaveRoom = "leave-room";
     static UserJoinedRoom = "user-joined-room";

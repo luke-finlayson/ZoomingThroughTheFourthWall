@@ -1,10 +1,11 @@
 const Actions = { // Constant values for redux functions
 
-    SET_IS_ROOM_HOST: 'SET_IS_ROOM_HOST',
+    SET_ROOM_ID: 'SET_ROOM_ID',
     SET_USER_ID: 'SET_USER_ID',
     SET_USER_NAME: 'SET_USER_NAME',
-    SET_CONNTECT_ONLY_WITH_AUDIO: 'SET_CONNTECT_ONLY_WITH_AUDIO',
     SET_SCREEN_SHARING: 'SET_SCREEN_SHARING',
+    SET_ROOM_HOST: 'SET_ROOM_HOST',
+    SET_ONLY_AUDIO: 'SET_ONLY_AUDIO'
 
 } // Changes state in our store
 
@@ -25,17 +26,10 @@ export const setUserName = (username) => {
     }
 }
 
-export const setIsRoomHost = (isRoomHost) => {
+export const setRoomId = (roomId) => {
     return {
-        type: Actions.SET_IS_ROOM_HOST,
-        isRoomHost
-    }
-}
-
-export const setConnectOnlyWithAudio = (onlyWithAudio) =>{
-    return {
-        type: Actions.SET_CONNTECT_ONLY_WITH_AUDIO,
-        onlyWithAudio,
+        type: Actions.SET_ROOM_ID,
+        roomId
     }
 }
 
@@ -44,6 +38,20 @@ export const setScreenSharing = (isScreenSharing) => {
         type: Actions.SET_SCREEN_SHARING,
         isScreenSharing
     }
+}
+
+export const setIsRoomHost = (isRoomHost) => {
+  return {
+    type: Actions.SET_ROOM_HOST,
+    isRoomHost
+  }
+}
+
+export const setConnectOnlyWithAudio = (connectOnlyWithAudio) => {
+  return {
+    type: Actions.SET_ONLY_AUDIO,
+    connectOnlyWithAudio
+  }
 }
 
 export default Actions;

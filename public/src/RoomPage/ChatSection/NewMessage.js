@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import SendMessageButton from "../../resources/images/sendMessageButton.svg";
-const SocketEvents = require('../socketevents');
+import SocketEvents from '../socketevents';
 
 const NewMessage = ({ socket }) => {
 
