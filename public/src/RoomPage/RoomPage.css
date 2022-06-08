@@ -327,6 +327,12 @@ video {
   z-index: 4;
 }
 
+.room-id {
+  font-size: 0.9em;
+  color: rgba(0,0,0,0.4);
+  text-align: center;
+}
+
 .room_label_paragraph {
   font-size: 17px;
   color: white;

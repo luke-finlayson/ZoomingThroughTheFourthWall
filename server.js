@@ -77,8 +77,8 @@ io.on(SocketEvents.Connection, (socket) => {
     // Only announce to connected clients the existence of this client when it
     // is ready for peer calls
     socket.on(SocketEvents.PeerReady, () => {
-      // Broadcast to members of room
-      socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId);
+      // Broadcast new member to members of room
+      socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId, userName);
     })
 
     socket.on(SocketEvents.NewMessage, (message) => {

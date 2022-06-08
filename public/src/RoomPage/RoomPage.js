@@ -23,7 +23,7 @@ const RoomPage = ({ socket }) => {
 
   return (
     <div className="room_container">
-      <ParticipantsSection />
+      <ParticipantsSection socket={socket} />
       <VideoSection socket={socket} />
       <ChatSection socket={socket}/>
     </div>

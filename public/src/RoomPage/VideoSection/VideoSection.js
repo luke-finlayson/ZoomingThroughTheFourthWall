@@ -113,6 +113,7 @@ const VideoSection = ({ socket }) => {
       // Ensure media stream isn't requested again
       setStream(false);
     }
+
   }, 100);
 
   return (
