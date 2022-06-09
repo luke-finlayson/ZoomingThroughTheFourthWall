@@ -12,4 +12,4 @@ class SocketEvents {
     static PeerReady = "peer-ready";
 }
 
-module.exports = SocketEvents;
+export default SocketEvents;
