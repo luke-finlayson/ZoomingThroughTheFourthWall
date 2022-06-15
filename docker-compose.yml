@@ -13,6 +13,11 @@ services:
       - /app/node_modules
       - /app/public/build
     restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=fourth_wall_cache
+      - POSTGRES_HOST=zoomingthroughthefourthwall-postgres-1
   postgres:
     image: "postgres:latest"
     restart: unless-stopped
@@ -23,7 +28,9 @@ services:
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=dev
+      - POSTGRES_DB=fourth_wall_cache
+      - TZ=GMT+12
+      - PGTZ=GMT+12
     volumes:
       - ./startup.sql:/docker-entrypoint-initdb.d/startup.sql
       
