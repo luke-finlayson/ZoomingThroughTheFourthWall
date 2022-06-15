@@ -8,8 +8,8 @@ const VideoButtons = ({ socket, peer, stream }) => {
 
   return (
     <div className="video_buttons_container">
-        <MicButton />
-        <CameraButton />
+        <MicButton stream={stream} />
+        <CameraButton stream={stream} />
         <LeaveRoomButton socket={socket} peer={peer} stream={stream} />
         <SwitchToScreenSharingButton />
 
