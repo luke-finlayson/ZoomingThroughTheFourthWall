@@ -64,7 +64,10 @@ const VideoSection = ({ socket }) => {
       peer.on('open', (id) => {
         // Get the state of the store
         const state = store.getState();
-        socket.emit(SocketEvents.JoinRoom, state.roomId, userId, state.username);
+
+        socket.emit(SocketEvents.JoinRoom, state.roomId, userId, state.username, (joinResponse) => {
+        });
+        
       });
     }
 
