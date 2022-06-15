@@ -8,6 +8,7 @@ const SocketEvents = require('./socketevents');
 const { Server } = require('socket.io');
 const { ExpressPeerServer } = require('peer');
 const TextRecognition = require("./textRecognition");
+const { DataService, User, Message } = require("./dataService");
 const cors = require('cors');
 app.use(cors());
 
@@ -31,6 +32,9 @@ const io = new Server(server, {
   }
 });
 
+// The postgres interface
+const dataService = new DataService();
+
 app.use('/peerjs', peerServer);
 
 // Create text recognition tool
@@ -52,11 +56,11 @@ io.on(SocketEvents.Connection, (socket) => {
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
 
     // Get array of existing rooms
-    const rooms = io.of("/").adapter.rooms;
+    var rooms = io.of("/").adapter.rooms;
 
     // Return error if room id wasn't provided
     if (!roomId) {
-      callback({ status: "Failed", error: "Room name not provided." })
+      callback({ status: "Failed", error: "RoomId not provided." })
       return;
     }
     // Return error if room doesn't exist.
@@ -67,10 +71,48 @@ io.on(SocketEvents.Connection, (socket) => {
 
     // Otherwise, room with that ID exists
     callback({ status: "Success" })
-
   });
 
-  socket.on(SocketEvents.JoinRoom, (roomID, userId, userName) => {
+  socket.on(SocketEvents.JoinRoom, (roomID, userId, username, callback) => {
+
+    var rooms = io.of("/").adapter.rooms;
+    var roomExisted = rooms.has(roomID);
+
+    const putUserInRoom = () => {
+      dataService.insertUserIntoRoom(userId, roomID, (error) => actAndCallbackGracefully(error, callback));
+    }
+
+    var user = new User(userId, username);
+    dataService.insertUser(user, (error) => {
+      if (error) {
+        actAndCallbackGracefully(error, callback);
+        return;
+      }
+      else {
+        console.log(`This room already exists: ${roomExisted}`)
+        // Insert room to database if it doesn't already exist
+        // and put user in the new room
+        if (!roomExisted) {
+          console.log('Room does not yet exist!');
+
+          dataService.insertRoom(roomID, (error) => {
+            if (error) {
+              actAndCallbackGracefully(error, callback);
+              return;
+            }
+            else {
+              putUserInRoom();
+            }
+          });
+        } 
+
+        // Otherwise just put the user in the room that already exists
+        else {
+          putUserInRoom();
+        }
+      }  
+    });
+
     // Join the room with room id
     socket.join(roomID);
 
@@ -78,14 +120,17 @@ io.on(SocketEvents.Connection, (socket) => {
     // is ready for peer calls
     socket.on(SocketEvents.PeerReady, () => {
       // Broadcast new member to members of room
-      socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId, userName);
+      socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId, username);
     })
 
-    socket.on(SocketEvents.NewMessage, (message) => {
-      // Save message to database and notify all other clients in room
-      io.to(roomID).emit(SocketEvents.NewMessage, userName, message, userId);
+    // Save message to database and notify all other clients in room
+    socket.on(SocketEvents.NewMessage, (content) => {
+      io.to(roomID).emit(SocketEvents.NewMessage, username, content, userId);
 
-      console.log("Message received from " + userName + ": " + message);
+      var message = new Message(userId, roomID, content);
+      dataService.insertMessage(message);
+
+      console.log("Message received from " + username + ": " + content);
     });
 
     // Disconnect socket when leave room button is pressed
@@ -100,9 +145,25 @@ io.on(SocketEvents.Connection, (socket) => {
     });
   });
 
+  // Returns the participants in the room with the given ID
+  socket.on(SocketEvents.GetRoomParticipants, (roomID, callback) => {
+    dataService.getUsersInRoom(roomID, (error, result) => {
+      try {
+        if (error) {
+          callback({ status: "Failed" });
+          return;
+        }
+        
+        callback({ status: "Success", payload: result })
+      }
+      
+      catch {}
+    })
+  })
+
   // Receive a base-64 encoded image, decode it and then perform text recognition on it
   // and return the extracted text and the vertices for each extraction
-  socket.on(SocketEvents.FindImageText, async (image64) => {
+  socket.on(SocketEvents.FindImageText, async (image64, callback) => {
     if (!image64) {
       callback({ status: "Failed", error: "Image not provided." })
       return;
@@ -110,7 +171,7 @@ io.on(SocketEvents.Connection, (socket) => {
 
     try {
       var result = await textRecognition.getTextData(image64);
-      callback({ status : "ok", response : result })
+      callback({ status : "Success", response : result })
     }
     catch (error) {
       console.log(error);
@@ -122,3 +183,21 @@ io.on(SocketEvents.Connection, (socket) => {
 server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
 });
+
+// Helper callback
+const actAndCallbackGracefully = (error, callback, action) => {
+  try {
+    if (error) {
+      console.log(`There was a problem! ${error}`);
+      callback({ status: "Failed" });
+      return;
+    }
+
+    if (action)
+      action()
+  
+    callback({ status: "Success" });
+  }
+
+  catch {}
+}
