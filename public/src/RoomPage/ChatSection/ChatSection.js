@@ -9,6 +9,7 @@ const ChatSection = ({ socket }) => {
 
   const [copyButtonText, setButtonText] = useState("Copy");
 
+  // Reset button text every 8s
   useInterval(() => {
     // If the button text hs changed, reset it
     if (copyButtonText == "Copied!") {

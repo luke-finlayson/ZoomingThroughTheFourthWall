@@ -10,6 +10,9 @@
   background-color: white;
   display: flex;
   flex-direction: column;
+  /* Temp. Position while participants section is hidden */
+  position:  absolute;
+  right: 0;
 }
 
 .chat_label_container {
