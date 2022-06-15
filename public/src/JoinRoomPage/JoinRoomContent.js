@@ -27,25 +27,40 @@ const JoinRoomContent = ({ isRoomHost, socket,
         // Set new user id
         store.dispatch({ type: 'SET_USER_ID', payload:  uuid.v4() });
 
-        // If the user is the host, create room ID
-        if (isRoomHost) {
-          store.dispatch({ type: 'SET_ROOM_ID', payload: uuid.v4() });
-          navigate('/room');
-        }
-        else {
-          // Otherwise, check if room id exists
-          socket.emit(SocketEvents.CheckRoomId, roomIdValue, (response) => {
-            // Only navigate to room if check was successful
-            if (response.status === "Success") {
-              store.dispatch({ type: 'SET_ROOM_ID', payload: roomIdValue });
-              navigate('/room');
+        // Validate the room name
+        socket.emit(SocketEvents.CheckRoomId, roomIdValue, (response) => {
+
+          // Don't do anything if the user didn't enter a room name
+          if (response == "Null") {
+            alert("Missing Room Name");
+          }
+          // Othwerise, check if the room name exists
+          else {
+            // If the user is the host, create the room if it does not exist
+            if (isRoomHost) {
+              // If the room exists, user cannot be host
+              if (response == "Exists") {
+                alert("Sorry, that room already exists");
+              }
+              else {
+                // Otherwise, 'create' the room
+                store.dispatch({ type: 'SET_ROOM_ID', payload: roomIdValue });
+                navigate('/room');
+              }
             }
             else {
-              // Otherwise, display the error
-              alert(response.error);
+              // Join the room if it exists
+              if (response == "Exists") {
+                store.dispatch({ type: 'SET_ROOM_ID', payload: roomIdValue });
+                navigate('/room');
+              }
+              else {
+                // If it doesn't, then alert the user
+                alert("Sorry that room doesn't exist");
+              }
             }
-          })
-        }
+          }
+        });
     }
 
     // Handle enter key press
