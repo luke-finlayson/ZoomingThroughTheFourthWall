@@ -60,17 +60,18 @@ io.on(SocketEvents.Connection, (socket) => {
 
     // Return error if room id wasn't provided
     if (!roomId) {
-      callback({ status: "Failed", error: "RoomId not provided." })
+      callback("Null")
       return;
     }
     // Return error if room doesn't exist.
     if (!rooms.has(roomId)) {
-      callback({ status: "Failed", error: "Room doesn't exist." });
+      callback("Does Not Exist");
       return;
     }
 
     // Otherwise, room with that ID exists
-    callback({ status: "Success" })
+    callback("Exists")
+
   });
 
   socket.on(SocketEvents.JoinRoom, (roomID, userId, username, callback) => {

@@ -4,22 +4,24 @@ import React, {useState} from 'react'
 import CameraButtonImg from '../../resources/images/camera.svg'
 import CameraButtonImgOff from '../../resources/images/cameraOff.svg'
 
-const CameraButton = () => {
+const CameraButton = ({ stream }) => {
 
   const[isLocalVideoTrackDisabled, setIsLocalVideoTrackDisabled] = useState(false);
 
   const handleCameraButtonPressed = () => {
-    isLocalVideoTrackDisabled ? stopVideo() : startVideo();
+    isLocalVideoTrackDisabled ? startVideo() : stopVideo();
 
     setIsLocalVideoTrackDisabled(!isLocalVideoTrackDisabled);
   }
 
   const startVideo = () => {
     // Logic to start camera video to other users
+    stream.getVideoTracks()[0].enabled = true;
   }
 
   const stopVideo = () => {
     // Logic to stop camera video to other users
+    stream.getVideoTracks()[0].enabled = false;
   }
 
 
