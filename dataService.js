@@ -71,14 +71,14 @@ class DataService{
         var roomID = this.client.escapeLiteral(message.roomID);
         var content = this.client.escapeLiteral(message.content);
 
-        this.pool.query(`INSERT INTO messages(id, user_id, room_id, message, timeSent) VALUES(uuid_generate_v4(), ${authorID}, ${roomID}, ${content}, '${message.timeSent}')`, (err) => {
+        this.pool.query(`INSERT INTO messages(id, user_id, room_name, message, timeSent) VALUES(uuid_generate_v4(), ${authorID}, ${roomID}, ${content}, '${message.timeSent}')`, (err) => {
             if (err)
                 console.log(err);
         })
     }
 
     getMessages(roomID, callback) {
-        this.pool.query(`SELECT * FROM messages WHERE room_id::text = '${this.client.escapeLiteral(roomID)}'`, (err, result) => {
+        this.pool.query(`SELECT * FROM messages WHERE room_name = '${this.client.escapeLiteral(roomID)}'`, (err, result) => {
             if (err)
                 console.log(err);
             
@@ -91,7 +91,7 @@ class DataService{
     }
 
     getUsersInRoom(roomID, callback) {
-        this.pool.query(`SELECT u.id, u.name FROM users u JOIN roomUsers r ON r.user_id = u.id WHERE r.room_id::text = '${roomID}'`, (err, result) => {
+        this.pool.query(`SELECT u.id, u.name FROM users u JOIN roomUsers r ON r.user_id = u.id WHERE r.room_name = '${roomID}'`, (err, result) => {
             if (err) {
                 console.log(err);
                 return;
