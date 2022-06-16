@@ -158,9 +158,25 @@ io.on(SocketEvents.Connection, (socket) => {
         callback({ status: "Success", payload: result })
       }
       
-      catch {}
+      catch { callback({ status: "Failed" }); }
     })
-  })
+  });
+
+  // Get all messages sent previously in the given room
+  socket.on(SocketEvents.GetMessageHistory, (roomID, callback) => {
+    dataService.getMessages(roomID, (error, result) => {
+      try {
+        if (error) {
+          callback({ status: "Failed" });
+          return;
+        }
+        
+        callback({ status: "Success", payload: result })
+      }
+      
+      catch { callback({ status: "Failed" }); }
+    });
+  });
 
   // Receive a base-64 encoded image, decode it and then perform text recognition on it
   // and return the extracted text and the vertices for each extraction
@@ -172,13 +188,13 @@ io.on(SocketEvents.Connection, (socket) => {
 
     try {
       var result = await textRecognition.getTextData(image64);
-      callback({ status : "Success", response : result })
+      callback({ status: "Success", response: result })
     }
     catch (error) {
       console.log(error);
-      callback({ status : "Failed", error : "Could not successfully perform text recognition."})
+      callback({ status: "Failed", error: "Could not successfully perform text recognition." })
     }
-  })
+  });
 });
 
 server.listen(port, () => {

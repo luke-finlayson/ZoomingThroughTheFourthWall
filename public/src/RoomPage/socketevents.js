@@ -11,6 +11,7 @@ class SocketEvents {
     static FindImageText = "find-image-text";
     static PeerReady = "peer-ready";
     static GetRoomParticipants = "get-room-participants";
+    static GetMessageHistory = "get-message-history";
 }
 
 export default SocketEvents;
