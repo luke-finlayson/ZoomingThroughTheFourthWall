@@ -7,7 +7,7 @@ import { Peer } from 'peerjs';
 import SocketEvents from '../socketevents';
 
 // Array to keep track of all connected streams
-var streams = [];
+var connectedUsers = [];
 
 const VideoSection = ({ socket }) => {
 
@@ -20,7 +20,7 @@ const VideoSection = ({ socket }) => {
   // Holds the peer connection object
   const [peer, setPeer] = useState(null);
   // Stores the list of streams as a state so that UI updates with new streams
-  const [streamState, setStreams] = useState(streams.slice());
+  const [usersState, setUsers] = useState(connectedUsers.slice());
 
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
@@ -29,22 +29,52 @@ const VideoSection = ({ socket }) => {
     // Set second user stream on call answered
     call.on("stream", (newStream) => {
       // Add new stream to the list of streams
-      addVideoStream(newUserId, newStream, false);
+      addVideoStream(newUserId, newStream, false, call);
     });
   }
 
   // Adds a video stream to the list of video streams
-  const addVideoStream = (newUserId, newStream, muted) => {
-    if(!streams.some(e => e.stream === newStream)) {
+  const addVideoStream = (newUserId, newStream, muted, call) => {
+    if(!connectedUsers.some(e => e.stream === newStream)) {
       // Add new stream to list of streams if it isn't already
-      streams.push({
+      connectedUsers.push({
         userId: newUserId,
         stream: newStream,
-        muted: muted
+        muted: muted,
+        call: call
       });
       // Update the streams state
-      setStreams(streams.slice())
+      setUsers(connectedUsers.slice());
     }
+  }
+
+  // Replaces the stream in the peer connection with the given stream
+  const replacePeerStreams = (mediaStream) => {
+
+    console.log("Screen sharing...");
+
+    connectedUsers.forEach((user) => {
+      // Only replace stream if call exists
+      if (user.call !== null) {
+        // Get tracks being streamed
+        var senders = user.call.peerConnection.getSenders();
+
+        senders.forEach((sender) => {
+          // Replace audio track
+          if (sender.track.kind === "audio") {
+            if (mediaStream.getAudioTracks().length > 0) {
+              sender.replaceTrack(mediaStream.getAudioTracks()[0]);
+            }
+          }
+          // Replace video track
+          if (sender.track.kind === "video") {
+            if (mediaStream.getVideoTracks().length > 0) {
+              sender.replaceTrack(mediaStream.getVideoTracks()[0]);
+            }
+          }
+        });
+      }
+    });
   }
 
   // Need to use polling to ensure only single instances of connections are created
@@ -67,7 +97,7 @@ const VideoSection = ({ socket }) => {
 
         socket.emit(SocketEvents.JoinRoom, state.roomId, userId, state.username, (joinResponse) => {
         });
-        
+
       });
     }
 
@@ -81,7 +111,7 @@ const VideoSection = ({ socket }) => {
         video: true
       }).then((stream) => {
         // Attach stream to video element
-        addVideoStream(userId, stream, true);
+        addVideoStream(userId, stream, true, null);
         // Update pointer
         setMyStream(stream);
 
@@ -91,7 +121,7 @@ const VideoSection = ({ socket }) => {
           call.answer(stream, userId);
           // Setup peer event to receive media streams
           call.on("stream", (newStream) => {
-            addVideoStream(call.peer, newStream, false);
+            addVideoStream(call.peer, newStream, false, call);
           });
         });
 
@@ -107,10 +137,11 @@ const VideoSection = ({ socket }) => {
         // Setup socket event to remove disconnected room members
         socket.on(SocketEvents.UserLeftRoom, (disconnectedUser) => {
           // Filter out streams matching disconnected id
-          streams = streams.filter((e) => {
+          connectedUsers = connectedUsers.filter((e) => {
             return e.userId !== disconnectedUser;
           });
-          setStreams(streams);
+          // Update the streams state
+          setUsers(connectedUsers.slice())
         });
       });
       // Ensure media stream isn't requested again
@@ -122,14 +153,14 @@ const VideoSection = ({ socket }) => {
   return (
     <div className="video_section_container">
       <div className="video-stream-container">
-        {streamState.map((stream, index) => {
+        {usersState.map((stream, index) => {
             return (
                 <VideoFrame
                 key={index}
                 stream={stream.stream}
                 userId={stream.userId}
                 muted={stream.muted}
-                peer={peer}
+                replaceStreams={replacePeerStreams}
                 />
             )
         })}

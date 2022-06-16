@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { store } from '../../store/store';
 import { useInterval } from '../useInterval';
 
-const VideoFrame = ({stream, userId, muted}) => {
+const VideoFrame = ({ stream, userId, muted, replaceStreams }) => {
 
   // Current value of screen sharing.
   // (For some weird reason this will actually be the opposite of the true value idk whats up)
@@ -37,7 +37,7 @@ const VideoFrame = ({stream, userId, muted}) => {
         // Screen sharing has ended
         store.dispatch({ type: "SET_SCREEN_SHARING", payload: !store.getState().isScreenSharing });
       }
-    })
+    });
   }
 
   // Use polling to check status of screen sharing
@@ -58,11 +58,14 @@ const VideoFrame = ({stream, userId, muted}) => {
         }).then((displayStream) => {
           // Change video source to display stream
           setVideoSource(displayStream, false);
+          // Replace peer stream with the current stream
+          replaceStreams(displayStream);
         });
       }
       else {
         // Change video source back to webcam
         setVideoSource(stream, true);
+        replaceStreams(stream);
       }
     }
   }, 100);
