@@ -106,7 +106,7 @@ const VideoSection = ({ socket }) => {
           // Filter out streams matching disconnected id
           streams = streams.filter((e) => {
             return e.userId !== disconnectedUser;
-          })
+          });
           setStreams(streams);
         });
       });
@@ -126,6 +126,7 @@ const VideoSection = ({ socket }) => {
                 stream={stream.stream}
                 userId={stream.userId}
                 muted={stream.muted}
+                peer={peer}
                 />
             )
         })}

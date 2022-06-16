@@ -14,8 +14,8 @@ const LeaveRoomButton = ({ socket, peer, stream }) => {
     socket.disconnect();
     // Disconnect from the peer connection
     peer.disconnect();
-    // Return to introduction page
-    navigate("/");
+
+    window.location.reload();
   }
 
   return (
