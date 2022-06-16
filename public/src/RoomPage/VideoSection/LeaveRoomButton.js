@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import SocketEvents from '../socketevents';
+import { store } from '../../store/store';
 
 const LeaveRoomButton = ({ socket, peer, stream }) => {
 
@@ -14,8 +15,7 @@ const LeaveRoomButton = ({ socket, peer, stream }) => {
     socket.disconnect();
     // Disconnect from the peer connection
     peer.disconnect();
-
-    window.location.reload();
+    window.location.replace('https://' + store.getState().serverUrl);
   }
 
   return (
