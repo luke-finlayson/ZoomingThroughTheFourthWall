@@ -6,24 +6,24 @@ CREATE TABLE users(
 );
 
 CREATE TABLE room(
-    id UUID PRIMARY KEY
+    name VARCHAR(200) PRIMARY KEY
 );
 
 CREATE TABLE roomUsers(
     user_id UUID,
-    room_id UUID,
+    room_name VARCHAR(200),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (room_id) REFERENCES room(id),
-    PRIMARY KEY (user_id, room_id)
+    FOREIGN KEY (room_name) REFERENCES room(name),
+    PRIMARY KEY (user_id, room_name)
 );
 
 CREATE TABLE messages(
     id UUID PRIMARY KEY,
     user_id UUID,
-    room_id UUID,
+    room_name VARCHAR(200),
     message VARCHAR(200) NOT NULL,
     timeSent TIMESTAMP NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id),
-    FOREIGN KEY(room_id) REFERENCES room(id)
+    FOREIGN KEY(room_name) REFERENCES room(name)
 );
 
