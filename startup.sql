@@ -1,22 +1,29 @@
-CREATE DATABASE zoom;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE account(
-id BIGINT PRIMARY KEY,
-name VARCHAR(100) NOT NULL
+CREATE TABLE users(
+    id UUID PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE room(
-id BIGINT PRIMARY KEY,
-name VARCHAR(50) NOT NULL
+    id UUID PRIMARY KEY
+);
+
+CREATE TABLE roomUsers(
+    user_id UUID,
+    room_id UUID,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (room_id) REFERENCES room(id),
+    PRIMARY KEY (user_id, room_id)
 );
 
 CREATE TABLE messages(
-id BIGINT PRIMARY KEY,
-userID BIGINT,
-roomID BIGINT,
-message VARCHAR(200) NOT NULL,
-timeSent TIMESTAMP NOT NULL,
-FOREIGN KEY(userID) REFERENCES account(id),
-FOREIGN KEY(roomID) REFERENCES room(id)
+    id UUID PRIMARY KEY,
+    user_id UUID,
+    room_id UUID,
+    message VARCHAR(200) NOT NULL,
+    timeSent TIMESTAMP NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(room_id) REFERENCES room(id)
 );
 

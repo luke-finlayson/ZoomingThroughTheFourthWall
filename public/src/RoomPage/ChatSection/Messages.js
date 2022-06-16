@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { store } from '../../store/store';
+import SocketEvents from '../socketevents';
 import { useInterval } from '../useInterval';
 
 // Holds a list of all the messages
@@ -33,7 +34,7 @@ const Messages = ({ socket }) => {
     // Ensure socket connection has been made
     if (socket !== null && !socketSetup) {
       // Create a new message on message received
-      socket.on("new-message", (author, message, id) => {
+      socket.on(SocketEvents.NewMessage, (author, message, id) => {
         var messageCreatedByMe = false;
         // Determine if the message was sent by this user
         if (id === store.getState().userId) {
