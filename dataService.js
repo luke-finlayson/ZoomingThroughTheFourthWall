@@ -38,7 +38,7 @@ class DataService{
     }
 
     insertRoom(roomID, callback) {
-        this.pool.query(`INSERT INTO room VALUES('${roomID}')`, (err) => {
+        this.pool.query(`INSERT INTO room VALUES(${this.client.escapeLiteral(roomID)})`, (err) => {
             if (err)
                 console.log('There was a rather problematic room insertion error.');
             else
@@ -49,7 +49,7 @@ class DataService{
     }
 
     insertUser(user, callback) {
-        this.pool.query(`INSERT INTO users(id, name) VALUES('${user.id}', '${user.name}')`, (err) => {
+        this.pool.query(`INSERT INTO users(id, name) VALUES('${user.id}', ${this.client.escapeLiteral(user.name)})`, (err) => {
             if (err)
                 console.log('There was a rather problematic user insertion error.');
             
@@ -58,7 +58,7 @@ class DataService{
     }
 
     insertUserIntoRoom(userID, roomID, callback) {
-        this.pool.query(`INSERT INTO roomUsers VALUES('${userID}', '${roomID}')`, (err) => {
+        this.pool.query(`INSERT INTO roomUsers VALUES('${userID}', ${this.client.escapeLiteral(roomID)})`, (err) => {
             console.log(err);
 
             if (callback)
