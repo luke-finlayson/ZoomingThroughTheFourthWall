@@ -105,13 +105,13 @@ io.on(SocketEvents.Connection, (socket) => {
               putUserInRoom();
             }
           });
-        } 
+        }
 
         // Otherwise just put the user in the room that already exists
         else {
           putUserInRoom();
         }
-      }  
+      }
     });
 
     // Join the room with room id
@@ -128,7 +128,7 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.on(SocketEvents.NewMessage, (content) => {
       io.to(roomID).emit(SocketEvents.NewMessage, username, content, userId);
 
-      var message = new Message(userId, roomID, content);
+      var message = new Message(userId, username, roomID, content);
       dataService.insertMessage(message);
 
       console.log("Message received from " + username + ": " + content);
@@ -154,10 +154,10 @@ io.on(SocketEvents.Connection, (socket) => {
           callback({ status: "Failed" });
           return;
         }
-        
+
         callback({ status: "Success", payload: result })
       }
-      
+
       catch { callback({ status: "Failed" }); }
     })
   });
@@ -170,10 +170,10 @@ io.on(SocketEvents.Connection, (socket) => {
           callback({ status: "Failed" });
           return;
         }
-        
+
         callback({ status: "Success", payload: result })
       }
-      
+
       catch { callback({ status: "Failed" }); }
     });
   });
@@ -212,7 +212,7 @@ const actAndCallbackGracefully = (error, callback, action) => {
 
     if (action)
       action()
-  
+
     callback({ status: "Success" });
   }
 
