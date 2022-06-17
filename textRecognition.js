@@ -18,7 +18,7 @@ class TextRecognition{
 
         if (!detections.length) {
             console.log("No text detected");
-            return 
+            return null;
         }
 
         detections.forEach(text => {
