@@ -134,6 +134,22 @@ io.on(SocketEvents.Connection, (socket) => {
       console.log("Message received from " + username + ": " + content);
     });
 
+    // Get all messages sent previously in the given room
+    socket.on(SocketEvents.GetMessageHistory, (callback) => {
+      dataService.getMessages(roomID, (error, result) => {
+        try {
+          if (error) {
+            callback({ status: "Failed" });
+            return;
+          }
+
+          callback({ status: "Success", payload: result })
+        }
+
+        catch { callback({ status: "Failed" }); }
+      });
+    });
+
     // Disconnect socket when leave room button is pressed
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
@@ -160,22 +176,6 @@ io.on(SocketEvents.Connection, (socket) => {
 
       catch { callback({ status: "Failed" }); }
     })
-  });
-
-  // Get all messages sent previously in the given room
-  socket.on(SocketEvents.GetMessageHistory, (roomID, callback) => {
-    dataService.getMessages(roomID, (error, result) => {
-      try {
-        if (error) {
-          callback({ status: "Failed" });
-          return;
-        }
-
-        callback({ status: "Success", payload: result })
-      }
-
-      catch { callback({ status: "Failed" }); }
-    });
   });
 
   // Receive a base-64 encoded image, decode it and then perform text recognition on it
