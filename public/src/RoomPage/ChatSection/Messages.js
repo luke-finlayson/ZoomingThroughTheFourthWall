@@ -35,8 +35,6 @@ const Messages = ({ socket }) => {
     if (socket !== null && !socketSetup) {
       // Request previous messages from the server
       socket.emit(SocketEvents.GetMessageHistory, store.getState().roomId, (response) => {
-
-        // Only add messages if the server request was successfull
         if (response.status === "Success") {
           response.payload.forEach((message) => {
             var messageCreatedByMe = false;
@@ -53,7 +51,7 @@ const Messages = ({ socket }) => {
             });
             // Update messages state
             setMessages(messages.slice());
-          }
+          });
         }
       });
 
