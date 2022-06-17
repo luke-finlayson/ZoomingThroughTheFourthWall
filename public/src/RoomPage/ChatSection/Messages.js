@@ -34,7 +34,7 @@ const Messages = ({ socket }) => {
     // Ensure socket connection has been made
     if (socket !== null && !socketSetup) {
       // Request previous messages from the server
-      socket.emit(SocketEvents.GetMessageHistory, store.getState().roomId, (response) => {
+      socket.emit(SocketEvents.GetMessageHistory, (response) => {
         if (response.status === "Success") {
           response.payload.forEach((message) => {
             var messageCreatedByMe = false;
