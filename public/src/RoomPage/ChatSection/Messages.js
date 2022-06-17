@@ -33,6 +33,28 @@ const Messages = ({ socket }) => {
   useInterval(() => {
     // Ensure socket connection has been made
     if (socket !== null && !socketSetup) {
+      // Request previous messages from the server
+      socket.emit(SocketEvents.GetMessageHistory, store.getState().roomId, (response) => {
+        if (response.status === "Success") {
+          response.payload.forEach((message) => {
+            var messageCreatedByMe = false;
+            // Determine if the message was sent by this user
+            if (message.authorID === store.getState().userId) {
+              messageCreatedByMe = true;
+            }
+            // Add the message to the list of messages
+            messages.push({
+              userId: message.authorID,
+              author: message.authorName,
+              content: message.payload.content,
+              messageCreatedByMe: messageCreatedByMe
+            });
+            // Update messages state
+            setMessages(messages.slice());
+          });
+        }
+      });
+
       // Create a new message on message received
       socket.on(SocketEvents.NewMessage, (author, message, id) => {
         var messageCreatedByMe = false;

@@ -105,13 +105,13 @@ io.on(SocketEvents.Connection, (socket) => {
               putUserInRoom();
             }
           });
-        } 
+        }
 
         // Otherwise just put the user in the room that already exists
         else {
           putUserInRoom();
         }
-      }  
+      }
     });
 
     // Join the room with room id
@@ -128,10 +128,26 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.on(SocketEvents.NewMessage, (content) => {
       io.to(roomID).emit(SocketEvents.NewMessage, username, content, userId);
 
-      var message = new Message(userId, roomID, content);
+      var message = new Message(userId, username, roomID, content);
       dataService.insertMessage(message);
 
       console.log("Message received from " + username + ": " + content);
+    });
+
+    // Get all messages sent previously in the given room
+    socket.on(SocketEvents.GetMessageHistory, (callback) => {
+      dataService.getMessages(roomID, (error, result) => {
+        try {
+          if (error) {
+            callback({ status: "Failed" });
+            return;
+          }
+
+          callback({ status: "Success", payload: result })
+        }
+
+        catch { callback({ status: "Failed" }); }
+      });
     });
 
     // Disconnect socket when leave room button is pressed
@@ -154,28 +170,12 @@ io.on(SocketEvents.Connection, (socket) => {
           callback({ status: "Failed" });
           return;
         }
-        
+
         callback({ status: "Success", payload: result })
       }
-      
+
       catch { callback({ status: "Failed" }); }
     })
-  });
-
-  // Get all messages sent previously in the given room
-  socket.on(SocketEvents.GetMessageHistory, (roomID, callback) => {
-    dataService.getMessages(roomID, (error, result) => {
-      try {
-        if (error) {
-          callback({ status: "Failed" });
-          return;
-        }
-        
-        callback({ status: "Success", payload: result })
-      }
-      
-      catch { callback({ status: "Failed" }); }
-    });
   });
 
   // Receive a base-64 encoded image, decode it and then perform text recognition on it
@@ -212,7 +212,7 @@ const actAndCallbackGracefully = (error, callback, action) => {
 
     if (action)
       action()
-  
+
     callback({ status: "Success" });
   }
 

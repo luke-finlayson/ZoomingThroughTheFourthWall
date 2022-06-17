@@ -2,12 +2,14 @@ const { Pool, Client } = require('pg')
 
 class Message {
     authorID;
+    authorName;
     content;
     roomID;
     timeSent;
 
-    constructor(authorID, roomID, content, timeSent = new Date(Date.now()).toISOString()) {
+    constructor(authorID, authorName, roomID, content, timeSent = new Date(Date.now()).toISOString()) {
         this.authorID = authorID;
+        this.authorName = authorName;
         this.content = content;
         this.roomID = roomID;
         this.timeSent = timeSent;
@@ -43,7 +45,7 @@ class DataService{
                 console.log('There was a rather problematic room insertion error.');
             else
                 console.log(`Successful insertion of room with ID ${roomID}`);
-            
+
             callback(err);
         });
     }
@@ -52,7 +54,7 @@ class DataService{
         this.pool.query(`INSERT INTO users(id, name) VALUES('${user.id}', ${this.client.escapeLiteral(user.name)})`, (err) => {
             if (err)
                 console.log('There was a rather problematic user insertion error.');
-            
+
             callback(err);
         });
     }
@@ -81,11 +83,11 @@ class DataService{
         this.pool.query(`SELECT * FROM messages WHERE room_name = ${this.client.escapeLiteral(roomID)}`, (err, result) => {
             if (err)
                 console.log(err);
-            
+
             var messages = result?.rows.map((_value, _index, row) => {
                 return new Message(row[1], row[2], row[3], row[4]);
             });
-            
+
             callback(err, messages);
         });
     }
