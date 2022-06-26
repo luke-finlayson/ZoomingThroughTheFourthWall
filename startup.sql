@@ -19,11 +19,11 @@ CREATE TABLE roomUsers(
 
 CREATE TABLE messages(
     id UUID PRIMARY KEY,
-    user_id UUID,
-    room_name VARCHAR(200),
+    user_id UUID NOT NULL,
+    user_name VARCHAR(200) NOT NULL,
+    room_name VARCHAR(200) NOT NULL,
     message VARCHAR(200) NOT NULL,
     timeSent TIMESTAMP NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(room_name) REFERENCES room(name)
 );
-

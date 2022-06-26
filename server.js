@@ -126,9 +126,11 @@ io.on(SocketEvents.Connection, (socket) => {
 
     // Save message to database and notify all other clients in room
     socket.on(SocketEvents.NewMessage, (content) => {
-      io.to(roomID).emit(SocketEvents.NewMessage, username, content, userId);
-
+      // Create a new message object
       var message = new Message(userId, username, roomID, content);
+      // Send the message to all users
+      io.to(roomID).emit(SocketEvents.NewMessage, message);
+      // Insert the message into the database
       dataService.insertMessage(message);
 
       console.log("Message received from " + username + ": " + content);
