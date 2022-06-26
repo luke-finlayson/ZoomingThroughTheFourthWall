@@ -101,7 +101,7 @@
 .join_room_buttons_container {
     display: flex;
     justify-content: flex-end;
-    width: 100%;
+    width: 90%;
 }
 
 .join_room_cancel_button {
