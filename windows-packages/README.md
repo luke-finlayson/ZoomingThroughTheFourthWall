@@ -1,10 +1,22 @@
 
 # Postgres Windows Zip (zipped up result of running the installer)
 
-Details covered:
+Details for portable zip version cribbed from:
 
     https://gist.github.com/jctosta/baa4a1ba472a5999f445c0f43fdbe208
-    
+
+
+At the time of writing, the following downloaded the latest zip version of Postgres:
+
+  wget -O postgresql-14.4-1-windows-x64-binaries.zip "https://sbp.enterprisedb.com/getfile.jsp?fileid=1258119"
+
+Alternatively, visit:
+
+https://www.enterprisedb.com/download-postgresql-binaries
+
+and click on the relevant x64 button, which downloads as a versioned zip file
+
+
 # Node.js
 
 Fourth Wall project looks to need a newer version than LTS version
