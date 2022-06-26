@@ -74,7 +74,7 @@ class DataService{
         var roomID = this.client.escapeLiteral(message.roomID);
         var content = this.client.escapeLiteral(message.content);
 
-        this.pool.query(`INSERT INTO messages(id, user_id, user_name, room_name, message, timeSent) VALUES(uuid_generate_v4(), ${authorID}, ${roomID}, ${authorName} ${content}, '${message.timeSent}')`, (err) => {
+        this.pool.query(`INSERT INTO messages(id, user_id, user_name, room_name, message, timeSent) VALUES(uuid_generate_v4(), ${authorID}, ${roomID}, ${authorName}, ${content}, '${message.timeSent}')`, (err) => {
             if (err)
                 console.log(err);
         })
