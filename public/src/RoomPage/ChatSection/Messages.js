@@ -58,17 +58,17 @@ const Messages = ({ socket }) => {
       });
 
       // Create a new message on message received
-      socket.on(SocketEvents.NewMessage, (author, message, id) => {
+      socket.on(SocketEvents.NewMessage, (message) => {
         var messageCreatedByMe = false;
         // Determine if the message was sent by this user
-        if (id === store.getState().userId) {
+        if (message.authorID === store.getState().userId) {
           messageCreatedByMe = true;
         }
         // Add the message to the list of messages
         messages.push({
-          userId: id,
-          author: author,
-          content: message,
+          userId: message.authorID,
+          author: message.authorName,
+          content: message.content,
           messageCreatedByMe: messageCreatedByMe
         });
         // Update messages state
