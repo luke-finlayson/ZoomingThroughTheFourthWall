@@ -9,7 +9,14 @@ trigger running is 'run as admin' from within a regular account.
 When a VM is running, check Devices -> webcams and make sure
 that your web cam (e.g. Integrated Webcam) has a tick mark against it.
 
- 
+
+To use the Google Vision API to perform OCR, you will need to
+have a Google Service account where you have created a key
+that can be used.
+
+https://console.cloud.google.com/apis/credentials
+
+
 ## Get Node.js and npm
 
 npm install n
