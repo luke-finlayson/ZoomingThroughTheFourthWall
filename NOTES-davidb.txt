@@ -1,0 +1,123 @@
+
+# Setup procedure in Virtual Box (Ubuntu 21)
+
+To use the host PCs web camera in Virutal Box you need to have the VB
+*Extension* added in on the host machine.  This needed to be done when
+logged into a Windows admin account, as it does not seem possible to
+trigger running is 'run as admin' from within a regular account.
+
+When a VM is running, check Devices -> webcams and make sure
+that your web cam (e.g. Integrated Webcam) has a tick mark against it.
+
+ 
+## Get Node.js and npm
+
+npm install n
+
+Install npm package manager (which by implication installs Node.js):
+
+    sudo apt-get install npm
+
+    which node
+    node --version
+
+    which npm
+    npm --version
+    
+    npm help
+    
+Optional: If npm outputs a message about a newer version being
+available, update it to avoid being continually pestered by the
+reminder. For example:
+
+    sudo npm install -g npm@8.13.0 
+
+
+The Fourth Wall project makes uses of new features of Node.js (v18.4.0
+at the time of writing).  As 'apt-get' installs something typically
+a few versions behind, install the 'n' program to then more carefully
+control the versino of Node.js installed
+
+    sudo npm install -g n
+    sudo n install 18.4.0
+    node --version
+    hash -r
+
+
+Now install the Node.js packages used by the Fourth Wall main server:
+
+    npm install
+
+Next install the Node.js packages that the React-based Fourth Wall
+client uses:
+
+    npm run build
+    
+
+## Setup Postgres
+
+Followed the option here of installing Docker on VM, and then using
+'docker compose up postgres' to install and operate that.
+
+
+To get docker-ce installed, followed the instructions at:
+
+    https://docs.docker.com/engine/install/ubuntu/
+
+Running with 'sudo' its 'hello world' container worked as intended.
+
+
+Fourth Wall's docker-composer.yml includes a target to get whatever
+the latest version of postgres is, sets user credentals and DB
+credentials, and populates it with the tables defined in 'startup.sql'.
+The container runs on port 5432, mapped to be the same to the outside
+world.
+
+
+    sudo docker compose up postgres
+
+
+    sudo docker ps
+    sudo docker exec -it zoomingthroughthefourthwall-postgres-1 bash
+
+
+If looking to setup Postgres natively on the VM, see for example:
+
+    https://www.cherryservers.com/blog/how-to-install-and-setup-postgresql-server-on-ubuntu-20-04
+
+And import the SQL table schemas with something like:
+
+    psql fourth_wall_cache < startup.sql
+
+Note: as the native Postgres DB setup was not actually done, it is not
+known if username and password arguments need to be supplied.  If needed
+use those given in docker-compose.yml
+
+
+## Run the Fourth Wall Server
+
+See package.json and public/packages.json for more details as to how
+the server and client are installed, configured, built and run.
+
+
+For a hard-wired example of how to run this project:
+
+  ./RUN-SERVER-WITH-SUDO.sh
+
+=> enter sudo password for your user
+
+As the server is configured to run on port 433 by default, it needs
+to be run as root, so it has permission to listen to this port value.
+
+
+## Run the Fourth Wall client GUI
+
+The client can be run as a regular user.  In development mode it
+runs its own Express web server on port 3000 that serves up the
+React GUI.
+
+In another terminal/tab:
+
+  npm run client
+
+
