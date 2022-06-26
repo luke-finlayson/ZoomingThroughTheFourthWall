@@ -86,7 +86,7 @@ class DataService{
                 console.log(err);
 
             var messages = result?.rows.map((_value, _index, row) => {
-                return new Message(row[1], row[2], row[3] row[4], row[5]);
+                return new Message(row[1], row[2], row[3], row[4], row[5]);
             });
 
             callback(err, messages);
