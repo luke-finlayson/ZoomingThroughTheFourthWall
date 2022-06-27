@@ -38,22 +38,23 @@ const Messages = ({ socket }) => {
       socket.emit(SocketEvents.GetMessageHistory, store.getState().roomId, (response) => {
         if (response.status === "Success") {
           console.log(response.payload);
-          // response.payload.forEach((message) => {
-          //   var messageCreatedByMe = false;
-          //   // Determine if the message was sent by this user
-          //   if (message.authorID === store.getState().userId) {
-          //     messageCreatedByMe = true;
-          //   }
-          //   // Add the message to the list of messages
-          //   messages.push({
-          //     userId: message.authorID,
-          //     author: message.authorName,
-          //     content: message.payload.content,
-          //     messageCreatedByMe: messageCreatedByMe
-          //   });
-          //   // Update messages state
-          //   setMessages(messages.slice());
-          // });
+          // Add messages to local array of messages
+          response.payload.rows.forEach((message) => {
+            var messageCreatedByMe = false;
+            // Determine if the message was sent by this user
+            if (message.user_id === store.getState().userId) {
+              messageCreatedByMe = true;
+            }
+            // Add the message to the list of messages
+            messages.push({
+              userId: message.user_id,
+              author: message.user_name,
+              content: message.message,
+              messageCreatedByMe: messageCreatedByMe
+            });
+            // Update messages state
+            setMessages(messages.slice());
+          });
         }
       });
 
