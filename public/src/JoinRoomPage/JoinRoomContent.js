@@ -27,6 +27,8 @@ const JoinRoomContent = ({ isRoomHost, socket,
         // Set new user id
         store.dispatch({ type: 'SET_USER_ID', payload:  uuid.v4() });
 
+        console.log(socket);
+
         // Validate the room name
         socket.emit(SocketEvents.CheckRoomId, roomIdValue, (response) => {
 

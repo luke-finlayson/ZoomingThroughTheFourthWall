@@ -70,10 +70,11 @@ class DataService{
 
     insertMessage(message) {
         var authorID = this.client.escapeLiteral(message.authorID);
+        var authorName = this.client.escapeLiteral(message.authorName);
         var roomID = this.client.escapeLiteral(message.roomID);
         var content = this.client.escapeLiteral(message.content);
 
-        this.pool.query(`INSERT INTO messages(id, user_id, room_name, message, timeSent) VALUES(uuid_generate_v4(), ${authorID}, ${roomID}, ${content}, '${message.timeSent}')`, (err) => {
+        this.pool.query(`INSERT INTO messages(id, user_id, user_name, room_name, message, timeSent) VALUES(uuid_generate_v4(), ${authorID}, ${authorName}, ${roomID}, ${content}, '${message.timeSent}')`, (err) => {
             if (err)
                 console.log(err);
         })
@@ -84,11 +85,11 @@ class DataService{
             if (err)
                 console.log(err);
 
-            var messages = result?.rows.map((_value, _index, row) => {
-                return new Message(row[1], row[2], row[3], row[4]);
-            });
+            // var messages = result.rows.map((_value, _index, row) => {
+            //     return new Message(row[1], row[2], row[3], row[4], row[5]);
+            // });
 
-            callback(err, messages);
+            callback(err, result);
         });
     }
 

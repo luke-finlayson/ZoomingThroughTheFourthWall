@@ -30,7 +30,7 @@ function App() {
         </Route>
         <Route path='/room' element={<RoomPage socket={socket} />}>
         </Route>
-        <Route path="/" element={<IntroductionPage />}>
+        <Route path="/" element={<IntroductionPage socket={socket} />}>
         </Route>
       </Routes>
     </Router>
