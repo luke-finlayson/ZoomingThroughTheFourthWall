@@ -37,7 +37,9 @@ const Messages = ({ socket }) => {
       // Request previous messages from the server
       socket.emit(SocketEvents.GetMessageHistory, store.getState().roomId, (response) => {
         if (response.status === "Success") {
+          console.log("Data Received: ");
           console.log(response.payload);
+
           // Add messages to local array of messages
           response.payload.rows.forEach((message) => {
             var messageCreatedByMe = false;
@@ -52,8 +54,11 @@ const Messages = ({ socket }) => {
               content: message.message,
               messageCreatedByMe: messageCreatedByMe
             });
+
             // Update messages state
             setMessages(messages.slice());
+            console.log("\n\nData Processed:");
+            console.log(messages);            
           });
         }
       });
