@@ -77,7 +77,10 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams }) => {
 
   // Display message until the stream is ready
   return (
-    <video id={userId} muted={muted} />
+    <div className="video-frame-container">
+      <video id={userId} muted={muted} />
+      <img src="../../resources/images/copyImagetext.png" />
+    </div>
   );
 }
 

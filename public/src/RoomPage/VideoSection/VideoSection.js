@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import VideoButtons from './VideoButtons';
 import VideoFrame from './VideoFrame';
+import ImagePopup from './ImagePopup';
 import { store } from '../../store/store';
 import { useInterval } from '../useInterval';
 import { Peer } from 'peerjs';
@@ -21,6 +22,10 @@ const VideoSection = ({ socket }) => {
   const [peer, setPeer] = useState(null);
   // Stores the list of streams as a state so that UI updates with new streams
   const [usersState, setUsers] = useState(connectedUsers.slice());
+  // When true, dispays the current video frame in a popup window
+  const [showPopup, setShowPopup] = useState(false);
+  // The ID of the user associated with the selected video frame
+  const [selectedUser, setSelectedUser] = useState();
 
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
@@ -161,11 +166,14 @@ const VideoSection = ({ socket }) => {
                 userId={user.userId}
                 muted={user.muted}
                 replaceStreams={replacePeerStreams}
+                setShowPopup={setShowPopup}
+                setSelectedUser={setSelectedUser}
                 />
             )
         })}
       </div>
       <VideoButtons socket={socket} peer={peer} stream={myStream} />
+      {showPopup && <ImagePopup user_id={selectedUser} setShowPopup={setShowPopup} />}
     </div>
   )
 }
