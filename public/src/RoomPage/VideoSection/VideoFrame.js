@@ -8,7 +8,6 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams, setSelectedUser, se
   // Current value of screen sharing.
   // (For some weird reason this will actually be the opposite of the true value idk whats up)
   const [isScreenSharing, setScreenSharing] = useState(false);
-  const [showButton, setShowButton] = useState(false);
 
   // Changes the video elements source to a given media stream.
   const setVideoSource = (source, flipped) => {
