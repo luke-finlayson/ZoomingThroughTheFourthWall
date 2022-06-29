@@ -8,7 +8,7 @@ class TextRecognition{
     }
 
     async getTextData(image64) {
-        fileName = "/image_cache/" + crypto.randomUUID();
+        const fileName = __dirname + "/image_cache/" + crypto.randomUUID();
         files.writeFileSync(fileName, image64);
 
         // Request for text recognition to be performed on the given image

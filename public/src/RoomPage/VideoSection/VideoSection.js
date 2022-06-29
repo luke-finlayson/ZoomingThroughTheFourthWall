@@ -173,7 +173,10 @@ const VideoSection = ({ socket }) => {
         })}
       </div>
       <VideoButtons socket={socket} peer={peer} stream={myStream} />
-      {showPopup && <ImagePopup user_id={selectedUser} setShowPopup={setShowPopup} />}
+      {showPopup && <ImagePopup
+        user_id={selectedUser}
+        setShowPopup={setShowPopup}
+        socket={socket} />}
     </div>
   )
 }

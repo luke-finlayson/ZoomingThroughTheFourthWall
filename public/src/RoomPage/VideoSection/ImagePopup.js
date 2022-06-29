@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useInterval } from '../useInterval';
+import SocketEvents from '../socketevents';
 
 // Displays the current frame of a video in a pop up window in the video section
-const ImagePopup = ({ user_id, setShowPopup }) => {
+const ImagePopup = ({ socket, user_id, setShowPopup }) => {
 
   const [gotImage, setGotImage] = useState(false);
 
@@ -30,6 +31,13 @@ const ImagePopup = ({ user_id, setShowPopup }) => {
       // Put the current frame of the video on the canvas
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Get the base64 image from the canvas
+      const image64 = canvas.toDataURL().slice('data:image/png;base64,')[1];
+      // Send the image to the server
+      socket.emit(SocketEvents.FindImageText, image64, (result) => {
+        console.log(result);
+      });
 
       // Image has now been retrieved
       setGotImage(true);

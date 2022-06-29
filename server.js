@@ -166,7 +166,7 @@ io.on(SocketEvents.Connection, (socket) => {
 
   // Receive a base-64 encoded image, decode it and then perform text recognition on it
   // and return the extracted text and the vertices for each extraction
-  socket.on(SocketEvents.FindImageText, async (callback, image64) => {
+  socket.on(SocketEvents.FindImageText, async (image64, callback) => {
     if (!image64) {
       callback({ status: "Failed", error: "Image not provided." })
       return;
