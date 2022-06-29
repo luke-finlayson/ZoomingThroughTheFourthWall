@@ -322,6 +322,16 @@ video {
   border-radius: 5px;
 }
 
+.video-frame-container {
+  position: relative;
+}
+.video-frame-container img {
+  width: 50px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
 .room_label {
   position: absolute;
   display: flex;

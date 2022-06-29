@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { store } from '../../store/store';
 import { useInterval } from '../useInterval';
+import CopyTextImage from '../../resources/images/copyImageText.svg';
 
-const VideoFrame = ({ stream, userId, muted, replaceStreams }) => {
+const VideoFrame = ({ stream, userId, muted, replaceStreams, setSelectedUser, setShowPopup }) => {
 
   // Current value of screen sharing.
   // (For some weird reason this will actually be the opposite of the true value idk whats up)
   const [isScreenSharing, setScreenSharing] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   // Changes the video elements source to a given media stream.
   const setVideoSource = (source, flipped) => {
@@ -38,6 +40,14 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams }) => {
         store.dispatch({ type: "SET_SCREEN_SHARING", payload: !store.getState().isScreenSharing });
       }
     });
+  }
+
+  // Updates the state to display a popup containing a snapshot of the current video frame
+  const showPopup = () => {
+    // Update the state to use this user as the selected user
+    setSelectedUser(userId);
+    // Update the state to show the popup
+    setShowPopup(true);
   }
 
   // Use polling to check status of screen sharing
@@ -79,7 +89,7 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams }) => {
   return (
     <div className="video-frame-container">
       <video id={userId} muted={muted} />
-      <img src="../../resources/images/copyImagetext.png" />
+      <img src={CopyTextImage} alt="Get text from video" onClick={showPopup} />
     </div>
   );
 }
