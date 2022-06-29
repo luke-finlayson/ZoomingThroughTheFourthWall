@@ -3,49 +3,46 @@ A video conferencing application built on React Redux and Node.js. Uses WebRTC v
 
 ## Building and running on a local machine (production)
 
-### Requirements
-[Install Docker](https://docs.docker.com/get-docker/)
+#### Prerequisites
+ - Git
+ - [Docker](https://docs.docker.com/get-docker/)
 
+#### Build and Run[^1]
 1. Clone the repository into a local folder with `git clone https://github.com/qwertyhpp/ZoomingThroughTheFourthWall`.
 2. With your terminal navigated to the cloned folder, run `docker compose build`.
 3. Run `docker compose up`.
 4. You should now be able to access the web app via https://localhost
 
-## API docs
+[^1]: Note that the site will **not** be able to connect to the postgres database if run on Windows.
 
-### Events (Client-side)
 
-* #### "new-message"
-  **Type**: Send/Receive
+## Socket.io Event Reference (for Client-side)
 
-* #### "create-room"
-  **Type**: Send
-
-* #### "join-room"
-  **Type**: Send
-
-* #### "leave-room"
-  **Type**: Send
-
-* #### "user-joined-room"
-  **Type**: Receive
-
-* #### "user-left-room"
-  **Type**: Receive
-
+Socket event names can be accessed by importing the static class SocketEvents.
 In case it is not obvious, _Send_ events can be sent from the client-side, while _Receive_ events can be listened for.
 
-These events are dependent on the usage of socket.io.
+| Event Name | Type | Takes | Gives |
+| --- | --- | --- | --- |
+| `NewMessage` | Send/Receive | Message content | Message Object |
+| `CheckRoomId` | Send | Room ID | --- |
+| `JoinRoom` | Send | Room ID, Username, User ID | --- |
+| `LeaveRoom` | Send | --- | --- |
+| `UserJoinedRoom` | Receive | --- | User ID, Username |
+| `UserLeftRoom` | Receive | --- | User ID |
+| `FindImageText` | Send | Callback, Base 64 encoded Image | --- |
+| `PeerReady` | Send | --- | --- |
+| `GetRoomParticipants` | Send | Room ID | --- |
+| `GetMessageHistory` | Send | Room ID | --- |
 
 ### Examples
 #### Receiving
 ```
-socket.on("new-message", (data) => {
+socket.on(SocketEvents.NewMessage, (message) => {
   // Do something
 });
 ```
 
 #### Sending
 ```
-socket.emit("join-room", roomID);
+socket.emit(SocketEvents.JoinRoom, roomID);
 ```
