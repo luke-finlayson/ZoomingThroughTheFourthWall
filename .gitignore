@@ -3,4 +3,4 @@ build
 npm-debug.log
 .env
 .DS_Store
-storied-port-349600-20c0c38eac10.json
+gc-credentials.json
