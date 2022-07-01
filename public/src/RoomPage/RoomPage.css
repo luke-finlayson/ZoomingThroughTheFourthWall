@@ -322,6 +322,37 @@ video {
   border-radius: 5px;
 }
 
+.video-frame-container {
+  position: relative;
+}
+.video-frame-container img {
+  width: 50px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.popup-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 80%;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.popup {
+  background-color: white;
+  padding: 5%;
+  border-radius: 15px;
+  position: relative;
+}
+.popup button {
+  position: absolute;
+  top: 20px;
+}
+
 .room_label {
   position: absolute;
   display: flex;
