@@ -13,23 +13,17 @@ class TextRecognition{
           console.log(err);
         });
 
-        console.log(image64);
-
         // Request for text recognition to be performed on the given image
         const [result] = await this.client.textDetection(fileName);
         const detections = result.textAnnotations;
-        let output = new Map();
-
-        console.log(result);
 
         if (!detections.length) {
             console.log("No text detected");
             return null;
         }
-
-        detections.forEach(text => {
-            output.set(text.description, text.boundingPoly.normalizedVertices);
-        });
+        
+        // First detection is all text found in the image.
+        let output = detections[0].description;
 
         // Get rid of the temporary image
         files.rmSync(fileName);
