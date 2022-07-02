@@ -15,13 +15,6 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams, setSelectedUser, se
     const video = document.getElementById(userId);
     video.srcObject = source;
 
-    // Determine video orientation (Webcam streams should be flipped, screen shares shouldn't be)
-    if (flipped) {
-      video.style.transform = "rotateY(180deg)";
-    } else {
-      video.style.transform = "rotateY(0deg)";
-    }
-
     // Add event listener to play video once stream has loaded
     // (Even though technically react discourages event listeners like this,
     // it's still the simplest way to go about it)
