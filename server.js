@@ -174,7 +174,11 @@ io.on(SocketEvents.Connection, (socket) => {
 
     try {
       var result = await textRecognition.getTextData(image64);
-      callback({ status: "Success", response: result })
+
+      if (!result)
+        callback({ status: "Success", response: "No text found." });
+      else
+        callback({ status: "Success", response: result })
     }
     catch (error) {
       console.log(error);
