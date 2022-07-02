@@ -22,7 +22,7 @@ class TextRecognition{
             return null;
         }
         
-        // First detection is all text found in the image.
+        // First detection contains all text found in the image.
         let output = detections[0].description;
 
         // Get rid of the temporary image
