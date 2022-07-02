@@ -35,9 +35,10 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
       // Get the base64 image from the canvas
       var header = 'data:image/png;base64,';
       var image64 = canvas.toDataURL().slice(header.length);
+
       // Send the image to the server
       socket.emit(SocketEvents.FindImageText, image64, (result) => {
-        console.log(result);
+        console.log(result.status + ' : ' + result.response);
       });
 
       // Image has now been retrieved
