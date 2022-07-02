@@ -33,7 +33,8 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       // Get the base64 image from the canvas
-      const image64 = canvas.toDataURL().slice('data:image/png;base64,')[1];
+      var header = 'data:image/png;base64,';
+      var image64 = canvas.toDataURL().slice(header.length);
       // Send the image to the server
       socket.emit(SocketEvents.FindImageText, image64, (result) => {
         console.log(result);

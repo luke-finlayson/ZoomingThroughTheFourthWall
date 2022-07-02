@@ -4,3 +4,5 @@ npm-debug.log
 .env
 .DS_Store
 gc-credentials.json
+image_cache/*
+!image_cache/.gitkeep
