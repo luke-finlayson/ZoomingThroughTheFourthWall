@@ -1,3 +1,4 @@
+#!/bin/bash
 
 export POSTGRES_PASSWORD=admin
 export POSTGRES_USER=postgres
