@@ -84,7 +84,6 @@ In the following, because of initdb call, then everything is UTF8 by default
 
     psql --username=postgres --password fourth_wall_cache
 
-# < ..\startup.sql
 
     \i ../startup.sql;
     \q  
