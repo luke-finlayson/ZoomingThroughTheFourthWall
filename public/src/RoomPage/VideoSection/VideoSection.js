@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import './VideoSection.css';
+
 import VideoButtons from './VideoButtons';
 import VideoFrame from './VideoFrame';
 import ImagePopup from './ImagePopup';

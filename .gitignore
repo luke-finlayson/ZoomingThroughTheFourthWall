@@ -6,3 +6,4 @@ npm-debug.log
 gc-credentials.json
 image_cache/*
 !image_cache/.gitkeep
+*~

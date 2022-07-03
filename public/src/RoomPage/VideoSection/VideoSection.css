@@ -1,0 +1,26 @@
+
+/* https://stackoverflow.com/questions/49237597/force-equal-width-columns-in-css-flexbox */
+
+/* the row! */
+.video-stream-container {
+    display: flex;
+    flex-flow: row;
+    max-height: 85vh;
+}
+
+.video-frame-item {
+    /* background: linear-gradient(168.68deg, #0052c9 1.12%, #0a91db 100%); */
+    padding: 10px;
+    margin:   5px;
+    width:   100%;
+}
+
+/* 
+
+<div class="row">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+</div>
+
+*/
