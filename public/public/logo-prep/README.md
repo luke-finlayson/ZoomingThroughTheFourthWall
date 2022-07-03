@@ -18,7 +18,7 @@ In Cygwin
     identify zoom-fourth-icon.ico
 
     export FW_CLEINT_PUBLIC=../.
-    /bin/cp zoom-fourth-icon192.ico $FW_CLIENT_PUBLIC/favicon.ico
+    /bin/cp zoom-fourth-icon.ico $FW_CLIENT_PUBLIC/favicon.ico
 
     /bin/cp zoom-fourth-icon192.icon $FW_CLIENT_PUBLIC/logo192.ico
     /bin/cp zoom-fourth-icon512.icon $FW_CLIENT_PUBLIC/logo512.ico
