@@ -14,7 +14,7 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams, setSelectedUser, se
     // Attach stream to video element
     const video = document.getElementById(userId);
     video.srcObject = source;
-
+      
     // Add event listener to play video once stream has loaded
     // (Even though technically react discourages event listeners like this,
     // it's still the simplest way to go about it)
@@ -77,11 +77,36 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams, setSelectedUser, se
     setVideoSource(stream, true);
   });
 
+    function handleKeyDown(event) {
+
+	const video = document.getElementById(userId);
+	
+	if (event.key == 'a') {
+	    console.log(`Move video id=${userId} Left`);
+
+	    video.style.visibility = "hidden";
+	    //video.style.transform = "rotateY(180deg) scale(1.2,1.2) translate(12%,0%);";
+	}
+	else if (event.key == 'd') {
+	    console.log('Move video id=${userId} Right');
+	    video.style.visibility = "visible";
+	}
+	else if (event.key == 'w') {
+	    console.log('Move video id=${userId} Up');
+	}
+	else if (event.key == 's') {
+	    console.log('Move video id=${userId} Down');
+	}
+	
+    }
+    
   // Display message until the stream is ready
   return (
-    <div className="video-frame-container"> 
-      <video id={userId} muted={muted} /> <!-- **** in davidb fork there was a className on video element specifying video-frame-item in CSS -->
-      <img src={CopyTextImage} alt="Get text from video" onClick={showPopup} />
+      <div className="video-frame-container"> 
+	  <video className="video-frame-elem" id={userId} muted={muted}
+		 onKeyDown={handleKeyDown}		 
+	  /> 
+	  <img src={CopyTextImage} alt="Get text from video" onClick={showPopup} />
     </div>
   );
 }
