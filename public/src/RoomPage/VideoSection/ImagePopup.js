@@ -6,6 +6,7 @@ import SocketEvents from '../socketevents';
 const ImagePopup = ({ socket, user_id, setShowPopup }) => {
 
   const [gotImage, setGotImage] = useState(false);
+  const [imageText, setImageText] = useState("Getting text...");
 
   // Disables the popup
   const closePopup = () => {
@@ -20,13 +21,9 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
       // Get the canvas element to display the image on
       const canvas = document.getElementById('snapshot');
 
-      console.log("Video width: " + video.videoWidth + "; Height: " + video.videoHeight);
-
       // Match size of canvas with size of video
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-
-      console.log("Canvas width: " + canvas.width + "; Height: " + canvas.height);
 
       // Put the current frame of the video on the canvas
       const context = canvas.getContext('2d');
@@ -38,7 +35,8 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
 
       // Send the image to the server
       socket.emit(SocketEvents.FindImageText, image64, (result) => {
-        console.log(result.status + ' : ' + result.response);
+        // Append returned text to html element
+        setImageText(result.response);
       });
 
       // Image has now been retrieved
@@ -49,7 +47,10 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
   return(
     <div className="popup-container" onClick={closePopup}>
       <div className="popup">
-        <canvas id="snapshot" />
+        <canvas id="snapshot" hidden />
+        <div className="textfield">
+          <p id="imageText">{imageText}</p>
+        </div>
         <button onClick={closePopup}>Close</button>
       </div>
     </div>

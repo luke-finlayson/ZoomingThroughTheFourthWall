@@ -79,8 +79,8 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams, setSelectedUser, se
 
   // Display message until the stream is ready
   return (
-    <div className="video-frame-container"> 
-      <video id={userId} muted={muted} /> <!-- **** in davidb fork there was a className on video element specifying video-frame-item in CSS -->
+    <div className="video-frame-container">
+      <video id={userId} muted={muted} /> // **** in davidb fork there was a className on video element specifying video-frame-item in CSS
       <img src={CopyTextImage} alt="Get text from video" onClick={showPopup} />
     </div>
   );
