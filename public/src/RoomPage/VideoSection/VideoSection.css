@@ -6,21 +6,19 @@
     display: flex;
     flex-flow: row;
     max-height: 85vh;
+    justify-content: center;
 }
 
-.video-frame-item {
-    /* background: linear-gradient(168.68deg, #0052c9 1.12%, #0a91db 100%); */
+/* .video-frame-container is defeind in RoomPage.css as just 'relative' */
+.video-frame-container {
+    position: relative; 
     padding: 10px;
     margin:   5px;
-    width:   100%;
+    overflow: hidden;
 }
 
-/* 
+.video-frame-elem {
+    transform: rotateY(180deg) scale(1.2,1.2) translate(0%,0%);
+}
 
-<div class="row">
-    <div class="item"></div>
-    <div class="item"></div>
-    <div class="item"></div>
-</div>
 
-*/
