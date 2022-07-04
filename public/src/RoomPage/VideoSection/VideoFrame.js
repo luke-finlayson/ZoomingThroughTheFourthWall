@@ -88,14 +88,14 @@ const VideoFrame = ({ stream, userId, muted, replaceStreams, setSelectedUser, se
 	    //video.style.transform = "rotateY(180deg) scale(1.2,1.2) translate(12%,0%);";
 	}
 	else if (event.key == 'd') {
-	    console.log('Move video id=${userId} Right');
+	    console.log(`Move video id=${userId} Right`);
 	    video.style.visibility = "visible";
 	}
 	else if (event.key == 'w') {
-	    console.log('Move video id=${userId} Up');
+	    console.log(`Move video id=${userId} Up`);
 	}
 	else if (event.key == 's') {
-	    console.log('Move video id=${userId} Down');
+	    console.log(`Move video id=${userId} Down`);
 	}
 	
     }
