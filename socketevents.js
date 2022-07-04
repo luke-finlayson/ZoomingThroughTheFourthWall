@@ -12,6 +12,7 @@ class SocketEvents {
     static PeerReady = "peer-ready";
     static GetRoomParticipants = "get-room-participants";
     static GetMessageHistory = "get-message-history";
+    static ClearMessages = "clear-messages";
 }
 
 module.exports = SocketEvents;

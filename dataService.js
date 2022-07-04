@@ -93,6 +93,13 @@ class DataService{
         });
     }
 
+    deleteMessages(roomID, callback) {
+      this.pool.query(`DELETE FROM messages WHERE room_name = ${this.client.escapeLiteral(roomID)}`, (err) => {
+        if (err)
+          console.log(err);
+      })
+    }
+
     getUsersInRoom(roomID, callback) {
         this.pool.query(`SELECT u.id, u.name FROM users u JOIN roomUsers r ON r.user_id = u.id WHERE r.room_name = ${this.client.escapeLiteral(roomID)}`, (err, result) => {
             if (err) {

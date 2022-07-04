@@ -136,6 +136,13 @@ io.on(SocketEvents.Connection, (socket) => {
       console.log("Message received from " + username + ": " + content);
     });
 
+    socket.on(SocketEvents.ClearMessages, () => {
+      // Delete messages from database
+      dataService.deleteMessages(roomID);
+      // Tell connected clients to clear their messages
+      io.to(roomID).emit(SocketEvents.ClearMessages);
+    })
+
     // Disconnect socket when leave room button is pressed
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
