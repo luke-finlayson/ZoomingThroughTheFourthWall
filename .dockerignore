@@ -3,3 +3,7 @@ npm-debug.log
 .git
 dist
 build
+NOTES-davidb.txt
+windows-packages
+*.bat
+*.sh
