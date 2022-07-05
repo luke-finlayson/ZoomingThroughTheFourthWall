@@ -13,12 +13,14 @@
   /* Temp. Position while participants section is hidden */
   position:  absolute;
   right: 0;
+  box-shadow: -4px 0px 17px -3px rgba(0,0,0,0.1);
+  padding-left: 10px;
 }
 
 .chat_label_container {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .chat_label_paragraph {
@@ -26,6 +28,17 @@
   color: #9ca5ab;
   margin-left: 40px;
   font-size: 16px;
+}
+
+.chat_label_container button {
+  border: none;
+  padding: 10px 25px;
+  color: white;
+  background: #fc5d5b;
+  border-radius: 50px 0px 0px 50px;
+}
+.chat_label_container button:hover {
+  background: red;
 }
 
 .new_message_container {
@@ -215,17 +228,17 @@
 }
 
 .video_buttons_container {
-  width: 60%;
+  width: 76%;
   height: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  left: 10%;
+  left: 2%;
   bottom: 0;
-  background: linear-gradient(168.68deg, #0052c9 1.12%, #0a91db 100%);
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  background: linear-gradient(168.68deg,rgba(10, 145, 219, 0.9) 1.12%,rgba(10, 145, 219, 0.9));
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 .video_button_container {

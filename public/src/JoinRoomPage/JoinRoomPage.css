@@ -102,6 +102,9 @@
     display: flex;
     justify-content: flex-end;
     width: 90%;
+    position: absolute;
+    bottom: 21px;
+    right: -11px;
 }
 
 .join_room_cancel_button {
