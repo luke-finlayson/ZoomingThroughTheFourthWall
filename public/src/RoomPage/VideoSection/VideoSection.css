@@ -5,20 +5,20 @@
 .video-stream-container {
     display: flex;
     flex-flow: row;
-    max-height: 85vh;
+    height: 90%;
     justify-content: center;
 }
 
 /* .video-frame-container is defeind in RoomPage.css as just 'relative' */
 .video-frame-container {
-    position: relative; 
+    position: relative;
     padding: 10px;
     margin:   5px;
-    overflow: hidden;
+    max-width: 80%;
+    /*overflow: hidden;*/
 }
 
 .video-frame-elem {
-    transform: scale(1.2,1.2) translate(0%,0%);
+    /*transform: scale(1.2,1.2) translate(0%,0%);*/
+    width: 100%;
 }
-
-

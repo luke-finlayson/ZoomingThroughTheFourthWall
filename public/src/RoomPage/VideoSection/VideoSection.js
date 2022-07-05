@@ -125,7 +125,6 @@ const VideoSection = ({ socket }) => {
 
         // Setup peer event to receive calls
         peer.on("call", (call) => {
-          console.log(call.peer);
           // Otherwise answer the call with the stream and userId
           call.answer(stream);
 
