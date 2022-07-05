@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {connect} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setConnectOnlyWithAudio } from '../store/actions';
 import JoinRoomInputs from './JoinRoomInputs';
 import OnlyWithAudioCheckbox from './OnlyWithAudioCheckbox';
 import JoinRoomButtons from './JoinRoomButtons';
@@ -9,8 +8,7 @@ import { store } from '../store/store';
 import * as uuid from 'uuid';
 import SocketEvents from '../RoomPage/socketevents';
 
-const JoinRoomContent = ({ isRoomHost, socket,
-  connectOnlyWithAudio, setConnectOnlyWithAudioAction }) => {
+const JoinRoomContent = ({ isRoomHost, socket }) => {
 
     // Default values when website is first rendered
     const [roomIdValue, setRoomIdValue] = useState("");
@@ -49,10 +47,7 @@ const JoinRoomContent = ({ isRoomHost, socket,
             socket={socket}
          />
          {/* Connect only with audio */}
-        <OnlyWithAudioCheckbox
-            setConnectOnlyWithAudio = {setConnectOnlyWithAudioAction}
-            connectOnlyWithAudio = {connectOnlyWithAudio}
-        />
+        <OnlyWithAudioCheckbox />
 
         <JoinRoomButtons
             isRoomHost={isRoomHost}
@@ -62,17 +57,4 @@ const JoinRoomContent = ({ isRoomHost, socket,
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setConnectOnlyWithAudioAction: (onlyWithAudio) =>
-        dispatch(setConnectOnlyWithAudio(onlyWithAudio))
-    };
-}
-
-const mapStoreStateToProps = (state) => {
-    return {
-        ...state,
-    }
-}
-
-export default connect(mapStoreStateToProps, mapDispatchToProps)(JoinRoomContent);
+export default JoinRoomContent;

@@ -116,7 +116,7 @@ const VideoSection = ({ socket }) => {
     if (getStream && peer !== null) {
       // Get the webcam and audio stream from the user device
       navigator.mediaDevices.getUserMedia({
-        audio: true,
+        audio: !store.getState().connectOnlyWithAudio,
         video: true
       }).then((stream) => {
         // Attach stream to video element

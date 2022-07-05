@@ -250,14 +250,14 @@
 .video_button_image {
   height: 80%;
   padding: 10px;
-  border-radius: 25px;
+  border-radius: 15px;
   transition: 0.3s;
 }
 
 .video_button_image:hover {
   background: blue;
   padding: 10px;
-  border-radius: 25px;
+  border-radius: 15px;
 }
 
 .video_button_end {
