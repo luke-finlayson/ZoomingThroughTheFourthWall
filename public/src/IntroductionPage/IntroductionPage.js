@@ -1,13 +1,7 @@
-import React, { useEffect } from 'react'
 import './IntroductionPage.css'
 import ConnectingButtons from "./ConnectingButtons";
-import { connect } from 'react-redux'
-import { setIsRoomHost } from '../store/actions';
 
-const IntroductionPage = ({ setIsRoomHostAction, socket }) => {
-
-  useEffect( () => {setIsRoomHostAction(false);
-  }, []);
+const IntroductionPage = ({ socket }) => {
 
   return (
     <div className='introduction_page_container'>
@@ -21,10 +15,5 @@ const IntroductionPage = ({ setIsRoomHostAction, socket }) => {
     </div>
   );
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setIsRoomHostAction: (isRoomHost) => dispatch(setIsRoomHost(isRoomHost)),
-  }
-}
 
-export default connect(null, mapDispatchToProps)(IntroductionPage);
+export default IntroductionPage;

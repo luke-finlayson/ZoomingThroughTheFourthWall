@@ -17,20 +17,17 @@ const JoinRoomContent = ({ isRoomHost, socket,
     const [nameValue, setNameValue] = useState("");
     const navigate = useNavigate();
 
-    // Checks if the room exists or not using setShowRoomNotFoundMessage
-    const [showRoomNotFoundMessage, setShowRoomNotFoundMessage] = useState(false);
-
     const handleJoinToRoom = () => {
         // Set Username
         store.dispatch({ type: 'SET_USER_NAME', payload: nameValue });
         // Set new user id
         store.dispatch({ type: 'SET_USER_ID', payload:  uuid.v4() });
 
-        // Validate the room name
+        // Stil validate the room name just in case
         socket.emit(SocketEvents.CheckRoomId, roomIdValue, (response) => {
 
           // Don't do anything if the user didn't enter a room name
-          if (response == "Null") {
+          if (response === "Null") {
             alert("Missing Room Name");
           }
           // Othwerise, check if the room name exists
@@ -38,7 +35,7 @@ const JoinRoomContent = ({ isRoomHost, socket,
             // If the user is the host, create the room if it does not exist
             if (isRoomHost) {
               // If the room exists, user cannot be host
-              if (response == "Exists") {
+              if (response === "Exists") {
                 alert("Sorry, that room already exists");
               }
               else {
@@ -49,7 +46,7 @@ const JoinRoomContent = ({ isRoomHost, socket,
             }
             else {
               // Join the room if it exists
-              if (response == "Exists") {
+              if (response === "Exists") {
                 store.dispatch({ type: 'SET_ROOM_ID', payload: roomIdValue });
                 navigate('/room');
               }
@@ -79,6 +76,7 @@ const JoinRoomContent = ({ isRoomHost, socket,
             setNameValue={setNameValue}
             isRoomHost={isRoomHost}
             handleEnter={handleKeyPress}
+            socket={socket}
          />
          {/* Connect only with audio */}
         <OnlyWithAudioCheckbox

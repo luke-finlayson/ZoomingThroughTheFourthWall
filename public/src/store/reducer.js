@@ -39,7 +39,7 @@ const reducer = (state = initState, action) => {
         case Actions.SET_ROOM_HOST:
             return {
                 ...state,
-                isRoomHost: action.isRoomHost
+                isRoomHost: action.payload
             }
         case Actions.SET_ONLY_AUDIO:
             return {
