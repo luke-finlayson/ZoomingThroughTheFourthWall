@@ -1,5 +1,5 @@
 import './IntroductionPage.css'
-import ConnectingButtons from "./ConnectingButtons";
+import ConnectButton from "./ConnectButton";
 
 const IntroductionPage = ({ socket }) => {
 
@@ -9,7 +9,7 @@ const IntroductionPage = ({ socket }) => {
         {/* Change the logo here!! */}
         <h1>Fourth Wall</h1>
         {socket &&
-          (socket.connected ? <ConnectingButtons /> : <div className="loader"></div>)
+          (socket.connected ? <ConnectButton /> : <div className="loader"></div>)
         }
       </div>
     </div>

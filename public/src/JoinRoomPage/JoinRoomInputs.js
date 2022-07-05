@@ -1,4 +1,4 @@
-import React from 'react'
+import SocketEvents from '../RoomPage/socketevents';
 
 const Input = ({ placeholder, value, changeHandler, handleKeyPress }) => {
     return (
@@ -15,11 +15,25 @@ const Input = ({ placeholder, value, changeHandler, handleKeyPress }) => {
 const JoinRoomInputs = (props) => {
 
     const { nameValue, setNameValue,
-      roomIdValue, setRoomIdValue, isRoomHost, handleEnter } = props;
+      roomIdValue, setRoomIdValue, handleEnter, socket } = props;
 
     // Handlers
     const handleRoomIdValueChange = (event) => {
+        // Update global value
         setRoomIdValue(event.target.value);
+
+        // Check room name
+        socket.emit(SocketEvents.CheckRoomId, roomIdValue, (response) => {
+          // If the room doesn't exist, notify user that it'll be created
+          if (response === 'Does Not Exist') {
+            // User is host
+            console.log("host");
+          }
+          if (response === 'Exists') {
+            // User won't be host
+            console.log("not host");
+          }
+        });
     }
 
     const handleNameValueChange = (event) => {
