@@ -36,7 +36,7 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
       // Send the image to the server
       socket.emit(SocketEvents.FindImageText, image64, (result) => {
         // Append returned text to html element
-        setImageText(result.response);
+        setImageText(result.response.replace('\n', '<br>'));
       });
 
       // Image has now been retrieved
