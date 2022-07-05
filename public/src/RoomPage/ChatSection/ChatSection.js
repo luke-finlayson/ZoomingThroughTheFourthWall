@@ -11,8 +11,6 @@ const messages = [];
 
 const ChatSection = ({ socket }) => {
 
-  const [copyButtonText, setButtonText] = useState("Copy");
-
   // Store messages as a state so that new messages are rendered as they are added
   const [messagesState, setMessages] = useState(messages.slice());
   // To ensure socket event listener is only created once
@@ -20,12 +18,6 @@ const ChatSection = ({ socket }) => {
 
   // Poll to create listener
   useInterval(() => {
-
-    // If the button text hs changed, reset it
-    if (copyButtonText == "Copied!") {
-      setButtonText("Copy");
-    }
-
     // Ensure socket connection has been made
     if (socket !== null && !socketSetup) {
 
@@ -93,12 +85,6 @@ const ChatSection = ({ socket }) => {
   return (
     <div className="chat_section_container">
         <p className="room-id">Room Name: {store.getState().roomId}</p>
-        <button onClick={() => {
-          // Copy room id
-          navigator.clipboard.writeText(store.getState().roomId);
-          // Update button text
-          setButtonText("Copied!");
-        }}>{copyButtonText}</button>
         <ChatLabel socket={socket} />
         <Messages socket={socket} messages={messagesState} />
         <NewMessage socket={socket} />
