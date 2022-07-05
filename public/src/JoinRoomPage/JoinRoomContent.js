@@ -23,6 +23,8 @@ const JoinRoomContent = ({ isRoomHost, socket,
         // Set new user id
         store.dispatch({ type: 'SET_USER_ID', payload:  uuid.v4() });
 
+        // Set the room name
+        store.dispatch({ type: 'SET_ROOM_ID', payload: roomIdValue });
         // Navigate to room page
         navigate('/room');
 

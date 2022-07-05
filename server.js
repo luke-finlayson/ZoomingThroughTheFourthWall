@@ -53,8 +53,6 @@ app.get('/', (_request, response) => {
 
 io.on(SocketEvents.Connection, (socket) => {
 
-  console.log("User connected!");
-
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
 
     // Get array of existing rooms
