@@ -9,7 +9,7 @@ const JoinRoomPage = (props) => {
     return (
         <div className="join_room_page_container">
             <div className='join_room_page_panel'>
-                <JoinRoomTitle />
+                <p className='join_room_title'>Join a room</p>
                 <JoinRoomContent socket={socket} />
             </div>
         </div>
