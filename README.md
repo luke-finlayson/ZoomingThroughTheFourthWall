@@ -21,18 +21,19 @@ A video conferencing application built on React Redux and Node.js. Uses WebRTC v
 Socket event names can be accessed by importing the static class SocketEvents.
 In case it is not obvious, _Send_ events can be sent from the client-side, while _Receive_ events can be listened for.
 
-| Event Name | Type | Takes | Gives |
-| --- | --- | --- | --- |
-| `NewMessage` | Send/Receive | Message content | Message Object |
-| `CheckRoomId` | Send | Room ID | --- |
-| `JoinRoom` | Send | Room ID, Username, User ID | --- |
-| `LeaveRoom` | Send | --- | --- |
-| `UserJoinedRoom` | Receive | --- | User ID, Username |
-| `UserLeftRoom` | Receive | --- | User ID |
-| `FindImageText` | Send | Callback, Base 64 encoded Image | --- |
-| `PeerReady` | Send | --- | --- |
-| `GetRoomParticipants` | Send | Room ID | --- |
-| `GetMessageHistory` | Send | Room ID | --- |
+| Event Name | Type | Takes | Gives | Description |
+| --- | --- | --- | --- | --- |
+| `NewMessage` | Send/Receive | Message content | Message Object | Creates a new chat message |
+| `CheckRoomId` | Send | Room ID | --- | Checks if a given room name exists or is taken |
+| `JoinRoom` | Send | Room ID, Username, User ID | --- | Joins the given room |
+| `LeaveRoom` | Send | --- | --- | Leaves the current room |
+| `UserJoinedRoom` | Receive | --- | User ID, Username | Notifys connected users of a new user |
+| `UserLeftRoom` | Receive | --- | User ID | Notifys connected users of a user who left |
+| `FindImageText` | Send | Callback, Base 64 encoded Image | --- | Returns the text found in an image |
+| `PeerReady` | Send | --- | --- | Notifys server that user is ready to start streaming media |
+| `GetRoomParticipants` | Send | Room ID | --- | Returns the connected users in a room |
+| `GetMessageHistory` | Send | Room ID | --- | Returns all previous messages in a room |
+| `ClearMessages` | Send/Receive | --- | --- | Deletes all previous messages in a room |
 
 ### Examples
 #### Receiving
