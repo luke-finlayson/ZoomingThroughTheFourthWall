@@ -24,8 +24,6 @@ const ChatSection = ({ socket }) => {
       // Request previous messages from the server
       socket.emit(SocketEvents.GetMessageHistory, store.getState().roomId, (response) => {
         if (response.status === "Success") {
-          console.log("Data Received: ");
-          console.log(response.payload);
 
           // Add messages to local array of messages
           response.payload.rows.forEach((message) => {
@@ -44,8 +42,6 @@ const ChatSection = ({ socket }) => {
 
             // Update messages state
             setMessages(messages.slice());
-            console.log("\n\nData Processed:");
-            console.log(messages);
           });
         }
       });
