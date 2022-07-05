@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './VideoSection.css';
-
 import VideoButtons from './VideoButtons';
 import VideoFrame from './VideoFrame';
 import ImagePopup from './ImagePopup';
@@ -10,7 +9,7 @@ import { Peer } from 'peerjs';
 import SocketEvents from '../socketevents';
 
 // Array to keep track of all connected streams
-var connectedUsers = [];
+var streams = [];
 
 const VideoSection = ({ socket }) => {
 
@@ -18,16 +17,21 @@ const VideoSection = ({ socket }) => {
   const userId = store.getState().userId;
   // Used to ensure user stream is only fetched once
   const [getStream, setStream] = useState(true);
-  // Pointer to local stream
-  const [myStream, setMyStream] = useState();
-  // Holds the peer connection object
+
+  // Holds the peer connection objects
   const [peer, setPeer] = useState(null);
+
   // Stores the list of streams as a state so that UI updates with new streams
-  const [usersState, setUsers] = useState(connectedUsers.slice());
+  const [streamsState, setStreams] = useState(streams.slice());
+  const [myStream, setMyStream] = useState();
   // When true, dispays the current video frame in a popup window
   const [showPopup, setShowPopup] = useState(false);
   // The ID of the user associated with the selected video frame
   const [selectedUser, setSelectedUser] = useState();
+
+  // Current value of screen sharing.
+  // (For some weird reason this will actually be the opposite of the true value idk whats up)
+  const [isScreenSharing, setScreenSharing] = useState(false);
 
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
@@ -35,6 +39,7 @@ const VideoSection = ({ socket }) => {
     const call = peer.call(newUserId, stream);
     // Set second user stream on call answered
     call.on("stream", (newStream) => {
+      console.log("[c]Added stream from " + newUserId);
       // Add new stream to the list of streams
       addVideoStream(newUserId, newStream, false, call);
     });
@@ -42,25 +47,23 @@ const VideoSection = ({ socket }) => {
 
   // Adds a video stream to the list of video streams
   const addVideoStream = (newUserId, newStream, muted, call) => {
-    if(!connectedUsers.some(e => e.stream === newStream)) {
+    if(!streams.some(e => e.stream === newStream)) {
       // Add new stream to list of streams if it isn't already
-      connectedUsers.push({
+      streams.push({
         userId: newUserId,
         stream: newStream,
         muted: muted,
         call: call
       });
       // Update the streams state
-      setUsers(connectedUsers.slice());
+      setStreams(streams.slice());
     }
   }
 
   // Replaces the stream in the peer connection with the given stream
   const replacePeerStreams = (mediaStream) => {
 
-    console.log("Screen sharing...");
-
-    connectedUsers.forEach((user) => {
+    streams.forEach((user) => {
       // Only replace stream if call exists
       if (user.call !== null) {
         // Get tracks being streamed
@@ -88,7 +91,7 @@ const VideoSection = ({ socket }) => {
   useInterval(() => {
     // Establish the peer connection if it hasn't already
     if (peer === null && socket != null) {
-      // Attempt peerjs connection
+      // Attempt main peerjs connection
       const peer = new Peer(userId, {
         host: store.getState().serverUrl,
         port: 443,
@@ -104,14 +107,13 @@ const VideoSection = ({ socket }) => {
 
         socket.emit(SocketEvents.JoinRoom, state.roomId, userId, state.username, (joinResponse) => {
         });
-
       });
     }
 
     // In order for peer calls to work, need to get media after connections
     // been made, which will cause a slight delay before the user's camera
     // feed is displayed. May revisit how this works later to improve UX
-    if (getStream && peer != null) {
+    if (getStream && peer !== null) {
       // Get the webcam and audio stream from the user device
       navigator.mediaDevices.getUserMedia({
         audio: true,
@@ -119,15 +121,17 @@ const VideoSection = ({ socket }) => {
       }).then((stream) => {
         // Attach stream to video element
         addVideoStream(userId, stream, true, null);
-        // Update pointer
         setMyStream(stream);
 
         // Setup peer event to receive calls
         peer.on("call", (call) => {
-          // Answer the call with the stream and userId
-          call.answer(stream, userId);
+          console.log(call.peer);
+          // Otherwise answer the call with the stream and userId
+          call.answer(stream);
+
           // Setup peer event to receive media streams
           call.on("stream", (newStream) => {
+            console.log("[a]Added stream from " + call.peer);
             addVideoStream(call.peer, newStream, false, call);
           });
         });
@@ -144,37 +148,65 @@ const VideoSection = ({ socket }) => {
         // Setup socket event to remove disconnected room members
         socket.on(SocketEvents.UserLeftRoom, (disconnectedUser) => {
           // Filter out streams matching disconnected id
-          connectedUsers = connectedUsers.filter((e) => {
+          streams = streams.filter((e) => {
             return e.userId !== disconnectedUser;
           });
           // Update the streams state
-          setUsers(connectedUsers.slice())
+          setStreams(streams.slice())
         });
       });
       // Ensure media stream isn't requested again
       setStream(false);
     }
 
+    // Get the state of the store
+    const state = store.getState();
+
+    // Only do something if the state of screen sharing has changed and this is the user's stream
+    if (isScreenSharing !== state.isScreenSharing && streams[0] !== null) {
+      // Toggle screen sharing
+      setScreenSharing(state.isScreenSharing);
+
+      if(!isScreenSharing) {
+        // Get stream from screen
+        navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true
+        }).then((displayStream) => {
+          // Replace other users streams
+          replacePeerStreams(displayStream);
+          // Replace clients stream
+          streams[0].stream = displayStream;
+          setStreams(streams.slice());
+        });
+      }
+      else {
+        // Change video source back to webcam
+        replacePeerStreams(myStream);
+        // Replace clients stream
+        streams[0].stream = myStream;
+        setStreams(streams.slice());
+      }
+    }
   }, 100);
 
   return (
     <div className="video_section_container">
-      <div className="video-stream-container">
-        {usersState.map((user, index) => {
+      <div className="video-stream-container" id="video-container">
+        {streamsState.map((user, index) => {
             return (
                 <VideoFrame
                 key={index}
                 stream={user.stream}
                 userId={user.userId}
                 muted={user.muted}
-                replaceStreams={replacePeerStreams}
                 setShowPopup={setShowPopup}
                 setSelectedUser={setSelectedUser}
                 />
             )
         })}
       </div>
-      <VideoButtons socket={socket} peer={peer} stream={myStream} />
+      {streams[0] && <VideoButtons socket={socket} peer={peer} stream={streams[0].stream} />}
       {showPopup && <ImagePopup
         user_id={selectedUser}
         setShowPopup={setShowPopup}
