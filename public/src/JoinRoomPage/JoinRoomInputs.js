@@ -39,7 +39,6 @@ const JoinRoomInputs = (props) => {
           }
 
           store.dispatch({ type: 'SET_ROOM_HOST', payload: isRoomHost });
-          console.log(store.getState().isRoomHost);
         });
     }
 
