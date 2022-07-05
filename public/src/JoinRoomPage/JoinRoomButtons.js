@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Button = ({buttonText, cancelButton, onClickHandler}) => {
-    const buttonClass = cancelButton ? 'join_roon_cancel_button' : 'join_room_success_button';
+    const buttonClass = cancelButton ? 'join_room_cancel_button' : 'join_room_success_button';
 
     return (
         <button onClick={onClickHandler} className={buttonClass}>
@@ -14,23 +14,20 @@ const Button = ({buttonText, cancelButton, onClickHandler}) => {
 }
 
 const JoinRoomButtons = ({handleJoinToRoom, isRoomHost}) => {
-  
-const navigate = useNavigate();
 
-    const successButtonText = isRoomHost ? "Host" : "Join";
+const navigate = useNavigate();
 
     const pushToIntroductionPage = () => {
         navigate('/');
     }
-  
-  
+
     return (
         <div className="join_room_buttons_container">
-            <Button buttonText={successButtonText}
+            <Button buttonText="Join"
                 onClickHandler={handleJoinToRoom}
             />
             <Button buttonText="Cancel"
-                cancelButton
+                cancelButton={true}
                 onClickHandler={pushToIntroductionPage} />
         </div>
     )
