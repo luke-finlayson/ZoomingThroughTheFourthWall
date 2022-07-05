@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { setConnectOnlyWithAudio } from '../store/actions';
 import JoinRoomInputs from './JoinRoomInputs';
 import OnlyWithAudioCheckbox from './OnlyWithAudioCheckbox';
-import RoomNotFoundMessage from './RoomNotFoundMessage';
 import JoinRoomButtons from './JoinRoomButtons';
 import { store } from '../store/store';
 import * as uuid from 'uuid';
@@ -87,9 +86,6 @@ const JoinRoomContent = ({ isRoomHost, socket,
         <OnlyWithAudioCheckbox
             setConnectOnlyWithAudio = {setConnectOnlyWithAudioAction}
             connectOnlyWithAudio = {connectOnlyWithAudio}
-        />
-        <RoomNotFoundMessage
-            showRoomNotFoundMessage={showRoomNotFoundMessage}
         />
 
         <JoinRoomButtons
