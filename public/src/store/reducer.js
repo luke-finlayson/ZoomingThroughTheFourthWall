@@ -3,8 +3,8 @@ import * as uuid from 'uuid';
 
 const initState = {
     userId: uuid.v4(),
-    username: null,
-    roomId: null,
+    username: 'unnamed',
+    roomId: 'default',
     isScreenSharing: false,
     isRoomHost: false,
     // Change this to the address of the production server
