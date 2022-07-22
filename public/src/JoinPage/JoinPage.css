@@ -67,6 +67,12 @@
   color: white;
   width: 450px;
 }
+.join_room_button:focus {
+  border: none;
+  outline: none;
+  color: white;
+  width: 450px;
+}
 
 .create_room_button {
   margin-top: 15px;
@@ -150,6 +156,11 @@ input[type=text]::placeholder {
   transition: 0.5s;
 }
 .timelineButton:hover {
+  color: white;
+}
+.timelineButton:focus {
+  border: none;
+  outline: none;
   color: white;
 }
 .current {

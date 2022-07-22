@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import JoinRoomPage from "./JoinRoomPage/JoinRoomPage";
 import RoomPage from "./RoomPage/RoomPage";
-import IntroductionPage from "./IntroductionPage/IntroductionPage";
+import JoinPage from "./JoinPage/JoinPage";
 import './App.css';
 import io from 'socket.io-client';
 import { store } from './store/store';
@@ -26,11 +25,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path ='join-room' element={<JoinRoomPage socket={socket} />}>
-        </Route>
         <Route path='/room' element={<RoomPage socket={socket} />}>
         </Route>
-        <Route path="/" element={<IntroductionPage socket={socket} />}>
+        <Route path="/" element={<JoinPage socket={socket} />}>
         </Route>
       </Routes>
     </Router>

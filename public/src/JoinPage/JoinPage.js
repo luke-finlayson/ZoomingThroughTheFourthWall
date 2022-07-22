@@ -1,14 +1,20 @@
-import './IntroductionPage.css'
-import ConnectButton from "./ConnectButton";
+import './JoinPage.css'
+import Button from "./Button";
+import TextField from "./TextField";
 import { useInterval } from "../RoomPage/useInterval.js";
 import { useState } from "react";
 import { store } from '../store/store';
 import { useNavigate } from 'react-router-dom';
+import * as uuid from 'uuid';
+import SocketEvents from '../RoomPage/socketevents';
 
-const IntroductionPage = ({ socket }) => {
+const JoinPage = ({ socket }) => {
 
   const [socketConnected, setSocketConnected] = useState(false);
   const [formPosition, setFormPosition] = useState(0);
+  const [username, setUsername] = useState('anonymous');
+  const [roomName, setRoomName] = useState('default');
+  const [isRoomHost, setIsRoomHost] = useState(false);
 
   const navigate = useNavigate();
 
@@ -50,15 +56,40 @@ const IntroductionPage = ({ socket }) => {
     setFormPosition(2)
   }
 
+  // Change Handlers
+  const roomNameChange = (event) => {
+      // Update global value
+      setRoomName(event.target.value);
+
+      // Check room name
+      socket.emit(SocketEvents.CheckRoomId, event.target.value, (response) => {
+        // If the room doesn't exist, notify user that it'll be created
+        if (response === 'Does Not Exist') {
+          // User is host
+          setIsRoomHost(true);
+        }
+        if (response === 'Exists' || response === 'Null') {
+          // User won't be host
+          setIsRoomHost(false);
+        }
+
+        store.dispatch({ type: 'SET_ROOM_HOST', payload: isRoomHost });
+      });
+  }
+
+  const usernameChange = (event) => {
+      setUsername(event.target.value);
+  }
+
   // Ensures information provided is correct, and navigates to the room page
   const handleJoinToRoom = () => {
       // Set Username
-      //store.dispatch({ type: 'SET_USER_NAME', payload: nameValue });
+      store.dispatch({ type: 'SET_USER_NAME', payload: username });
       // Set new user id
-      //store.dispatch({ type: 'SET_USER_ID', payload:  uuid.v4() });
+      store.dispatch({ type: 'SET_USER_ID', payload:  uuid.v4() });
 
       // Set the room name
-      //store.dispatch({ type: 'SET_ROOM_ID', payload: roomIdValue });
+      store.dispatch({ type: 'SET_ROOM_ID', payload: roomName });
       // Navigate to room page
       navigate('/room');
   }
@@ -67,9 +98,21 @@ const IntroductionPage = ({ socket }) => {
     <div className='introduction_page_container'>
       <h1 className="logo_text">Fourth Wall</h1>
 
+      {formPosition === 0 &&
+        <Button socketConnected={socketConnected} incrementPosition={incrementPosition} />}
+
+      {formPosition === 1 &&
+        <TextField id="username" placeholder="Enter your name"
+          onEnter={incrementPosition} onChange={usernameChange} />}
+
+      {formPosition === 2 &&
+        <TextField id="roomName" placeholder="Enter the room name"
+          onEnter={handleJoinToRoom} onChange={roomNameChange} />}
+
       <div className="progressTimeline">
         <button id="timelineButtonHoom"
           className={formPosition === 0 ? "timelineButton current" : "timelineButton"}
+
           onClick={goHome}>Home</button>
         <p className="timelineSeparator">⟶</p>
         <button id="timelineButtonName"
@@ -78,15 +121,11 @@ const IntroductionPage = ({ socket }) => {
         <p className="timelineSeparator">⟶</p>
         <button id="timelineButtonRoom"
           className={formPosition === 2 ? "timelineButton current" : "timelineButton"}
-          onClick={goToRoom}>Room Selection</button>
+          onClick={goToRoom}>Room selection</button>
       </div>
-
-      {formPosition === 0 &&
-        <ConnectButton socketConnected={socketConnected} incrementPosition={incrementPosition} />}
-      {formPosition === 1 && <input type="text" id="username" placeholder="Enter your name" autocomplete="off" />}
 
     </div>
   );
 };
 
-export default IntroductionPage;
+export default JoinPage;

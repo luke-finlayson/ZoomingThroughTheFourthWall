@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { spline } from '@georgedoescode/spline';
 import SimplexNoise from 'simplex-noise';
 
-const ConnectButton = ({ socketConnected, incrementPosition}) => {
+const Button = ({ socketConnected, incrementPosition}) => {
 
   const [showBackground, setShowBackground] = useState(true);
 
@@ -38,4 +38,4 @@ const ConnectButton = ({ socketConnected, incrementPosition}) => {
   )
 }
 
-export default ConnectButton;
+export default Button;
