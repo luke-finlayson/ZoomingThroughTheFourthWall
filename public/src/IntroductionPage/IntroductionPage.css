@@ -15,6 +15,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  overflow-x: hidden;
 
   background: linear-gradient(30deg, #6d90b9, #bbc7dc);
   background-size: 400% 400%;
@@ -46,19 +47,25 @@
 
   background-color: rgba(0,0,0,0);
   border: none;
-  color: rgba(255,255,255,0.8);
   font-size: 50px;
   font-weight: 700;
   border-radius: 8px;
-  transition: 0.3s;
+  color: rgba(255,255,255,0.5);
+  transition: 0.5s;
   font-family: 'Poppins', sans-serif;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 400px;
 
   position: relative;
   z-index: 1;
 }
-
 .join_room_button:hover {
   color: white;
+  width: 450px;
 }
 
 .create_room_button {
@@ -102,6 +109,52 @@
   height: 100vmin;
   z-index: 0;
   transition: 1s;
+}
+
+input[type="text"] {
+  font-family: 'Poppins', sans-serif;
+  background: none;
+  border: none;
+  caret-color: white;
+  font-size: 50px;
+  color: rgba(255,255,255,0.8);
+  text-align: center;
+  width: 80vw;
+}
+input[type=text]:focus {
+  border: none;
+  outline: none;
+}
+input[type=text]::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.progressTimeline {
+  position: absolute;
+  bottom: 110px;
+  display: flex;
+  flex-direction: row;
+  z-index: 2;
+}
+
+.timelineSeparator {
+  color: white;
+  padding: 0 20px;
+}
+
+.timelineButton {
+  background: none;
+  border: none;
+  font-family: 'Poppins';
+  color: rgba(255, 255, 255, 0.5);
+  transition: 0.5s;
+}
+.timelineButton:hover {
+  color: white;
+}
+.current {
+  color: white;
+  font-size: 1.5em;
 }
 
 /* Safari */

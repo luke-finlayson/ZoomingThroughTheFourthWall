@@ -30,8 +30,10 @@ const ConnectButton = ({ socketConnected, incrementPosition}) => {
     {socketConnected ? <button className='join_room_button'
       onClick={incrementPosition}
       onMouseOver={toggleBackground}
-      onMouseOut={toggleBackground}
-      >Join a Room</button> : <div className="loader"></div>}
+      onMouseOut={toggleBackground}>
+        <p>Join a Room</p>
+        <p className="buttonArrow">➮</p>
+      </button> : <div className="loader"></div>}
     </div>
   )
 }
