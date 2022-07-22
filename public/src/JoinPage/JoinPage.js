@@ -12,9 +12,14 @@ const JoinPage = ({ socket }) => {
 
   const [socketConnected, setSocketConnected] = useState(false);
   const [formPosition, setFormPosition] = useState(0);
-  const [username, setUsername] = useState('anonymous');
-  const [roomName, setRoomName] = useState('default');
+  const [formMessage, setFormMessage] = useState();
+
+  const [username, setUsername] = useState('');
+  const [roomName, setRoomName] = useState('');
   const [isRoomHost, setIsRoomHost] = useState(false);
+
+  const [formError, setFormError] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -28,32 +33,26 @@ const JoinPage = ({ socket }) => {
     }
   }, 100);
 
-  // Increases the form position by
-  const incrementPosition = () => {
-    // Determine new form position
-    let position = formPosition + 1
-
-    // Check form position
-    if (position > 2) {
-      // Join the room
-      handleJoinToRoom();
-    }
-
-    // Otherwise update position state
-    setFormPosition(position)
-  }
-
   // Set form position to 0
   const goHome = () => {
-    setFormPosition(0)
+    setFormPosition(0);
+    // Reset form message
+    setFormMessage("");
   }
   // Set form position to 0
   const goToName = () => {
-    setFormPosition(1)
+    setFormPosition(1);
+    // Reset form message
+    setFormMessage("");
   }
   // Set form position to 0
   const goToRoom = () => {
-    setFormPosition(2)
+    // Go to room section if no form errors are present
+    if (!formError) {
+      setFormPosition(2);
+      // Reset form message
+      setFormMessage("");
+    }
   }
 
   // Change Handlers
@@ -78,7 +77,19 @@ const JoinPage = ({ socket }) => {
   }
 
   const usernameChange = (event) => {
-      setUsername(event.target.value);
+      // Update username state
+      setUsername(event.target.value.trim());
+
+      // Determine which message to display
+      if (event.target.value.trim() === "") {
+        setFormMessage("You must enter a valid username");
+        // Disable possible button paths
+        setFormError(true);
+      }
+      else {
+        setFormMessage("");
+        setFormError(false);
+      }
   }
 
   // Ensures information provided is correct, and navigates to the room page
@@ -98,29 +109,35 @@ const JoinPage = ({ socket }) => {
     <div className='introduction_page_container'>
       <h1 className="logo_text">Fourth Wall</h1>
 
-      {formPosition === 0 &&
-        <Button socketConnected={socketConnected} incrementPosition={incrementPosition} />}
+      <div className="formContainer">
+        {formPosition === 0 &&
+          <Button socketConnected={socketConnected} incrementPosition={goToName} />}
 
-      {formPosition === 1 &&
-        <TextField id="username" placeholder="Enter your name"
-          onEnter={incrementPosition} onChange={usernameChange} />}
+        {formPosition === 1 &&
+          <TextField id="username" placeholder="Enter your name" value={username}
+            onEnter={goToRoom} onChange={usernameChange} />}
 
-      {formPosition === 2 &&
-        <TextField id="roomName" placeholder="Enter the room name"
-          onEnter={handleJoinToRoom} onChange={roomNameChange} />}
+        {formPosition === 2 &&
+          <TextField id="roomName" placeholder="Enter the room name" value={roomName}
+            onEnter={handleJoinToRoom} onChange={roomNameChange} />}
+
+        <p className="formMessage">{formMessage}</p>
+      </div>
 
       <div className="progressTimeline">
         <button id="timelineButtonHoom"
           className={formPosition === 0 ? "timelineButton current" : "timelineButton"}
-
+          tabIndex={formPosition === 0 ? "-1" : "0"}
           onClick={goHome}>Home</button>
         <p className="timelineSeparator">⟶</p>
         <button id="timelineButtonName"
           className={formPosition === 1 ? "timelineButton current" : "timelineButton"}
+          tabIndex={formPosition === 1 ? "-1" : "0"}
           onClick={goToName}>Choose a name</button>
         <p className="timelineSeparator">⟶</p>
         <button id="timelineButtonRoom"
           className={formPosition === 2 ? "timelineButton current" : "timelineButton"}
+          tabIndex={formPosition === 2 ? "-1" : "0"}
           onClick={goToRoom}>Room selection</button>
       </div>
 

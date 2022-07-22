@@ -1,4 +1,4 @@
-const TextField = ({ id, placeholder, onEnter, onChange }) => {
+const TextField = ({ id, placeholder, onEnter, onChange, value }) => {
 
   // Handle enter key press
   const handleKeyPress = (e) => {
@@ -10,7 +10,8 @@ const TextField = ({ id, placeholder, onEnter, onChange }) => {
 
   return(
     <input type="text" id={id} placeholder={placeholder}
-      autoComplete="off" onKeyPress={handleKeyPress} onChange={onChange} autoFocus/>
+      autoComplete="off" onKeyPress={handleKeyPress} onChange={onChange}
+      autoFocus value={value} />
   );
 }
 
