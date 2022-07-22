@@ -91,13 +91,32 @@
 }
 
 .loader {
-  border: 5px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 5px solid #3498db;
-  width: 40px;
-  height: 40px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.1);
+  animation: flash 0.8s infinite linear alternate;
+  animation-delay: 0.4s;
+}
+.loader::before, .loader::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.1);
+  animation: flash 0.8s infinite alternate;
+}
+.loader::before {
+  left: -40px;
+  animation-delay: 0s;
+}
+.loader::after {
+  left: 40px;
+  animation-delay: 0.8s;
 }
 
 .join-message {
@@ -167,16 +186,20 @@ input[type=text]::placeholder {
   color: white;
   font-size: 1.5em;
 }
-
-/* Safari */
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+.formMessage {
+  text-align: center;
+  color: white;
+  font-family: 'Poppins';
+  font-size: 21px;
+  position: absolute;
+  left: 0;
+  width: 100vw;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* Safari */
+@keyframes flash {
+  0% { background-color: rgba(255, 255, 255, 0.1); }
+  50%, 100% { background-color: rgba(255, 255, 255, 0.8); }
 }
 
 /* Animations! */
