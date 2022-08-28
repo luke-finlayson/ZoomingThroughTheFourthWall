@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import SwitchImg from '../../resources/images/switchToScreenSharingNEW.svg';
+import SwitchImg from '../../resources/images/screenShare.svg';
 import {store} from '../../store/store';
 
 const SwitchToScreenSharingButton = () => {
