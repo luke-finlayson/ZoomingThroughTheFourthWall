@@ -59,7 +59,6 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup }) =>
 	  <video className="video-frame-elem" id={userId} muted={muted}
 		 onKeyDown={handleKeyDown}
 	  />
-	  <img src={CopyTextImage} alt="Get text from video" onClick={showPopup} />
     </div>
   );
 }

@@ -80,7 +80,6 @@ const ChatSection = ({ socket }) => {
 
   return (
     <div className="chat_section_container">
-        <p className="room-id">Room Name: {store.getState().roomId}</p>
         <ChatLabel socket={socket} />
         <Messages socket={socket} messages={messagesState} />
         <NewMessage socket={socket} />
