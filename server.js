@@ -163,10 +163,6 @@ io.on(SocketEvents.Connection, (socket) => {
     // Disconnect socket when leave room button is pressed
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
-
-      // Remove room if this user was the last one in it
-      if (!rooms.has(roomID)) 
-        dataService.deleteRoom(roomID);
       
       dataService.deleteUser(user);
     });
@@ -230,6 +226,12 @@ io.on(SocketEvents.Connection, (socket) => {
 
       catch { callback({ status: "Failed" }); }
     });
+  });
+
+  io.of("/").adapter.on(SocketEvents.DeleteRoom, (room) => {
+    dataService.deleteRoom(room);
+
+    console.log(`room ${room} was deleted`);
   });
 });
 
