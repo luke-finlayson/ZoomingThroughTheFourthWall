@@ -24,6 +24,5 @@ CREATE TABLE messages(
     room_name VARCHAR(200) NOT NULL,
     message VARCHAR(200) NOT NULL,
     timeSent TIMESTAMP NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(room_name) REFERENCES room(name)
 );

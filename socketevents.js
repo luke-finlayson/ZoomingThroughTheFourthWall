@@ -6,6 +6,7 @@ class SocketEvents {
     static CheckRoomId = "check-room-id";
     static JoinRoom = "join-room";
     static LeaveRoom = "leave-room";
+    static DeleteRoom = "delete-room";
     static UserJoinedRoom = "user-joined-room";
     static UserLeftRoom = "user-left-room";
     static FindImageText = "find-image-text";
