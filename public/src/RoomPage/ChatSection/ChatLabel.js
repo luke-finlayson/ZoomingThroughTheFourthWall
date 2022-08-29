@@ -16,7 +16,7 @@ const ChatLabel = ({ socket, collapsed, setCollapsed }) => {
         <p className="chat_label_paragraph">Messages</p>
         {(store.getState().isRoomHost && !collapsed)
           && <button onClick={clearMessages} >Clear</button>}
-        <img className="chat_collapse_button" 
+        <img className={collapsed ? "chat_collapse_button flipped_y" : "chat_collapse_button"} 
              onClick={() => setCollapsed(!collapsed)}
              src={CollapseIcon} />
     </div>
