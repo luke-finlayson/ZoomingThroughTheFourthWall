@@ -93,7 +93,7 @@ const VideoSection = ({ socket }) => {
     if (peer === null && socket != null) {
       // Attempt main peerjs connection
       const peer = new Peer(userId, {
-        host: store.getState().serverUrl,
+        host: "//",
         port: 443,
         path: '/peerjs',
         secure: true,
