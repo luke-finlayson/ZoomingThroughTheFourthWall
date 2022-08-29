@@ -9,5 +9,5 @@ ocr positional layout
 
 pause and a bit of rewind
 
-
+Better documentation for getting it running
 

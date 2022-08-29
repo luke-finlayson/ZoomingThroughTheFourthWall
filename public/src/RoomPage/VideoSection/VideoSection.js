@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './VideoSection.css';
-import VideoButtons from './VideoButtons';
+import VideoButtons from '../VideoButtons/VideoButtons';
 import VideoFrame from './VideoFrame';
 import ImagePopup from './ImagePopup';
 import { store } from '../../store/store';
@@ -8,10 +8,7 @@ import { useInterval } from '../useInterval';
 import { Peer } from 'peerjs';
 import SocketEvents from '../socketevents';
 
-// Array to keep track of all connected streams
-var streams = [];
-
-const VideoSection = ({ socket }) => {
+const VideoSection = ({ socket, streams }) => {
 
   // Unique id of this user
   const userId = store.getState().userId;
@@ -191,31 +188,29 @@ const VideoSection = ({ socket }) => {
 
   return (
     <div className="video_section_container">
-    {streams[0] &&
-      <VideoButtons
-      socket={socket}
-      peer={peer}
-      stream={streams[0].stream}
-      />
-    }
-      <div className="video-stream-container" id="video-container">
-        {streamsState.map((user, index) => {
-            return (
-                <VideoFrame
-                key={index}
-                stream={user.stream}
-                userId={user.userId}
-                muted={user.muted}
-                setShowPopup={setShowPopup}
-                setSelectedUser={setSelectedUser}
-                />
-            )
-        })}
-      </div>
-      {showPopup && <ImagePopup
-        user_id={selectedUser}
-        setShowPopup={setShowPopup}
-        socket={socket} />}
+    <VideoButtons
+    socket={socket}
+    peer={peer}
+    stream={myStream}
+    />
+    <div className="video-stream-container" id="video-container">
+      {streamsState.map((user, index) => {
+          return (
+              <VideoFrame
+              key={index}
+              stream={user.stream}
+              userId={user.userId}
+              muted={user.muted}
+              setShowPopup={setShowPopup}
+              setSelectedUser={setSelectedUser}
+              />
+          )
+      })}
+    </div>
+    {showPopup && <ImagePopup
+      user_id={selectedUser}
+      setShowPopup={setShowPopup}
+      socket={socket} />}
     </div>
   )
 }
