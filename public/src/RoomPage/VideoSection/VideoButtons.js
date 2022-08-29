@@ -30,7 +30,16 @@ const VideoButtons = ({ socket, peer, stream }) => {
         <p className="room_name">{store.getState().roomId}</p>
         <img className="copy_icon_img" src={CopyIcon} 
         alt="Copy Room Name" 
-        onClick={() => navigator.clipboard.writeText(store.getState().roomId)}/>
+        onClick={
+          () => {
+            // Copy room name to client clipboard
+            navigator.clipboard.writeText(store.getState().roomId);
+            setHideCounter(3);
+          }
+        }/>
+        {(hideCounter === 0) && <div className='copied_message'>
+          <p>Copied!</p>
+        </div>}
       </div>
     </div>
   );

@@ -25,9 +25,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/room' element={<RoomPage socket={socket} />}>
-        </Route>
         <Route path="/" element={<JoinPage socket={socket} />}>
+        </Route>
+        <Route path='/room' element={<RoomPage socket={socket} />}>
         </Route>
       </Routes>
     </Router>
