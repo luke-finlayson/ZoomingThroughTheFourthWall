@@ -19,8 +19,8 @@ var server;
 // Create HTTPS server with SSL key and cert if built for production
 if (process.env.NODE_ENV === "production") {
   server = https.createServer({
-    key: fs.readFileSync('/etc/letsencrypt/live/fourth-wall.sowemustthink.space/privkey.pem', 'utf-8'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/fourth-wall.sowemustthink.space/fullchain.pem', 'utf-8')
+    key: fs.readFileSync('keys/privkey.pem', 'utf-8'),
+    cert: fs.readFileSync('keys/fullchain.pem', 'utf-8')
   }, app);
 }
 // Otherwise, create an HTTP server

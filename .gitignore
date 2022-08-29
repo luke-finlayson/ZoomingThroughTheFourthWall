@@ -7,3 +7,4 @@ gc-credentials.json
 image_cache/*
 !image_cache/.gitkeep
 *~
+keys
