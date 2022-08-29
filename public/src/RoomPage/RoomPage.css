@@ -31,9 +31,11 @@
   padding: 3px;
   border-radius: 8px;
 }
+
 .chat_collapse_button:hover {
   cursor: pointer;
 }
+
 .flipped_y {
   transform: rotate(180deg);
 }
