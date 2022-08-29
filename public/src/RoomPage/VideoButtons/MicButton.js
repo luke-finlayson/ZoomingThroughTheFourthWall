@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 
 import MicOnImg from '../../resources/images/micOn.svg'
 import MicOffImg from '../../resources/images/micOff.svg'
+import TextOnOff from './TextOnOff';
 
 const MicButton = ({ room, stream }) => {
   const [isMicMuted, setIsMicMuted] = useState(false);
@@ -23,11 +24,12 @@ const MicButton = ({ room, stream }) => {
 
 
   return (
-    <div className='video_button_container'>
+    <div className='video_button_container' onClick={handelmicButtonPressed}>
       <img src={isMicMuted ? MicOffImg : MicOnImg} alt=""
-      onClick={handelmicButtonPressed}
       className='video_button_image'
       />
+
+      <TextOnOff on={!isMicMuted} />
     </div>
   )
 }

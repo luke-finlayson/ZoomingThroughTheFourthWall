@@ -4,8 +4,15 @@ import CameraButton from './CameraButton';
 import SwitchToScreenSharingButton from './SwitchToScreenSharingButton';
 import LeaveRoomButton from './LeaveRoomButton';
 import { store } from '../../store/store';
-import CopyIcon from '../../resources/images/copy.svg'
+import CopyIcon from '../../resources/images/copy.svg';
 import { useInterval } from '../useInterval';
+
+// Renders a 25px high vertical bar
+const VerticalSeparator = () => {
+  return(
+      <div className="vertical_separator"></div>
+  );
+}
 
 // Renders a row of control buttons at the top of the room page
 const VideoButtons = ({ socket, peer, stream }) => {
@@ -28,7 +35,11 @@ const VideoButtons = ({ socket, peer, stream }) => {
         {stream &&
           <MicButton stream={stream} />}
         {stream &&
+          <VerticalSeparator />}
+        {stream &&
           <CameraButton stream={stream} />}
+        {stream &&
+          <VerticalSeparator />}
 
         <SwitchToScreenSharingButton />
       </div>
