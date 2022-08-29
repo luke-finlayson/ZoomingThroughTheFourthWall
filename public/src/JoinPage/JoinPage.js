@@ -130,7 +130,6 @@ const JoinPage = ({ socket }) => {
           tabIndex={formPosition === 2 ? "-1" : "0"}
           onClick={() => goTo(2)}>Room selection</button>
       </div>
-
     </div>
   );
 };
