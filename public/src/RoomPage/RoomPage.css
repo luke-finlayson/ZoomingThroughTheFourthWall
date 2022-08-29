@@ -24,6 +24,21 @@
   width: 380px;
 }
 
+.chat_collapse_button {
+  position: absolute;
+  right: 21px;
+  transition: 0.3s;
+  padding: 3px;
+  border-radius: 8px;
+}
+.chat_collapse_button:hover {
+  cursor: pointer;
+  background-color: #9F9F9F;
+}
+.flipped_y {
+  transform: rotate(180deg);
+}
+
 .chat_label_container {
   display: flex;
   align-items: center;
