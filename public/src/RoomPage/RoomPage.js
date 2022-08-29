@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import './RoomPage.css';
-import ParticipantsSection from './ParticipantsSection/ParticipantsSection';
 import VideoSection from './VideoSection/VideoSection';
 import ChatSection from './ChatSection/ChatSection';
 import { store } from '../store/store';
 import { useNavigate } from 'react-router-dom';
+
+// Array to keep track of all connected streams
+var streams = [];
 
 // Entry point and interface of our room page
 const RoomPage = ({ socket }) => {
@@ -22,7 +24,7 @@ const RoomPage = ({ socket }) => {
 
   return (
     <div className="room_container">
-      <VideoSection socket={socket} />
+      <VideoSection socket={socket} streams={streams} />
       <ChatSection socket={socket}/>
     </div>
   )

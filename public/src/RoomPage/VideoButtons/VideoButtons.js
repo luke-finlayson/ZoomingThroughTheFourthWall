@@ -7,7 +7,8 @@ import { store } from '../../store/store';
 import CopyIcon from '../../resources/images/copy.svg'
 import { useInterval } from '../useInterval';
 
-const VideoButtons = ({ socket, peer, stream }) => {
+// Renders a row of control buttons at the top of the room page
+const VideoButtons = ({ socket, peer, streams }) => {
 
   // Counter to hide 'copied!' message after 3 seconds
   const [hideCounter, setHideCounter] = useState(0);
@@ -20,13 +21,21 @@ const VideoButtons = ({ socket, peer, stream }) => {
 
   return (
     <div className="video_buttons_container">
+      
       <div className="toggle_buttons control_button_container">
-        <MicButton stream={stream} />
-        <CameraButton stream={stream} />
+
+        {/* Don't show mic and camera buttons if user stream doesn't exist*/}
+        {streams[0] &&
+          <MicButton stream={streams[0].stream} />}
+        {streams[0] &&
+          <CameraButton stream={streams[0].stream} />}
+
         <SwitchToScreenSharingButton />
       </div>
+      
       <div className="management_buttons control_button_container">
-        <LeaveRoomButton socket={socket} peer={peer} stream={stream} />
+        <LeaveRoomButton socket={socket} peer={peer} streams={streams} />
+        
         <p className="room_name">{store.getState().roomId}</p>
         <img className="copy_icon_img" src={CopyIcon} 
         alt="Copy Room Name" 
@@ -37,10 +46,12 @@ const VideoButtons = ({ socket, peer, stream }) => {
             setHideCounter(3);
           }
         }/>
+        
         {(hideCounter === 0) && <div className='copied_message'>
           <p>Copied!</p>
         </div>}
       </div>
+    
     </div>
   );
 }

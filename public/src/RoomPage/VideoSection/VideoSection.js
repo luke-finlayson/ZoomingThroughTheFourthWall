@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './VideoSection.css';
-import VideoButtons from './VideoButtons';
+import VideoButtons from '../VideoButtons/VideoButtons';
 import VideoFrame from './VideoFrame';
 import ImagePopup from './ImagePopup';
 import { store } from '../../store/store';
@@ -8,10 +8,7 @@ import { useInterval } from '../useInterval';
 import { Peer } from 'peerjs';
 import SocketEvents from '../socketevents';
 
-// Array to keep track of all connected streams
-var streams = [];
-
-const VideoSection = ({ socket }) => {
+const VideoSection = ({ socket, streams }) => {
 
   // Unique id of this user
   const userId = store.getState().userId;
@@ -195,7 +192,7 @@ const VideoSection = ({ socket }) => {
       <VideoButtons
       socket={socket}
       peer={peer}
-      stream={streams[0].stream}
+      streams={streamsState}
       />
     }
       <div className="video-stream-container" id="video-container">

@@ -1,21 +1,20 @@
-import { useNavigate } from 'react-router-dom';
 import SocketEvents from '../socketevents';
-import { store } from '../../store/store';
 
-const LeaveRoomButton = ({ socket, peer, stream }) => {
-
-  const navigate = useNavigate();
+const LeaveRoomButton = ({ socket, peer, streams }) => {
 
   const handleRoomDisconnection = () => {
-    // End the stream
-    stream.getTracks().forEach(track => track.stop());
-    console.log(stream);
+    // End the stream if the user stream exists
+    if (streams && streams[0]) {
+      streams[0].stream.getTracks().forEach(track => track.stop());
+    }
+
     socket.emit(SocketEvents.LeaveRoom);
     // Disconnect from the socket
     socket.disconnect();
     // Disconnect from the peer connection
     peer.disconnect();
-    window.location.replace('https://' + store.getState().serverUrl);
+
+    window.location.replace(window.location.protocol + "//" + window.location.host);
   }
 
   return (
