@@ -114,6 +114,11 @@ class DataService{
             callback(err, users);
         });
     }
+
+    deleteRoom(roomID) {
+        this.pool.query(`DELETE from roomUsers WHERE room_name = '${roomID}'`)
+        this.pool.query(`DELETE FROM room WHERE name = '${roomID}'`)
+    }
 }
 
 module.exports = {
