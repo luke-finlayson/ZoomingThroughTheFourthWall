@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 
-import MicButtonImg from '../../resources/images/mic.svg'
-import MicButtonImgOff from '../../resources/images/micOff.svg'
+import MicButtonImg from '../../resources/images/microphone.svg'
 import { unmountComponentAtNode } from 'react-dom';
 
 const MicButton = ({ room, stream }) => {
@@ -25,7 +24,7 @@ const MicButton = ({ room, stream }) => {
 
   return (
     <div className='video_button_container'>
-      <img src={isMicMuted ? MicButtonImgOff : MicButtonImg} alt=""
+      <img src={MicButtonImg} alt=""
       onClick={handelmicButtonPressed}
       className='video_button_image'
       />

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import JoinRoomPage from "./JoinRoomPage/JoinRoomPage";
 import RoomPage from "./RoomPage/RoomPage";
-import IntroductionPage from "./IntroductionPage/IntroductionPage";
+import JoinPage from "./JoinPage/JoinPage";
 import './App.css';
 import io from 'socket.io-client';
 import { store } from './store/store';
@@ -17,7 +16,7 @@ function App() {
     // Establish the socket connection if it hasn't already
     if (socket === null || !socket.connected) {
       // Attempt to create socket connection
-      const socket = io("https://" + store.getState().serverUrl + ':443/');
+      const socket = io("http://" + store.getState().serverUrl + ':443/');
       // Store socket connection in state
       setSocket(socket);
     }
@@ -26,11 +25,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path ='join-room' element={<JoinRoomPage socket={socket} />}>
-        </Route>
         <Route path='/room' element={<RoomPage socket={socket} />}>
         </Route>
-        <Route path="/" element={<IntroductionPage socket={socket} />}>
+        <Route path="/" element={<JoinPage socket={socket} />}>
         </Route>
       </Routes>
     </Router>
