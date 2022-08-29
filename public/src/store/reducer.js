@@ -8,7 +8,7 @@ const initState = {
     isScreenSharing: false,
     isRoomHost: false,
     // Change this to the address of the production server
-    serverUrl: 'localhost',
+    serverUrl: '/',
     connectOnlyWithAudio: false
 };
 
