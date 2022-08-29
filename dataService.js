@@ -116,12 +116,14 @@ class DataService{
     }
 
     deleteRoom(roomID) {
+        this.deleteMessages(roomID)
         this.pool.query(`DELETE FROM roomUsers WHERE room_name = '${roomID}'`)
         this.pool.query(`DELETE FROM room WHERE name = '${roomID}'`)
     }
 
     deleteUser(user) {
-        this.pool.query(`DELETE FROM users WHERE id = ${user.id}`)
+        this.pool.query(`DELETE FROM roomUsers WHERE user_id = '${user.id}'`)
+        this.pool.query(`DELETE FROM users WHERE id = '${user.id}'`)
     }
 }
 
