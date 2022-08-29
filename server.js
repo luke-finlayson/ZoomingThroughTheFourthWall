@@ -100,6 +100,7 @@ io.on(SocketEvents.Connection, (socket) => {
     }
 
     var user = new User(userId, username);
+
     dataService.insertUser(user, (error) => {
       if (error) {
         actAndCallbackGracefully(error, callback);
@@ -163,8 +164,11 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
 
+      // Remove room if this user was the last one in it
       if (!rooms.has(roomID)) 
         dataService.deleteRoom(roomID);
+      
+      dataService.deleteUser(user);
     });
 
     // This can be used as SocketEvents.LeaveRoom instead
