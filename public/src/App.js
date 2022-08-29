@@ -16,7 +16,7 @@ function App() {
     // Establish the socket connection if it hasn't already
     if (socket === null || !socket.connected) {
       // Attempt to create socket connection
-      const socket = io("https://" + store.getState().serverUrl + ':443/');
+      const socket = io("http://" + store.getState().serverUrl + ':443/');
       // Store socket connection in state
       setSocket(socket);
     }

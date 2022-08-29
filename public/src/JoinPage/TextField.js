@@ -11,7 +11,7 @@ const TextField = ({ id, placeholder, onEnter, onChange, value }) => {
   return(
     <input type="text" id={id} placeholder={placeholder}
       autoComplete="off" onKeyPress={handleKeyPress} onChange={onChange}
-      autoFocus value={value} />
+      autoFocus value={value} className="join_room_input" />
   );
 }
 

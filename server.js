@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const https = require('https');
+const https = require('http');
 const fs = require('fs');
 const path = require('path');
 const port = 443;
@@ -13,13 +13,13 @@ const cors = require('cors');
 app.use(cors());
 
 // Get the key and certificate require for HTTPS
-const credentials = {
-  key: fs.readFileSync('keys/key.pem'),
-  cert: fs.readFileSync('keys/cert.pem')
-};
+// const credentials = {
+//   key: fs.readFileSync('keys/key.pem'),
+//   cert: fs.readFileSync('keys/cert.pem')
+// };
 
 // Create an HTTPS server with the given credentials and Express instance
-const server = https.createServer(credentials, app);
+const server = https.createServer(app)//credentials, app);
 const peerServer = ExpressPeerServer(server, {
   debug: true,
   secure: true

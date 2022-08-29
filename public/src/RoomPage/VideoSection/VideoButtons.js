@@ -3,6 +3,7 @@ import MicButton from './MicButton';
 import CameraButton from './CameraButton';
 import SwitchToScreenSharingButton from './SwitchToScreenSharingButton';
 import LeaveRoomButton from './LeaveRoomButton';
+import { store } from '../../store/store';
 
 const VideoButtons = ({ socket, peer, stream }) => {
   return (

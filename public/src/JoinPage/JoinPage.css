@@ -136,7 +136,7 @@
   transition: 1s;
 }
 
-input[type="text"] {
+.join_room_input {
   font-family: 'Poppins', sans-serif;
   background: none;
   border: none;
@@ -146,11 +146,11 @@ input[type="text"] {
   text-align: center;
   width: 80vw;
 }
-input[type=text]:focus {
+.join_room_input:focus {
   border: none;
   outline: none;
 }
-input[type=text]::placeholder {
+.join_room_input::placeholder {
   color: rgba(255, 255, 255, 0.42);
 }
 

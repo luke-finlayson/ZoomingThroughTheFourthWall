@@ -34,25 +34,15 @@ const JoinPage = ({ socket }) => {
   }, 100);
 
   // Set form position to 0
-  const goHome = () => {
-    setFormPosition(0);
-    // Reset form message
-    setFormMessage("");
-  }
-  // Set form position to 0
-  const goToName = () => {
-    setFormPosition(1);
-    // Reset form message
-    setFormMessage("");
-  }
-  // Set form position to 0
-  const goToRoom = () => {
-    // Go to room section if no form errors are present
-    if (!formError) {
-      setFormPosition(2);
-      // Reset form message
-      setFormMessage("");
+  const goTo = (position) => {
+    // Don't move onto the room name input if the name field is blank
+    if (formPosition <= 1 && formError) {
+      return;
     }
+    // Go to the specified section
+    setFormPosition(position);
+    // Reset form message
+    setFormMessage("");
   }
 
   // Change Handlers
@@ -111,11 +101,11 @@ const JoinPage = ({ socket }) => {
 
       <div className="formContainer">
         {formPosition === 0 &&
-          <Button socketConnected={socketConnected} incrementPosition={goToName} />}
+          <Button socketConnected={socketConnected} goTo={goTo} />}
 
         {formPosition === 1 &&
           <TextField id="username" placeholder="Enter your name" value={username}
-            onEnter={goToRoom} onChange={usernameChange} />}
+            onEnter={() => goTo(2)} onChange={usernameChange} />}
 
         {formPosition === 2 &&
           <TextField id="roomName" placeholder="Enter the room name" value={roomName}
@@ -128,17 +118,17 @@ const JoinPage = ({ socket }) => {
         <button id="timelineButtonHoom"
           className={formPosition === 0 ? "timelineButton current" : "timelineButton"}
           tabIndex={formPosition === 0 ? "-1" : "0"}
-          onClick={goHome}>Home</button>
+          onClick={() => goTo(0)}>Home</button>
         <p className="timelineSeparator">⟶</p>
         <button id="timelineButtonName"
           className={formPosition === 1 ? "timelineButton current" : "timelineButton"}
           tabIndex={formPosition === 1 ? "-1" : "0"}
-          onClick={goToName}>Choose a name</button>
+          onClick={() => goTo(1)}>Choose a name</button>
         <p className="timelineSeparator">⟶</p>
         <button id="timelineButtonRoom"
           className={formPosition === 2 ? "timelineButton current" : "timelineButton"}
           tabIndex={formPosition === 2 ? "-1" : "0"}
-          onClick={goToRoom}>Room selection</button>
+          onClick={() => goTo(2)}>Room selection</button>
       </div>
 
     </div>

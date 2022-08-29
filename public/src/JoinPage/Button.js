@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { spline } from '@georgedoescode/spline';
 import SimplexNoise from 'simplex-noise';
 
-const Button = ({ socketConnected, incrementPosition}) => {
+const Button = ({ socketConnected, goTo}) => {
 
   const [showBackground, setShowBackground] = useState(true);
 
@@ -28,7 +28,7 @@ const Button = ({ socketConnected, incrementPosition}) => {
       </defs>
     </svg>
     {socketConnected ? <button className='join_room_button'
-      onClick={incrementPosition}
+      onClick={() => goTo(1)}
       onMouseOver={toggleBackground}
       onMouseOut={toggleBackground}>
         <p>Join a Room</p>
