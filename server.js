@@ -19,8 +19,8 @@ var server;
 // Create HTTPS server with SSL key and cert if built for production
 if (process.env.NODE_ENV === "production") {
   server = https.createServer({
-    key: fs.readFileSync('/etc/letsencrypt/live/fourth-wall.sowemustthink.space/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/fourth-wall.sowemustthink.space/fullchain.pem')
+    key: fs.readFileSync('/etc/letsencrypt/live/fourth-wall.sowemustthink.space/privkey.pem', 'utf-8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/fourth-wall.sowemustthink.space/fullchain.pem', 'utf-8')
   }, app);
 }
 // Otherwise, create an HTTP server
@@ -154,6 +154,9 @@ io.on(SocketEvents.Connection, (socket) => {
     // Disconnect socket when leave room button is pressed
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
+
+      if (!rooms.has(roomID)) 
+        dataService.deleteRoom(roomID);
     });
 
     // This can be used as SocketEvents.LeaveRoom instead
