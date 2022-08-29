@@ -14,7 +14,8 @@
   "scripts": {
     "server": "nodemon server.js",
     "client": "cd public && npm start",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "client_dev": "cd public && npm run dev",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client_dev\"",
     "build": "cd public && npm install && npm run build"
   },
   "name": "fourthwall",

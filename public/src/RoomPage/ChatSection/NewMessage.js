@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SendMessageButton from "../../resources/images/sendMessageButton.svg";
+import SendMessageButton from "../../resources/images/rightArrow.svg";
 import SocketEvents from '../socketevents';
 
 const NewMessage = ({ socket }) => {
@@ -34,8 +34,10 @@ const NewMessage = ({ socket }) => {
       placeholder="Type your message"
       type="text"
       onKeyDown={handleKeyPressed}
-       />
-       <img className="new_message_button" src={SendMessageButton} onClick={sendMessage} alt="Send"/>
+      />
+      <div onClick={sendMessage} className="new_message_button">
+        <img src={SendMessageButton} alt="Send" />
+      </div>
     </div>
   )
 }

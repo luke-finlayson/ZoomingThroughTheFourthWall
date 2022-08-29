@@ -1,8 +1,9 @@
 import React from 'react'
 import { store } from '../../store/store';
 import SocketEvents from '../socketevents';
+import CollapseIcon from '../../resources/images/collapse.svg';
 
-const ChatLabel = ({ socket }) => {
+const ChatLabel = ({ socket, collapsed, setCollapsed }) => {
 
   // Clears the messages from the database
   const clearMessages = () => {
@@ -12,8 +13,12 @@ const ChatLabel = ({ socket }) => {
 
   return (
     <div className="chat_label_container">
-        <p className="chat_label_paragraph">Chat</p>
-        {store.getState().isRoomHost && <button onClick={clearMessages} >Clear</button>}
+        <p className="chat_label_paragraph">Messages</p>
+        {(store.getState().isRoomHost && !collapsed)
+          && <button onClick={clearMessages} >Clear</button>}
+        <img className="chat_collapse_button" 
+             onClick={() => setCollapsed(!collapsed)}
+             src={CollapseIcon} />
     </div>
   )
 }

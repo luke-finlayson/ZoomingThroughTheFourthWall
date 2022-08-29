@@ -15,6 +15,7 @@ const ChatSection = ({ socket }) => {
   const [messagesState, setMessages] = useState(messages.slice());
   // To ensure socket event listener is only created once
   const [socketSetup, setSocketSetup] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   // Poll to create listener
   useInterval(() => {
@@ -79,10 +80,14 @@ const ChatSection = ({ socket }) => {
   }, 1000);
 
   return (
-    <div className="chat_section_container">
-        <ChatLabel socket={socket} />
-        <Messages socket={socket} messages={messagesState} />
-        <NewMessage socket={socket} />
+    <div 
+    className={collapsed ? "chat_section_container collapsed_section" 
+    : "chat_section_container expanded_section"}>
+        <ChatLabel socket={socket} collapsed={collapsed} setCollapsed={setCollapsed}/>
+        {!collapsed && 
+          <Messages socket={socket} messages={messagesState} />}
+        {!collapsed && 
+          <NewMessage socket={socket} />}
     </div>
   )
 }
