@@ -1,0 +1,13 @@
+
+api keys -- smoother setup
+
+smaller video window, let user shift around
+
+general tidy up of UI
+
+ocr positional layout
+
+pause and a bit of rewind
+
+
+
