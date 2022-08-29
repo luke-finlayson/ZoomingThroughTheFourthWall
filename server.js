@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const port = 443;
@@ -19,7 +20,17 @@ const credentials = {
 };
 
 // Create an HTTPS server with the given credentials and Express instance
-const server = https.createServer(credentials, app);
+var server;
+
+// Create HTTPS server if built for production
+if (process.env.NODE_ENV === "production") {
+  server = https.createServer(credentials, app);
+}
+// Otherwise, create an HTTP server
+else {
+  server = http.createServer(app);
+}
+
 const peerServer = ExpressPeerServer(server, {
   debug: true,
   secure: true
