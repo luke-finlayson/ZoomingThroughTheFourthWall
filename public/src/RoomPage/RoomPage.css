@@ -33,7 +33,6 @@
 }
 .chat_collapse_button:hover {
   cursor: pointer;
-  background-color: #9F9F9F;
 }
 .flipped_y {
   transform: rotate(180deg);
