@@ -3,7 +3,7 @@ api keys -- smoother setup
 
 smaller video window, let user shift around
 
-general tidy up of UI
+general tidy up of UI -- [In Progress]
 
 ocr positional layout
 
