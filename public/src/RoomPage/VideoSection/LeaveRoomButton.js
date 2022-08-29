@@ -19,12 +19,10 @@ const LeaveRoomButton = ({ socket, peer, stream }) => {
   }
 
   return (
-    <div className='video_button_container'>
-      <button className='video_button_end'
-      onClick={handleRoomDisconnection}>
-        Leave Room
-      </button>
-    </div>
+    <button className='video_button_end'
+    onClick={handleRoomDisconnection}>
+      Leave
+    </button>
   )
 }
 

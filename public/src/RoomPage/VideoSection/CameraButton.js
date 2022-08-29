@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-
 // Import icons
-import CameraButtonImg from '../../resources/images/camera.svg'
+import CameraOffImg from '../../resources/images/cameraOff.svg'
+import CameraOnImg from '../../resources/images/cameraOn.svg'
 
 const CameraButton = ({ stream }) => {
 
@@ -26,7 +26,7 @@ const CameraButton = ({ stream }) => {
 
   return (
     <div className='video_button_container'>
-      <img src={CameraButtonImg} alt=""
+      <img src={isLocalVideoTrackDisabled ? CameraOffImg : CameraOnImg} alt=""
       className='video_button_image'
       onClick={handleCameraButtonPressed}/>
     </div>
