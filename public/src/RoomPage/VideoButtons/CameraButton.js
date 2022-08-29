@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 // Import icons
 import CameraOffImg from '../../resources/images/cameraOff.svg'
 import CameraOnImg from '../../resources/images/cameraOn.svg'
+import TextOnOff from './TextOnOff'
 
 const CameraButton = ({ stream }) => {
 
@@ -25,10 +26,11 @@ const CameraButton = ({ stream }) => {
 
 
   return (
-    <div className='video_button_container'>
+    <div className='video_button_container' onClick={handleCameraButtonPressed}>
       <img src={isLocalVideoTrackDisabled ? CameraOffImg : CameraOnImg} alt=""
-      className='video_button_image'
-      onClick={handleCameraButtonPressed}/>
+      className='video_button_image'/>
+
+      <TextOnOff on={!isLocalVideoTrackDisabled}/>
     </div>
   )
 }
