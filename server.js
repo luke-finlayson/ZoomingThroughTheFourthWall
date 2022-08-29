@@ -13,18 +13,15 @@ const { DataService, User, Message } = require("./dataService");
 const cors = require('cors');
 app.use(cors());
 
-// Get the key and certificate require for HTTPS
-const credentials = {
-  key: fs.readFileSync('keys/key.pem'),
-  cert: fs.readFileSync('keys/cert.pem')
-};
-
 // Create an HTTPS server with the given credentials and Express instance
 var server;
 
-// Create HTTPS server if built for production
+// Create HTTPS server with SSL key and cert if built for production
 if (process.env.NODE_ENV === "production") {
-  server = https.createServer(credentials, app);
+  server = https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/fourth-wall.sowemustthink.space/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/fourth-wall.sowemustthink.space/fullchain.pem')
+  }, app);
 }
 // Otherwise, create an HTTP server
 else {
