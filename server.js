@@ -51,13 +51,21 @@ const textRecognition = new TextRecognition();
 if (process.env.NODE_ENV === "production")
   app.use(express.static(path.join(__dirname, '/public/build')));
 
-// Serve different responses depending on whether production is enabled or not
-app.get('/', (_request, response) => {
+const directToHome = (response) => {
   if (process.env.NODE_ENV !== "production")
     response.send('The server is indeed working.')
   else
     response.sendFile(path.join(__dirname, '/public/build/index.html'));
+}
+
+// Serve different responses depending on whether production is enabled or not
+app.get('/', (_request, response) => {
+  directToHome(response);
 });
+
+app.get('/room', (_request, response) => {
+  directToHome(response);
+})
 
 io.on(SocketEvents.Connection, (socket) => {
 
