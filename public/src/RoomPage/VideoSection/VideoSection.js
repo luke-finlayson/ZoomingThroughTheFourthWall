@@ -188,31 +188,29 @@ const VideoSection = ({ socket, streams }) => {
 
   return (
     <div className="video_section_container">
-    {streams[0] &&
-      <VideoButtons
-      socket={socket}
-      peer={peer}
-      streams={streamsState}
-      />
-    }
-      <div className="video-stream-container" id="video-container">
-        {streamsState.map((user, index) => {
-            return (
-                <VideoFrame
-                key={index}
-                stream={user.stream}
-                userId={user.userId}
-                muted={user.muted}
-                setShowPopup={setShowPopup}
-                setSelectedUser={setSelectedUser}
-                />
-            )
-        })}
-      </div>
-      {showPopup && <ImagePopup
-        user_id={selectedUser}
-        setShowPopup={setShowPopup}
-        socket={socket} />}
+    <VideoButtons
+    socket={socket}
+    peer={peer}
+    stream={myStream}
+    />
+    <div className="video-stream-container" id="video-container">
+      {streamsState.map((user, index) => {
+          return (
+              <VideoFrame
+              key={index}
+              stream={user.stream}
+              userId={user.userId}
+              muted={user.muted}
+              setShowPopup={setShowPopup}
+              setSelectedUser={setSelectedUser}
+              />
+          )
+      })}
+    </div>
+    {showPopup && <ImagePopup
+      user_id={selectedUser}
+      setShowPopup={setShowPopup}
+      socket={socket} />}
     </div>
   )
 }

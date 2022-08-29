@@ -8,7 +8,7 @@ import CopyIcon from '../../resources/images/copy.svg'
 import { useInterval } from '../useInterval';
 
 // Renders a row of control buttons at the top of the room page
-const VideoButtons = ({ socket, peer, streams }) => {
+const VideoButtons = ({ socket, peer, stream }) => {
 
   // Counter to hide 'copied!' message after 3 seconds
   const [hideCounter, setHideCounter] = useState(0);
@@ -25,16 +25,16 @@ const VideoButtons = ({ socket, peer, streams }) => {
       <div className="toggle_buttons control_button_container">
 
         {/* Don't show mic and camera buttons if user stream doesn't exist*/}
-        {streams[0] &&
-          <MicButton stream={streams[0].stream} />}
-        {streams[0] &&
-          <CameraButton stream={streams[0].stream} />}
+        {stream &&
+          <MicButton stream={stream} />}
+        {stream &&
+          <CameraButton stream={stream} />}
 
         <SwitchToScreenSharingButton />
       </div>
       
       <div className="management_buttons control_button_container">
-        <LeaveRoomButton socket={socket} peer={peer} streams={streams} />
+        <LeaveRoomButton socket={socket} peer={peer} stream={stream} />
         
         <p className="room_name">{store.getState().roomId}</p>
         <img className="copy_icon_img" src={CopyIcon} 

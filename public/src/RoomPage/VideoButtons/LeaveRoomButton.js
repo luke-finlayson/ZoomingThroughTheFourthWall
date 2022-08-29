@@ -1,11 +1,12 @@
 import SocketEvents from '../socketevents';
 
-const LeaveRoomButton = ({ socket, peer, streams }) => {
+const LeaveRoomButton = ({ socket, peer, stream }) => {
 
-  const handleRoomDisconnection = () => {
+  // Disconnects the user from the server and stops their stream
+  const disconnect = () => {
     // End the stream if the user stream exists
-    if (streams && streams[0]) {
-      streams[0].stream.getTracks().forEach(track => track.stop());
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
     }
 
     socket.emit(SocketEvents.LeaveRoom);
@@ -13,7 +14,12 @@ const LeaveRoomButton = ({ socket, peer, streams }) => {
     socket.disconnect();
     // Disconnect from the peer connection
     peer.disconnect();
+  }
 
+  const handleRoomDisconnection = () => {
+    disconnect();
+
+    // Send the user back to the landing page
     window.location.replace(window.location.protocol + "//" + window.location.host);
   }
 
