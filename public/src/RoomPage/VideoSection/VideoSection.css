@@ -5,8 +5,10 @@
 .video-stream-container {
     display: flex;
     flex-flow: row;
-    height: 90%;
+    height: 100vh;
     justify-content: center;
+    width: 100vw;
+    align-items: center;
 }
 
 /* .video-frame-container is defeind in RoomPage.css as just 'relative' */

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-import SwitchImg from '../../resources/images/screenShare.svg';
+import ShareOnImg from '../../resources/images/shareOn.svg';
+import ShareOffImg from '../../resources/images/shareOff.svg'
 import {store} from '../../store/store';
 
 const SwitchToScreenSharingButton = () => {
@@ -13,7 +14,7 @@ const SwitchToScreenSharingButton = () => {
 
   return (
     <div className='video_button_container'>
-      <img src={SwitchImg} alt=""
+      <img src={ShareOnImg} alt=""
       onClick={handleScreenSharingEnable}
       className='video_button_image'/>
     </div>
