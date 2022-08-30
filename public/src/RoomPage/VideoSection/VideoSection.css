@@ -14,7 +14,6 @@
 /* .video-frame-container is defeind in RoomPage.css as just 'relative' */
 .video-frame-container {
     margin: 5px;
-    padding: 10px;
     position: relative;
     overflow: hidden;
     border-radius: 11px;
