@@ -39,6 +39,11 @@ class DataService{
         this.client = new Client();
     }
 
+    /**
+     * Inserts a room with the given room name into the room table
+     * @param {string} roomID 
+     * @param {function} callback The function to invoke following completion or error
+     */
     insertRoom(roomID, callback) {
         this.pool.query(`INSERT INTO room VALUES(${this.client.escapeLiteral(roomID)})`, (err) => {
             if (err)
@@ -50,6 +55,11 @@ class DataService{
         });
     }
 
+    /**
+     * Insert the given user into the users table
+     * @param {User} user The user to insert
+     * @param {function} callback The function to invoke following completion or error
+     */
     insertUser(user, callback) {
         this.pool.query(`INSERT INTO users(id, name) VALUES('${user.id}', ${this.client.escapeLiteral(user.name)})`, (err) => {
             if (err)
@@ -59,6 +69,12 @@ class DataService{
         });
     }
 
+    /**
+     * Inserts the given user into the given room
+     * @param {*} userID The ID of the user
+     * @param {string} roomID The name of the room
+     * @param {function} callback The function to invoke following completion or error
+     */
     insertUserIntoRoom(userID, roomID, callback) {
         this.pool.query(`INSERT INTO roomUsers VALUES('${userID}', ${this.client.escapeLiteral(roomID)})`, (err) => {
             console.log(err);
@@ -68,6 +84,10 @@ class DataService{
         });
     }
 
+    /**
+     * Inserts the given Message from a user to a specific room
+     * @param {Message} message 
+     */
     insertMessage(message) {
         var authorID = this.client.escapeLiteral(message.authorID);
         var authorName = this.client.escapeLiteral(message.authorName);
@@ -80,6 +100,11 @@ class DataService{
         })
     }
 
+    /**
+     * Gets all the previous messages sent in a particular room
+     * @param {string} roomID The name of the room
+     * @param {function} callback The function to invoke following completion or error
+     */
     getMessages(roomID, callback) {
         this.pool.query(`SELECT * FROM messages WHERE room_name = ${this.client.escapeLiteral(roomID)}`, (err, result) => {
             if (err)
@@ -93,6 +118,11 @@ class DataService{
         });
     }
 
+    /**
+     * Deletes all the messages in a given room
+     * @param {string} roomID The name of the room
+     * @param {function} callback The function to invoke following completion or error
+     */
     deleteMessages(roomID, callback) {
       this.pool.query(`DELETE FROM messages WHERE room_name = ${this.client.escapeLiteral(roomID)}`, (err) => {
         if (err)
@@ -100,6 +130,11 @@ class DataService{
       })
     }
 
+    /**
+     * Gets all the users currently in a given room
+     * @param {string} roomID The name of the room
+     * @param {function} callback The function to invoke following completion or error
+     */
     getUsersInRoom(roomID, callback) {
         this.pool.query(`SELECT u.id, u.name FROM users u JOIN roomUsers r ON r.user_id = u.id WHERE r.room_name = ${this.client.escapeLiteral(roomID)}`, (err, result) => {
             if (err) {
@@ -115,6 +150,10 @@ class DataService{
         });
     }
 
+    /**
+     * Deletes the given room from the database
+     * @param {string} roomID The name of the room to delete
+     */
     deleteRoom(roomID) {
         try {
             this.deleteMessages(roomID)
@@ -126,6 +165,10 @@ class DataService{
         }
     }
 
+    /**
+     * Deletes the given user from the database
+     * @param {User} user The User to delete
+     */
     deleteUser(user) {
         this.pool.query(`DELETE FROM roomUsers WHERE user_id = '${user.id}'`)
         this.pool.query(`DELETE FROM users WHERE id = '${user.id}'`)
