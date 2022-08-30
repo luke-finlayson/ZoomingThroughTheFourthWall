@@ -201,7 +201,7 @@ const VideoSection = ({ socket, streams }) => {
               muted={user.muted}
               setShowPopup={setShowPopup}
               setSelectedUser={setSelectedUser}
-              numStreams={streams.length}
+              numStreams={streamsState.length}
               />
           )
       })}
