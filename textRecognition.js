@@ -7,6 +7,12 @@ class TextRecognition{
         this.client = new vision.ImageAnnotatorClient();
     }
 
+    /**
+     * Accepts a base64 encoded image and uses the Google Vision API to perform
+     * text recognition
+     * @param {string} image64 The base64 encoded image
+     * @returns {string} The text extracted from the input image
+     */
     async getTextData(image64) {
         const fileName = __dirname + "/image_cache/" + crypto.randomUUID() + ".png";
         files.writeFileSync(fileName, image64, 'base64', (err) => {
