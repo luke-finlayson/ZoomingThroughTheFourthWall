@@ -13,8 +13,8 @@ const Message = ({author, content, sameAuthor, messageCreatedByMe}) => {
 
     return (
         <div className={`message_container ${alignClass}`}>
-            <p className={`message_content ${contentAdditionalStyles}`}>{content}</p>
             {!sameAuthor && <p className='message_title'>{authorText}</p>}
+            <p className={`message_content ${contentAdditionalStyles}`}>{content}</p>
         </div>
     )
 }
