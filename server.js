@@ -103,7 +103,8 @@ io.on(SocketEvents.Connection, (socket) => {
     dataService.insertUser(user, (error) => {
       if (error) {
         actAndCallbackGracefully(error, callback);
-        socket.leave(roomID) 
+        //socket.leave(roomID)
+        console.log('****We are definitely leaving right now.****')
         return;
       }
       
