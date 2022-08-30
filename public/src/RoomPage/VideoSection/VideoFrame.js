@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { store } from '../../store/store';
-import { useInterval } from '../useInterval';
+import { useInterval } from '../../Utilities/useInterval';
 
 const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup }) => {
   // Changes the video elements source to a given media stream.

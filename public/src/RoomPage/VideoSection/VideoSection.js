@@ -4,26 +4,24 @@ import VideoButtons from '../VideoButtons/VideoButtons';
 import VideoFrame from './VideoFrame';
 import ImagePopup from './ImagePopup';
 import { store } from '../../store/store';
-import { useInterval } from '../useInterval';
+import { useInterval } from '../../Utilities/useInterval';
 import { Peer } from 'peerjs';
-import SocketEvents from '../socketevents';
+import SocketEvents from '../../Utilities/socketevents';
 
 const VideoSection = ({ socket, streams }) => {
 
-  // Unique id of this user
-  const userId = store.getState().userId;
-  // Used to ensure user stream is only fetched once
-  const [getStream, setStream] = useState(true);
-
-  // Holds the peer connection objects
+  // Holds the peer connection object
   const [peer, setPeer] = useState(null);
 
+  // Unique id of this user
+  const userId = store.getState().userId;
+  const [getStream, setStream] = useState(true);
+  const [userStream, setUserStream] = useState();
   // Stores the list of streams as a state so that UI updates with new streams
   const [streamsState, setStreams] = useState(streams.slice());
-  const [myStream, setMyStream] = useState();
-  // When true, dispays the current video frame in a popup window
+  
+  // Varioud UI toggles
   const [showPopup, setShowPopup] = useState(false);
-  // The ID of the user associated with the selected video frame
   const [selectedUser, setSelectedUser] = useState();
 
   // Current value of screen sharing.
@@ -87,7 +85,7 @@ const VideoSection = ({ socket, streams }) => {
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
     // Establish the peer connection if it hasn't already
-    if (peer === null && socket != null) {
+    if (peer === null && socket != null && socket.connected) {
       // Attempt main peerjs connection
       const peer = new Peer(userId, {
         host: "/",
@@ -118,7 +116,7 @@ const VideoSection = ({ socket, streams }) => {
       }).then((stream) => {
         // Attach stream to video element
         addVideoStream(userId, stream, true, null);
-        setMyStream(stream);
+        setUserStream(stream);
 
         // Setup peer event to receive calls
         peer.on("call", (call) => {
@@ -178,9 +176,9 @@ const VideoSection = ({ socket, streams }) => {
       }
       else {
         // Change video source back to webcam
-        replacePeerStreams(myStream);
+        replacePeerStreams(userStream);
         // Replace clients stream
-        streams[0].stream = myStream;
+        streams[0].stream = userStream;
         setStreams(streams.slice());
       }
     }
@@ -191,7 +189,7 @@ const VideoSection = ({ socket, streams }) => {
     <VideoButtons
     socket={socket}
     peer={peer}
-    stream={myStream}
+    stream={userStream}
     />
     <div className="video-stream-container" id="video-container">
       {streamsState.map((user, index) => {

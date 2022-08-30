@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useInterval } from '../useInterval';
-import SocketEvents from '../socketevents';
+import { useInterval } from '../../Utilities/useInterval';
+import SocketEvents from '../../Utilities/socketevents';
 
 // Displays the current frame of a video in a pop up window in the video section
 const ImagePopup = ({ socket, user_id, setShowPopup }) => {

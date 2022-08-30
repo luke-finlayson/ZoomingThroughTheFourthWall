@@ -4,8 +4,7 @@ import RoomPage from "./RoomPage/RoomPage";
 import JoinPage from "./JoinPage/JoinPage";
 import './App.css';
 import io from 'socket.io-client';
-import { store } from './store/store';
-import { useInterval } from './RoomPage/useInterval';
+import { useInterval } from './Utilities/useInterval';
 
 function App() {
 

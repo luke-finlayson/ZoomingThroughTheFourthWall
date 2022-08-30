@@ -5,7 +5,7 @@ import SwitchToScreenSharingButton from './SwitchToScreenSharingButton';
 import LeaveRoomButton from './LeaveRoomButton';
 import { store } from '../../store/store';
 import CopyIcon from '../../resources/images/copy.svg';
-import { useInterval } from '../useInterval';
+import { useInterval } from '../../Utilities/useInterval';
 
 // Renders a 25px high vertical bar
 const VerticalSeparator = () => {

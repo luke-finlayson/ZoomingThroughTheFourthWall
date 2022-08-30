@@ -1,6 +1,6 @@
 import React from 'react'
 import { store } from '../../store/store';
-import SocketEvents from '../socketevents';
+import SocketEvents from '../../Utilities/socketevents';
 import CollapseIcon from '../../resources/images/collapse.svg';
 
 const ChatLabel = ({ socket, collapsed, setCollapsed }) => {
