@@ -68,7 +68,7 @@ app.get('/room', (_request, response) => {
 })
 
 io.on(SocketEvents.Connection, (socket) => {
-  console.log(`User ${socket} has connected`)
+  console.log(`Socket with ID ${socket.id} has connected`)
 
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
 
@@ -94,6 +94,8 @@ io.on(SocketEvents.Connection, (socket) => {
   socket.on(SocketEvents.JoinRoom, (roomID, userId, username, callback) => {
     // Join the room with room id
     socket.join(roomID);
+
+    console.log(`${username} has joined ${roomID}`)
 
     const putUserInRoom = () => {
       dataService.insertUserIntoRoom(userId, roomID, (error) => actAndCallbackGracefully(error, callback));
@@ -140,6 +142,7 @@ io.on(SocketEvents.Connection, (socket) => {
     // Disconnect socket when leave room button is pressed
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
+      console.log(`${username} has left ${roomID}`)
       
       dataService.deleteUser(user);
     });
@@ -148,7 +151,7 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.on(SocketEvents.Disconnect, () => {
       // Notify other users that the user disconnected
       socket.to(roomID).emit(SocketEvents.UserLeftRoom, userId);
-      console.log(`User ${socket} has disconnected`)
+      console.log(`Socket with ID ${socket.id} has disconnected`)
     });
   });
 
@@ -207,13 +210,19 @@ io.on(SocketEvents.Connection, (socket) => {
   });
 });
 
-io.of("/").adapter.on(SocketEvents.DeleteRoom, (room) => {
+io.of("/").adapter.on(SocketEvents.DeleteRoom, async (room) => {
+  if (await roomIsDefaultRoom(room))
+    return;
+
   dataService.deleteRoom(room);
 
   console.log(`room ${room} was deleted`);
 });
 
-io.of("/").adapter.on(SocketEvents.CreateRoom, (room) => {
+io.of("/").adapter.on(SocketEvents.CreateRoom, async (room) => {
+  if (await roomIsDefaultRoom(room))
+    return;
+
   dataService.insertRoom(room, (error) => {
     if (error)
       console.log(`room ${room} was not created: ${error}`);
@@ -221,6 +230,16 @@ io.of("/").adapter.on(SocketEvents.CreateRoom, (room) => {
       console.log(`room ${room} was created`);
   });
 });
+
+/**
+ * Checks whether the given room ID corresponds to a socket's default room
+ * @param {string} room The room ID to check
+ * @returns Whether the given room is a default socket room or not
+ */
+const roomIsDefaultRoom = async (room) => {
+  var sockets = await io.allSockets();
+  return sockets.has(room);
+}
 
 server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
