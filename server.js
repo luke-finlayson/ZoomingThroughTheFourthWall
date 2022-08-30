@@ -68,6 +68,7 @@ app.get('/room', (_request, response) => {
 })
 
 io.on(SocketEvents.Connection, (socket) => {
+  console.log(`User ${socket} has connected`)
 
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
 
@@ -103,8 +104,7 @@ io.on(SocketEvents.Connection, (socket) => {
     dataService.insertUser(user, (error) => {
       if (error) {
         actAndCallbackGracefully(error, callback);
-        //socket.leave(roomID)
-        console.log('****We are definitely leaving right now.****')
+        socket.leave(roomID)
         return;
       }
       
@@ -148,6 +148,7 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.on(SocketEvents.Disconnect, () => {
       // Notify other users that the user disconnected
       socket.to(roomID).emit(SocketEvents.UserLeftRoom, userId);
+      console.log(`User ${socket} has disconnected`)
     });
   });
 
@@ -204,20 +205,20 @@ io.on(SocketEvents.Connection, (socket) => {
       catch { callback({ status: "Failed" }); }
     });
   });
+});
 
-  io.of("/").adapter.on(SocketEvents.DeleteRoom, (room) => {
-    dataService.deleteRoom(room);
+io.of("/").adapter.on(SocketEvents.DeleteRoom, (room) => {
+  dataService.deleteRoom(room);
 
-    console.log(`room ${room} was deleted`);
-  });
+  console.log(`room ${room} was deleted`);
+});
 
-  io.of("/").adapter.on(SocketEvents.CreateRoom, (room) => {
-    dataService.insertRoom(room, (error) => {
-      if (error)
-        console.log(`room ${room} was not created: ${error}`);
-      else
-        console.log(`room ${room} was created`);
-    });
+io.of("/").adapter.on(SocketEvents.CreateRoom, (room) => {
+  dataService.insertRoom(room, (error) => {
+    if (error)
+      console.log(`room ${room} was not created: ${error}`);
+    else
+      console.log(`room ${room} was created`);
   });
 });
 
