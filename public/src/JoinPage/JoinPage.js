@@ -20,7 +20,6 @@ const JoinPage = ({ socket }) => {
 
   const [formError, setFormError] = useState(false);
 
-
   const navigate = useNavigate();
 
   useInterval(() => {

@@ -3,7 +3,9 @@ api keys -- smoother setup
 
 smaller video window, let user shift around
 
-general tidy up of UI -- [In Progress]
+general tidy up of UI -- [Done]
+
+adaptive grid -- [In Progress]
 
 ocr positional layout
 
