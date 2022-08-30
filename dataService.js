@@ -170,8 +170,9 @@ class DataService{
      * @param {User} user The User to delete
      */
     deleteUser(user) {
-        this.pool.query(`DELETE FROM roomUsers WHERE user_id = '${user.id}'`)
-        this.pool.query(`DELETE FROM users WHERE id = '${user.id}'`)
+        this.pool.query(`DELETE FROM roomUsers WHERE user_id = '${user.id}'`).then(() => {
+            this.pool.query(`DELETE FROM users WHERE id = '${user.id}'`)
+        });
     }
 }
 
