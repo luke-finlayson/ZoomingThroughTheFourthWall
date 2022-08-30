@@ -1,4 +1,4 @@
-import SocketEvents from '../socketevents';
+import SocketEvents from '../../Utilities/socketevents';
 
 const LeaveRoomButton = ({ socket, peer, stream }) => {
 

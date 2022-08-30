@@ -1,12 +1,12 @@
 import './JoinPage.css'
 import Button from "./Button";
 import TextField from "./TextField";
-import { useInterval } from "../RoomPage/useInterval.js";
+import { useInterval } from "../Utilities/useInterval";
 import { useState } from "react";
 import { store } from '../store/store';
 import { useNavigate } from 'react-router-dom';
 import * as uuid from 'uuid';
-import SocketEvents from '../RoomPage/socketevents';
+import SocketEvents from '../Utilities/socketevents';
 
 const JoinPage = ({ socket }) => {
 
@@ -25,11 +25,9 @@ const JoinPage = ({ socket }) => {
 
   useInterval(() => {
     // Ensure socket is not null
-    if (socket) {
-      if (socket.connected) {
-        // If the socket connection has been made, update state
-        setSocketConnected(true);
-      }
+    if (socket && socket.connected) {
+      // If the socket connection has been made, update state
+      setSocketConnected(true);
     }
   }, 100);
 

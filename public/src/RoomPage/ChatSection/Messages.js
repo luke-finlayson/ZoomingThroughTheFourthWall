@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { store } from '../../store/store';
-import SocketEvents from '../socketevents';
-import { useInterval } from '../useInterval';
+import SocketEvents from '../../Utilities/socketevents';
+import { useInterval } from '../../Utilities/useInterval';
 
 // Returns a div element formatted as a message with the given data
 const Message = ({author, content, sameAuthor, messageCreatedByMe}) => {

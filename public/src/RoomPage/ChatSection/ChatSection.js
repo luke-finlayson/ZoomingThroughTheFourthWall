@@ -3,8 +3,8 @@ import ChatLabel from './ChatLabel';
 import Messages from './Messages';
 import NewMessage from './NewMessage';
 import { store } from '../../store/store';
-import { useInterval } from '../useInterval';
-import SocketEvents from '../socketevents';
+import { useInterval } from '../../Utilities/useInterval';
+import SocketEvents from '../../Utilities/socketevents';
 
 // Holds a list of all the messages
 const messages = [];
