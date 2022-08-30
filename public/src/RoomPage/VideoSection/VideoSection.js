@@ -42,8 +42,8 @@ const VideoSection = ({ socket, streams }) => {
 
   // Adds a video stream to the list of video streams
   const addVideoStream = (newUserId, newStream, muted, call) => {
+    // Add new stream to list of streams if it isn't already
     if(!streams.some(e => e.stream === newStream)) {
-      // Add new stream to list of streams if it isn't already
       streams.push({
         userId: newUserId,
         stream: newStream,
@@ -103,19 +103,27 @@ const VideoSection = ({ socket, streams }) => {
         socket.emit(SocketEvents.JoinRoom, state.roomId, userId, state.username, (joinResponse) => {
         });
       });
+
+      addVideoStream(userId, null, true, null);
     }
 
-    // In order for peer calls to work, need to get media after connections
-    // been made, which will cause a slight delay before the user's camera
-    // feed is displayed. May revisit how this works later to improve UX
-    if (getStream && peer !== null) {
+    // Request user media, but add an object to list of streams regardless of 
+    // result so that blank element is displayed
+    if (getStream && peer !== null && streams.length !== 0) {
+
       // Get the webcam and audio stream from the user device
       navigator.mediaDevices.getUserMedia({
         audio: !store.getState().connectOnlyWithAudio,
         video: true
       }).then((stream) => {
-        // Attach stream to video element
-        addVideoStream(userId, stream, true, null);
+        // Update user object in the list of streams to include the user's media stream
+        for (const i in streams) {
+          if (streams[i].userId == userId) {
+            streams[i].stream = stream;
+          }
+        }
+
+        setStreams(streams.slice())
         setUserStream(stream);
 
         // Setup peer event to receive calls
@@ -148,7 +156,8 @@ const VideoSection = ({ socket, streams }) => {
           // Update the streams state
           setStreams(streams.slice())
         });
-      });
+      })
+
       // Ensure media stream isn't requested again
       setStream(false);
     }
