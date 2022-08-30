@@ -64,7 +64,7 @@
 .chat_label_container {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .chat_label_paragraph {
@@ -168,7 +168,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .mgb_main {
