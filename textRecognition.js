@@ -10,12 +10,18 @@ class TextRecognition{
     async getTextData(image64) {
         const fileName = __dirname + "/image_cache/" + crypto.randomUUID() + ".png";
         files.writeFileSync(fileName, image64, 'base64', (err) => {
-          console.log(err);
+            if (err) {
+                console.log(err);
+                return null;
+          }
         });
 
         // Request for text recognition to be performed on the given image
         const [result] = await this.client.textDetection(fileName);
         const detections = result.textAnnotations;
+
+        // Get rid of the temporary image
+        files.rmSync(fileName);
 
         if (!detections.length) {
             console.log("No text detected");
@@ -24,9 +30,6 @@ class TextRecognition{
         
         // First detection contains all text found in the image.
         let output = detections[0].description;
-
-        // Get rid of the temporary image
-        files.rmSync(fileName);
 
         return output;
     }
