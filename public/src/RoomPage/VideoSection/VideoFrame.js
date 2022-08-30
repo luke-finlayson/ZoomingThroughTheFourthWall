@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { store } from '../../store/store';
 import { useInterval } from '../../Utilities/useInterval';
 
-const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup }) => {
+const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numStreams }) => {
   // Changes the video elements source to a given media stream.
   const setVideoSource = (source, flipped) => {
     // Attach stream to video element
@@ -54,10 +54,9 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup }) =>
 
   // Display message until the stream is ready
   return (
-      <div className="video-frame-container">
-	  <video className="video-frame-elem" id={userId} muted={muted}
-		 onKeyDown={handleKeyDown}
-	  />
+      <div className={numStreams > 1 ? "video-frame-container lots" : "video-frame-container solo"}>
+        <video className="video-frame-elem" id={userId} muted={muted}
+        onKeyDown={handleKeyDown}/>
     </div>
   );
 }

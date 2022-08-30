@@ -13,14 +13,27 @@
 
 /* .video-frame-container is defeind in RoomPage.css as just 'relative' */
 .video-frame-container {
+    margin: 5px;
     position: relative;
-    padding: 10px;
-    margin:   5px;
-    max-width: 80%;
-    /*overflow: hidden;*/
+    overflow: hidden;
+    border-radius: 11px;
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.solo {
+    height: 80vh;
+    max-width: 60vw;
+}
+
+.lots {
+    height: 80vh;
+    max-width: 30vw;
 }
 
 .video-frame-elem {
-    /*transform: scale(1.2,1.2) translate(0%,0%);*/
-    width: 100%;
+    height: 100%;
 }
