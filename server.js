@@ -68,6 +68,7 @@ app.get('/room', (_request, response) => {
 })
 
 io.on(SocketEvents.Connection, (socket) => {
+  console.log(`Socket with ID ${socket.id} has connected`)
 
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
 
@@ -94,6 +95,8 @@ io.on(SocketEvents.Connection, (socket) => {
     // Join the room with room id
     socket.join(roomID);
 
+    console.log(`${username} has joined ${roomID}`)
+
     const putUserInRoom = () => {
       dataService.insertUserIntoRoom(userId, roomID, (error) => actAndCallbackGracefully(error, callback));
     }
@@ -103,8 +106,7 @@ io.on(SocketEvents.Connection, (socket) => {
     dataService.insertUser(user, (error) => {
       if (error) {
         actAndCallbackGracefully(error, callback);
-        //socket.leave(roomID)
-        console.log('****We are definitely leaving right now.****')
+        socket.leave(roomID)
         return;
       }
       
@@ -140,6 +142,7 @@ io.on(SocketEvents.Connection, (socket) => {
     // Disconnect socket when leave room button is pressed
     socket.on(SocketEvents.LeaveRoom, () => {
       socket.disconnect();
+      console.log(`${username} has left ${roomID}`)
       
       dataService.deleteUser(user);
     });
@@ -148,6 +151,7 @@ io.on(SocketEvents.Connection, (socket) => {
     socket.on(SocketEvents.Disconnect, () => {
       // Notify other users that the user disconnected
       socket.to(roomID).emit(SocketEvents.UserLeftRoom, userId);
+      console.log(`Socket with ID ${socket.id} has disconnected`)
     });
   });
 
@@ -204,22 +208,38 @@ io.on(SocketEvents.Connection, (socket) => {
       catch { callback({ status: "Failed" }); }
     });
   });
+});
 
-  io.of("/").adapter.on(SocketEvents.DeleteRoom, (room) => {
-    dataService.deleteRoom(room);
+io.of("/").adapter.on(SocketEvents.DeleteRoom, async (room) => {
+  if (await roomIsDefaultRoom(room))
+    return;
 
-    console.log(`room ${room} was deleted`);
-  });
+  dataService.deleteRoom(room);
 
-  io.of("/").adapter.on(SocketEvents.CreateRoom, (room) => {
-    dataService.insertRoom(room, (error) => {
-      if (error)
-        console.log(`room ${room} was not created: ${error}`);
-      else
-        console.log(`room ${room} was created`);
-    });
+  console.log(`room ${room} was deleted`);
+});
+
+io.of("/").adapter.on(SocketEvents.CreateRoom, async (room) => {
+  if (await roomIsDefaultRoom(room))
+    return;
+
+  dataService.insertRoom(room, (error) => {
+    if (error)
+      console.log(`room ${room} was not created: ${error}`);
+    else
+      console.log(`room ${room} was created`);
   });
 });
+
+/**
+ * Checks whether the given room ID corresponds to a socket's default room
+ * @param {string} room The room ID to check
+ * @returns Whether the given room is a default socket room or not
+ */
+const roomIsDefaultRoom = async (room) => {
+  var sockets = await io.allSockets();
+  return sockets.has(room);
+}
 
 server.listen(port, () => {
     console.log(`Fourth Wall listening on port ${port}`)
