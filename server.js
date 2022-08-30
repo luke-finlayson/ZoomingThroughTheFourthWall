@@ -91,9 +91,8 @@ io.on(SocketEvents.Connection, (socket) => {
   });
 
   socket.on(SocketEvents.JoinRoom, (roomID, userId, username, callback) => {
-
-    var rooms = io.of("/").adapter.rooms;
-    var roomExisted = rooms.has(roomID);
+    // Join the room with room id
+    socket.join(roomID);
 
     const putUserInRoom = () => {
       dataService.insertUserIntoRoom(userId, roomID, (error) => actAndCallbackGracefully(error, callback));
@@ -104,35 +103,12 @@ io.on(SocketEvents.Connection, (socket) => {
     dataService.insertUser(user, (error) => {
       if (error) {
         actAndCallbackGracefully(error, callback);
+        socket.leave(roomID) 
         return;
       }
-      else {
-        console.log(`This room already exists: ${roomExisted}`)
-        // Insert room to database if it doesn't already exist
-        // and put user in the new room
-        if (!roomExisted) {
-          console.log('Room does not yet exist!');
-
-          dataService.insertRoom(roomID, (error) => {
-            if (error) {
-              actAndCallbackGracefully(error, callback);
-              return;
-            }
-            else {
-              putUserInRoom();
-            }
-          });
-        }
-
-        // Otherwise just put the user in the room that already exists
-        else {
-          putUserInRoom();
-        }
-      }
+      
+      putUserInRoom()
     });
-
-    // Join the room with room id
-    socket.join(roomID);
 
     // Only announce to connected clients the existence of this client when it
     // is ready for peer calls
@@ -232,6 +208,15 @@ io.on(SocketEvents.Connection, (socket) => {
     dataService.deleteRoom(room);
 
     console.log(`room ${room} was deleted`);
+  });
+
+  io.of("/").adapter.on(SocketEvents.CreateRoom, (room) => {
+    dataService.insertRoom(room, (error) => {
+      if (error)
+        console.log(`room ${room} was not created: ${error}`);
+      else
+        console.log(`room ${room} was created`);
+    });
   });
 });
 
