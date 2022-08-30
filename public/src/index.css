@@ -5,9 +5,33 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  background: linear-gradient(30deg, #6d90b9, #bbc7dc);
+  background-size: 400% 400%;
+
+  -webkit-animation: BackgroundDrift 30s linear infinite;
+  -moz-animation: BackgroundDrift 30s linear infinite;
+  animation: BackgroundDrift 30s linear infinite;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Animations! */
+@-webkit-keyframes BackgroundDrift {
+  0%{background-position:96% 0%}
+  50%{background-position:5% 100%}
+  100%{background-position:96% 0%}
+}
+@-moz-keyframes BackgroundDrift {
+  0%{background-position:96% 0%}
+  50%{background-position:5% 100%}
+  100%{background-position:96% 0%}
+}
+@keyframes BackgroundDrift {
+  0%{background-position:96% 0%}
+  50%{background-position:5% 100%}
+  100%{background-position:96% 0%}
 }

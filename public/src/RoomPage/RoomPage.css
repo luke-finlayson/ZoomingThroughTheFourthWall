@@ -2,6 +2,7 @@
   width: 100%;
   height: 100vh;
   display: flex;
+  background: rgba(255,255,255,0.6);
 }
 
 .copied_message {
@@ -144,7 +145,7 @@
 }
 
 .new_message_button:hover {
-  background-color: #86a9d2;
+  background-color: linear-gradient(10deg, #6d90b9, #bbc7dc);;
 }
 
 .new_message_button:active {
@@ -186,11 +187,10 @@
 }
 
 .messages_container {
-  width: calc(100% - 25px);
-  height: 80%;
-  margin-left: 30px;
-  margin-right: 30px;
   flex-grow: 1;
+  height: 80%;
+  margin-left: 11px;
+  margin-right: 11px;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -210,30 +210,32 @@
 }
 
 .message_left_styles {
-  background: rgba(0, 82, 201, 0.1);
-  color: black;
+  background: #e8e8e8;
+  color: #767676;
 }
 
 .message_right_styles {
-  background: linear-gradient(168.68deg, #0052c9 1.12%, #0a91db 100%);
+  background: #6d90b9;
   color: white;
 }
 
 .message_title {
-  margin: 0 0 10px 0;
-  padding: 0 10px;
-  color: black;
-  font-size: 16px;
-  font-weight: 500;
+  color: #989898;
   display: block;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 2px 10px;
+  padding: 0 10px;
+  font-family: 'Poppins';
 }
 
 .message_content {
-  margin: 0px 10px;
-  padding: 10px 30px 10px 20px;
-  border-radius: 25px;
-  font-size: 16px;
+  border-radius: 11px;
   display: inline-block;
+  font-size: 14px;
+  margin: 0 10px;
+  padding: 10px 30px 10px 20px;
+  font-family: 'Poppins';
 }
 
 /* width */
@@ -479,6 +481,11 @@ video {
 .popup button {
   position: absolute;
   top: 20px;
+}
+
+video {
+  border-radius: 11px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
 }
 
 .room_label {

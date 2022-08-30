@@ -16,13 +16,6 @@
   justify-content: center;
   flex-direction: column;
   overflow-x: hidden;
-
-  background: linear-gradient(30deg, #6d90b9, #bbc7dc);
-  background-size: 400% 400%;
-
-  -webkit-animation: BackgroundDrift 30s linear infinite;
-  -moz-animation: BackgroundDrift 30s linear infinite;
-  animation: BackgroundDrift 30s linear infinite;
 }
 
 .introduction_page_image {
@@ -202,19 +195,4 @@
   50%, 100% { background-color: rgba(255, 255, 255, 0.8); }
 }
 
-/* Animations! */
-@-webkit-keyframes BackgroundDrift {
-  0%{background-position:96% 0%}
-  50%{background-position:5% 100%}
-  100%{background-position:96% 0%}
-}
-@-moz-keyframes BackgroundDrift {
-  0%{background-position:96% 0%}
-  50%{background-position:5% 100%}
-  100%{background-position:96% 0%}
-}
-@keyframes BackgroundDrift {
-  0%{background-position:96% 0%}
-  50%{background-position:5% 100%}
-  100%{background-position:96% 0%}
-}
+
