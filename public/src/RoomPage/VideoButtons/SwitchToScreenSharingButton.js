@@ -15,10 +15,10 @@ const SwitchToScreenSharingButton = () => {
 
   return (
     <div className='video_button_container' onClick={handleScreenSharingEnable}>
-      <img src={ShareOnImg} alt=""
+      <img src={store.getState().isScreenSharing ? ShareOnImg : ShareOffImg} alt=""
       className='video_button_image'/>
 
-      <TextOnOff on={true} />
+      <TextOnOff on={store.getState().isScreenSharing} />
     </div>
   )
 }

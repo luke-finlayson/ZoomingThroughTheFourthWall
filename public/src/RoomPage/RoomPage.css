@@ -51,6 +51,8 @@
   transition: 0.3s;
   padding: 3px;
   border-radius: 8px;
+  width: 28px;
+  transform: rotate(180deg);
 }
 
 .chat_collapse_button:hover {
@@ -58,7 +60,7 @@
 }
 
 .flipped_y {
-  transform: rotate(180deg);
+  transform: rotate(0deg);
 }
 
 .chat_label_container {
