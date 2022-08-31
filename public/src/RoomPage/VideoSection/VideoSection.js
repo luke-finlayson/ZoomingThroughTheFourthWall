@@ -28,6 +28,25 @@ const VideoSection = ({ socket, streams }) => {
   // (For some weird reason this will actually be the opposite of the true value idk whats up)
   const [isScreenSharing, setScreenSharing] = useState(false);
 
+
+
+
+
+  /* TEMPORY FUNCTION - REMOVE LATER */
+  const modifyStreams = (add) => {
+    // Add or remove dummy streams to simulate multiple users
+    if (add) {
+      addVideoStream(userId + streams.length, userStream, true, null);
+    }
+    else if(streams.length > 1) {
+      streams.pop();
+      setStreams(streams.slice())
+    }
+  }
+
+
+
+
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
     // Call second user
@@ -43,7 +62,7 @@ const VideoSection = ({ socket, streams }) => {
   // Adds a video stream to the list of video streams
   const addVideoStream = (newUserId, newStream, muted, call) => {
     // Add new stream to list of streams if it isn't already
-    if(!streams.some(e => e.stream === newStream)) {
+    if(!streams.some(e => e.userId === newUserId)) {
       streams.push({
         userId: newUserId,
         stream: newStream,
@@ -82,10 +101,13 @@ const VideoSection = ({ socket, streams }) => {
     });
   }
 
+
+
+
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
     // Establish the peer connection if it hasn't already
-    if (peer === null && socket != null && socket.connected) {
+    if (peer === null && socket !== null && socket.connected) {
       // Attempt main peerjs connection
       const peer = new Peer(userId, {
         host: "/",
@@ -193,6 +215,8 @@ const VideoSection = ({ socket, streams }) => {
     }
   }, 100);
 
+
+
   return (
     <div className="video_section_container">
     <VideoButtons
@@ -200,7 +224,7 @@ const VideoSection = ({ socket, streams }) => {
     peer={peer}
     stream={userStream}
     />
-    <div className="video-stream-container" id="video-container">
+    <div className="video-stream-container">
       {streamsState.map((user, index) => {
           return (
               <VideoFrame
@@ -219,6 +243,11 @@ const VideoSection = ({ socket, streams }) => {
       user_id={selectedUser}
       setShowPopup={setShowPopup}
       socket={socket} />}
+
+      <div className='temp_buttons'>
+        <button onClick={() => modifyStreams(true)}>Add</button>
+        <button onClick={() => modifyStreams(false)}>Remove</button>
+      </div>
     </div>
   )
 }
