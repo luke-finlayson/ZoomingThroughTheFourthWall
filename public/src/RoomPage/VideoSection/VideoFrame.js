@@ -54,7 +54,7 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numS
 
   // Display message until the stream is ready
   return (
-      <div className={"video-frame-container"} style={{height: height / (numStreams) + 'px'}}>
+      <div className={"video-frame-container"} style={{height: (height - 50) / (numStreams) + 'px'}}>
         <video className="video-frame-elem" id={userId} muted={muted}
         onKeyDown={handleKeyDown}/>
         <button className='text_button' onClick={showPopup}>Scan</button>

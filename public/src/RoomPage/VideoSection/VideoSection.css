@@ -32,6 +32,7 @@
     transition: 0.3s;
     background: black;
     height: 74vh;
+    max-width: 60vw;
 }
 
 .solo {

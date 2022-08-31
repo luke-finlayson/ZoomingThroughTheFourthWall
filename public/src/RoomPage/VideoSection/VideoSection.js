@@ -244,10 +244,10 @@ const VideoSection = ({ socket, streams }) => {
       setShowPopup={setShowPopup}
       socket={socket} />}
 
-      <div className='temp_buttons'>
+      {/*<div className='temp_buttons'>
         <button onClick={() => modifyStreams(true)}>Add</button>
         <button onClick={() => modifyStreams(false)}>Remove</button>
-      </div>
+    </div>*/}
     </div>
   )
 }
