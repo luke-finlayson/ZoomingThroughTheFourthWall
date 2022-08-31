@@ -472,6 +472,7 @@ video {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 0% 10%;
+  width: 80%;
 }
 
 .popup {
