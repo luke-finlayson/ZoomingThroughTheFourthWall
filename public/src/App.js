@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import RoomPage from "./RoomPage/RoomPage";
 import JoinPage from "./JoinPage/JoinPage";
 import './App.css';
 import io from 'socket.io-client';
-import { useInterval } from './Utilities/useInterval';
-import { store } from './store/store'
 
 
 // Attempt to create socket connection
