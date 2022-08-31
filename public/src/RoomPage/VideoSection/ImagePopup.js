@@ -47,7 +47,7 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
   return(
     <div className="popup-container" onClick={closePopup}>
       <div className="popup">
-        <canvas id="snapshot"  />
+        <canvas id="snapshot" hidden />
         <div className="textfield">
           <p id="imageText">{imageText}</p>
         </div>
