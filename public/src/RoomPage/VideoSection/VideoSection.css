@@ -11,6 +11,14 @@
     align-items: center;
 }
 
+.text_button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    padding: 10px;
+}
+
 /* .video-frame-container is defeind in RoomPage.css as just 'relative' */
 .video-frame-container {
     margin: 5px;
@@ -23,18 +31,24 @@
     justify-content: center;
     transition: 0.3s;
     background: black;
+    height: 74vh;
+    max-width: 60vw;
 }
 
 .solo {
-    height: 80vh;
     max-width: 60vw;
 }
 
 .lots {
-    height: 80vh;
     max-width: 30vw;
 }
 
 .video-frame-elem {
     height: 100%;
+}
+
+.temp_buttons {
+    position: absolute;
+    left: 0;
+    bottom: 0;
 }

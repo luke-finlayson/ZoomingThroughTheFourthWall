@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import useWindowDimensions from '../../Utilities/useWindowDimensions';
 
 const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numStreams }) => {
+
+  const { width, height } = useWindowDimensions();
+
   // Changes the video elements source to a given media stream.
   const setVideoSource = (source, flipped) => {
     // Attach stream to video element
@@ -17,9 +21,7 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numS
 
   // Updates the state to display a popup containing a snapshot of the current video frame
   const showPopup = () => {
-    // Update the state to use this user as the selected user
     setSelectedUser(userId);
-    // Update the state to show the popup
     setShowPopup(true);
   }
 
@@ -52,9 +54,10 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numS
 
   // Display message until the stream is ready
   return (
-      <div className={numStreams > 1 ? "video-frame-container lots" : "video-frame-container solo"}>
+      <div className={"video-frame-container"} style={{height: (height - 50) / (numStreams) + 'px'}}>
         <video className="video-frame-elem" id={userId} muted={muted}
         onKeyDown={handleKeyDown}/>
+        <button className='text_button' onClick={showPopup}>Scan</button>
     </div>
   );
 }
