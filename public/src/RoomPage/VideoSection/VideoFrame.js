@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import useWindowDimensions from '../../Utilities/useWindowDimensions';
 
-const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numStreams }) => {
+const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numStreams, selectedUser }) => {
 
   const { width, height } = useWindowDimensions();
 
@@ -21,8 +21,13 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numS
 
   // Updates the state to display a popup containing a snapshot of the current video frame
   const showPopup = () => {
-    setSelectedUser(userId);
-    setShowPopup(true);
+    if (selectedUser === userId) {
+      setSelectedUser(null);
+      return;
+    }
+
+    setSelectedUser(userId)
+    //setShowPopup(true);
   }
 
   useEffect(() => {
@@ -52,13 +57,19 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numS
   	}
   }
 
-  // Display message until the stream is ready
-  return (
-      <div className={"video-frame-container"} style={{height: (height - 50) / (numStreams) + 'px'}}>
+  // Return the video and its container via the useMemo function to prevent flickering on state updates
+  const renderVideo = useMemo(() => {
+    <div className={selectedUser !== userId ? "video-frame-container" : "video-frame-container selected_video"} 
+      style={{height: (height - 50) / (numStreams) + 'px'}}
+      onClick={showPopup}>
         <video className="video-frame-elem" id={userId} muted={muted}
         onKeyDown={handleKeyDown}/>
-        <button className='text_button' onClick={showPopup}>Scan</button>
     </div>
+  }, stream)
+
+  // Display message until the stream is ready
+  return (
+      renderVideo
   );
 }
 

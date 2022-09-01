@@ -35,12 +35,9 @@
     max-width: 60vw;
 }
 
-.solo {
-    max-width: 60vw;
-}
-
-.lots {
-    max-width: 30vw;
+.selected_video {
+    box-shadow: 0 2px 50px 0 rgba(0,107,185,.6);
+    border: 5px solid #6d90b9;
 }
 
 .video-frame-elem {
