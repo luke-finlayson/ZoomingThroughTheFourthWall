@@ -29,15 +29,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.3s;
+    transition: 0.2s;
     background: black;
     height: 74vh;
     max-width: 60vw;
 }
 
 .selected_video {
-    box-shadow: 0 2px 50px 0 rgba(0,107,185,.6);
-    border: 5px solid #6d90b9;
+    box-shadow: 0 2px 50px 0 rgba(0,0,0,0.7);
 }
 
 .video-frame-elem {
@@ -47,5 +46,23 @@
 .temp_buttons {
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.temp_buttons button {
+    background: #f5f5f5;
+    border: none;
+    padding: 10px 35px;
+    font-size: 19px;
+    border-radius: 11px;
+    margin-left: 10px;
+    font-family: 'Poppins';
+    transition: 0.2s;
+}
+.temp_buttons button:hover {
+    background: #dddddd;
 }

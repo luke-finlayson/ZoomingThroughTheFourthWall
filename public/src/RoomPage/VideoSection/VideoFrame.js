@@ -1,20 +1,24 @@
-import { useEffect, useMemo } from 'react';
-import useWindowDimensions from '../../Utilities/useWindowDimensions';
+import { useEffect, useMemo, createRef } from 'react';
 
-const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numStreams, selectedUser }) => {
+const VideoFrame = ({ 
+    stream, 
+    userId, 
+    muted,
+    selectedUser,
+    setSelectedUser,
+    height
+  }) => {
 
-  const { width, height } = useWindowDimensions();
+  const video = createRef();
 
   // Changes the video elements source to a given media stream.
   const setVideoSource = (source, video) => {
     // Attach stream to video element
-    video.srcObject = source;
+    video.current.srcObject = source;
 
     // Add event listener to play video once stream has loaded
-    // (Even though technically react discourages event listeners like this,
-    // it's still the simplest way to go about it)
-    video.addEventListener('loadedmetadata', () => {
-      video.play();
+    video.current.addEventListener('loadedmetadata', () => {
+      video.current.play();
     });
   }
 
@@ -26,13 +30,11 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numS
     }
 
     setSelectedUser(userId)
-    //setShowPopup(true);
   }
 
   useEffect(() => {
     // Locate video element and attach stream if it exists
-    const video = document.getElementById(userId);
-    if (video) {
+    if (video.current) {
       setVideoSource(stream, video);
     }
     else {
@@ -42,17 +44,15 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numS
 
   function handleKeyDown(event) {
 
-  	const video = document.getElementById(userId);
-
   	if (event.key === 'a') {
   	    console.log(`Move video id=${userId} Left`);
 
-  	    video.style.visibility = "hidden";
+  	    video.current.style.visibility = "hidden";
   	    //video.style.transform = "rotateY(180deg) scale(1.2,1.2) translate(12%,0%);";
   	}
   	else if (event.key === 'd') {
   	    console.log(`Move video id=${userId} Right`);
-  	    video.style.visibility = "visible";
+  	    video.current.style.visibility = "visible";
   	}
   	else if (event.key ==='w') {
   	    console.log(`Move video id=${userId} Up`);
@@ -65,14 +65,14 @@ const VideoFrame = ({ stream, userId, muted, setSelectedUser, setShowPopup, numS
   // Return the video and its container via the useMemo function to prevent flickering on state updates
   const renderVideo = useMemo(() => {
     return (
-        <video className="video-frame-elem" id={userId} muted={muted} />
-    )
+      <video className="video-frame-elem" id={userId} muted={muted} ref={video} />
+    );
   }, [userId, muted, stream])
 
   // Display message until the stream is ready
   return (
     <div className={selectedUser !== userId ? "video-frame-container" : "video-frame-container selected_video"} 
-      style={{height: (height - 50) / (numStreams) + 'px'}}
+      style={{height: height}}
       onClick={showPopup}>
       {renderVideo}
     </div>

@@ -103,8 +103,6 @@ const VideoSection = ({ socket, streams }) => {
   }
 
 
-
-
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
     // Establish the peer connection if it hasn't already
@@ -229,39 +227,45 @@ const VideoSection = ({ socket, streams }) => {
 
   return (
     <div className="video_section_container">
-    <VideoButtons
-    socket={socket}
-    peer={peer}
-    stream={userStream}
-    />
-    <div className="video-stream-container" >
-      {streamsState.map((user, index) => {
-          return (
-              <VideoFrame
-              key={index}
-              stream={user.stream}
-              userId={user.userId}
-              muted={user.muted}
-              setShowPopup={setShowPopup}
-              setSelectedUser={setSelectedUser}
-              numStreams={streamsState.length}
-              selectedUser={selectedUser}
-              />
-          )
-      })}
-    </div>
-    {showPopup && <ImagePopup
-      user_id={selectedUser}
-      setShowPopup={setShowPopup}
-      socket={socket} />}
+      {/* Render the control buttons at the top of the screen */}
+      <VideoButtons
+      socket={socket}
+      peer={peer}
+      stream={userStream}
+      />
 
+      {/* Create video frames for each user in the list of streams */}
+      <div className="video-stream-container" >
+        {streamsState.map((user, index) => {
+            return (
+                <VideoFrame
+                key={index}
+                stream={user.stream}
+                userId={user.userId}
+                muted={user.muted}
+                selectedUser={selectedUser}
+                setSelectedUser={setSelectedUser}
+                height={"400px"}
+                />
+            )
+        })}
+      </div>
+
+      {/* Display a popup with the text found in an image */}
+      {showPopup && <ImagePopup
+        user_id={selectedUser}
+        setShowPopup={setShowPopup}
+        socket={socket} />}
+
+      {/* Temporary buttons to easily add or remove video streams to test grid layouts */}
       <div className='temp_buttons'>
         <button onClick={() => modifyStreams(true)}>Add</button>
         <button onClick={() => modifyStreams(false)}>Remove</button>
       </div>
 
+      {/* Display an error message if conection to the server is lost */}
       {!socketConnected && <div className='disconnected_section'>
-        <p>Hmm, we seem to be experiencing some connection issues...</p>
+        <p>Connection lost...</p>
       </div>}
     </div>
   )

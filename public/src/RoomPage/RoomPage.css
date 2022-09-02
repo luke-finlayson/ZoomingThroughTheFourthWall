@@ -32,7 +32,7 @@
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
   border-radius: 11px;
   bottom: 10px;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .collapsed_section {
@@ -43,12 +43,12 @@
 .disconnected_section {
   position: absolute;
   text-align: center;
-  width: 40%;
-  margin: 0% 30%;
+  width: 25%;
   background: #ae3333;
   border-radius: 11px;
   box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.16);
   bottom: 10px;
+  left: 10px;
   font-family: 'Poppins';
   color: white;
 }
@@ -61,7 +61,7 @@
 .chat_collapse_button {
   position: absolute;
   right: 21px;
-  transition: 0.3s;
+  transition: 0.2s;
   padding: 3px;
   border-radius: 8px;
   width: 28px;
@@ -112,7 +112,7 @@
 
 .copy_icon_img {
   padding: 0px 25px 0px 13px;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 .copy_icon_img:hover {
   cursor: pointer;
@@ -156,7 +156,7 @@
   border-radius: 11px;
   margin-left: 10px;
   padding: 10px;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .new_message_button:hover {
@@ -372,7 +372,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .video_button_image {
@@ -403,7 +403,7 @@
   border: none;
   color: white;
   background: #ae3333;
-  transition: 0.3s;
+  transition: 0.2s;
   font-family: 'Poppins';
   padding: 8px 23px;
   font-weight: bold;
