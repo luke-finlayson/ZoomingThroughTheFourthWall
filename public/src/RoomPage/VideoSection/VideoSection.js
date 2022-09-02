@@ -27,6 +27,7 @@ const VideoSection = ({ socket, streams }) => {
   // Current value of screen sharing.
   // (For some weird reason this will actually be the opposite of the true value idk whats up)
   const [isScreenSharing, setScreenSharing] = useState(false);
+  const [socketConnected, setSocketConnected] = useState(true);
 
 
 
@@ -140,7 +141,7 @@ const VideoSection = ({ socket, streams }) => {
       }).then((stream) => {
         // Update user object in the list of streams to include the user's media stream
         for (const i in streams) {
-          if (streams[i].userId == userId) {
+          if (streams[i].userId === userId) {
             streams[i].stream = stream;
           }
         }
@@ -213,6 +214,15 @@ const VideoSection = ({ socket, streams }) => {
         setStreams(streams.slice());
       }
     }
+
+    // Check socket connection
+    if (socketConnected && !socket.connected) {
+      console.log("socket disconnected")
+      setSocketConnected(false);
+    }
+    if (!socketConnected && socket.connected) {
+      setSocketConnected(true)
+    }
   }, 100);
 
 
@@ -248,7 +258,11 @@ const VideoSection = ({ socket, streams }) => {
       <div className='temp_buttons'>
         <button onClick={() => modifyStreams(true)}>Add</button>
         <button onClick={() => modifyStreams(false)}>Remove</button>
-    </div>
+      </div>
+
+      {!socketConnected && <div className='disconnected_section'>
+        <p>Hmm, we seem to be experiencing some connection issues...</p>
+      </div>}
     </div>
   )
 }
