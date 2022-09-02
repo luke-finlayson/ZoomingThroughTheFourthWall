@@ -64,6 +64,8 @@
   transition: 0.3s;
   padding: 3px;
   border-radius: 8px;
+  width: 28px;
+  transform: rotate(180deg);
 }
 
 .chat_collapse_button:hover {
@@ -71,7 +73,7 @@
 }
 
 .flipped_y {
-  transform: rotate(180deg);
+  transform: rotate(0deg);
 }
 
 .chat_label_container {
@@ -481,14 +483,15 @@ video {
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 80%;
   background-color: rgba(0, 0, 0, 0.8);
+  padding: 0% 10%;
+  width: 80%;
 }
 
 .popup {
   background-color: white;
   padding: 5%;
-  border-radius: 15px;
+  border-radius: 11px;
   position: relative;
 }
 
