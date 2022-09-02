@@ -33,7 +33,7 @@ const JoinPage = ({ socket }) => {
   // Set form position to 0
   const goTo = (position) => {
     // Don't move onto the room name input if the name field is blank
-    if (formPosition <= 1 && formError) {
+    if (formPosition <= 1 && username.trim() !== "") {
       return;
     }
     // Go to the specified section
@@ -47,16 +47,22 @@ const JoinPage = ({ socket }) => {
       // Update global value
       setRoomName(event.target.value);
 
+      setFormMessage("Looks like that room doesn't exists, we'll create it for you..");
+      // Disable possible button paths
+      setFormError(true);
+
       // Check room name
       socket.emit(SocketEvents.CheckRoomId, event.target.value, (response) => {
         // If the room doesn't exist, notify user that it'll be created
         if (response === 'Does Not Exist') {
           // User is host
           setIsRoomHost(true);
+          setFormError("Looks like that room doesn't exists, we'll create it for you..")
         }
         if (response === 'Exists' || response === 'Null') {
           // User won't be host
           setIsRoomHost(false);
+          setFormError("")
         }
 
         store.dispatch({ type: 'SET_ROOM_HOST', payload: isRoomHost });
@@ -65,7 +71,7 @@ const JoinPage = ({ socket }) => {
 
   const usernameChange = (event) => {
       // Update username state
-      setUsername(event.target.value.trim());
+      setUsername(event.target.value);
 
       // Determine which message to display
       if (event.target.value.trim() === "") {
@@ -100,13 +106,13 @@ const JoinPage = ({ socket }) => {
         {formPosition === 0 &&
           <Button socketConnected={socketConnected} goTo={goTo} />}
 
-        {formPosition === 1 &&
-          <TextField id="username" placeholder="Enter your name" value={username}
-            onEnter={() => goTo(2)} onChange={usernameChange} />}
-
         {formPosition === 2 &&
-          <TextField id="roomName" placeholder="Enter the room name" value={roomName}
-            onEnter={handleJoinToRoom} onChange={roomNameChange} />}
+          <TextField id="username" placeholder="Enter your name" value={username} onChange={usernameChange} 
+            onEnter={handleJoinToRoom} />}
+
+        {formPosition === 1 &&
+          <TextField id="roomName" placeholder="Enter the room name" value={roomName} onChange={roomNameChange}
+          onEnter={() => goTo(2)} />}
 
         <p className="formMessage">{formMessage}</p>
       </div>
@@ -117,15 +123,15 @@ const JoinPage = ({ socket }) => {
           tabIndex={formPosition === 0 ? "-1" : "0"}
           onClick={() => goTo(0)}>Home</button>
         <p className="timelineSeparator">⟶</p>
-        <button id="timelineButtonName"
+        <button id="timelineButtonRoom"
           className={formPosition === 1 ? "timelineButton current" : "timelineButton"}
           tabIndex={formPosition === 1 ? "-1" : "0"}
-          onClick={() => goTo(1)}>Choose a name</button>
+          onClick={() => goTo(1)}>Room selection</button>
         <p className="timelineSeparator">⟶</p>
-        <button id="timelineButtonRoom"
+        <button id="timelineButtonName"
           className={formPosition === 2 ? "timelineButton current" : "timelineButton"}
           tabIndex={formPosition === 2 ? "-1" : "0"}
-          onClick={() => goTo(2)}>Room selection</button>
+          onClick={() => goTo(2)}>Choose a name</button>
       </div>
     </div>
   );

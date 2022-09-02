@@ -37,6 +37,10 @@
     aspect-ratio: 4 / 3;
 }
 
+.video-frame-container:hover {
+    cursor: pointer;
+}
+
 .selected_video {
     box-shadow: 0 2px 50px 0 rgba(0,0,0,0.7);
 }

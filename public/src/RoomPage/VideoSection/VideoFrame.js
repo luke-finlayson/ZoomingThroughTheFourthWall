@@ -14,11 +14,11 @@ const VideoFrame = ({
   // Changes the video elements source to a given media stream.
   const setVideoSource = (source, video) => {
     // Attach stream to video element
-    video.current.srcObject = source;
+    video.srcObject = source;
 
     // Add event listener to play video once stream has loaded
-    video.current.addEventListener('loadedmetadata', () => {
-      video.current.play();
+    video.addEventListener('loadedmetadata', () => {
+      video.play();
     });
   }
 
@@ -35,12 +35,12 @@ const VideoFrame = ({
   useEffect(() => {
     // Locate video element and attach stream if it exists
     if (video.current) {
-      setVideoSource(stream, video);
+      setVideoSource(stream, video.current);
     }
     else {
       console.log("Failed to locate user video element")
     }
-  });
+  }, [stream]);
 
   function handleKeyDown(event) {
 

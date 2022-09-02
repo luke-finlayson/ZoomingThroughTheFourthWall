@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 import './VideoSection.css';
 import VideoButtons from '../VideoButtons/VideoButtons';
 import VideoFrame from './VideoFrame';
@@ -7,9 +7,12 @@ import { store } from '../../store/store';
 import { useInterval } from '../../Utilities/useInterval';
 import { Peer } from 'peerjs';
 import SocketEvents from '../../Utilities/socketevents';
-import determineVideoHeight from '../../Utilities/determineVideoHeight';
+import useDetermineLayout from '../../Utilities/useDetermineLayout';
 
 const VideoSection = ({ socket, streams }) => {
+  const videoContainer = createRef()
+  const [containerWidth, setWidth] = useState()
+  const [containerHeight, setHeight] = useState()
 
   // Holds the peer connection object
   const [peer, setPeer] = useState(null);
@@ -26,13 +29,9 @@ const VideoSection = ({ socket, streams }) => {
   const [selectedUser, setSelectedUser] = useState();
 
   // Current value of screen sharing.
-  // (For some weird reason this will actually be the opposite of the true value idk whats up)
   const [isScreenSharing, setScreenSharing] = useState(false);
   const [socketConnected, setSocketConnected] = useState(true);
-
-
-
-
+  const { rows, cols, width, height, area } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
 
   /* TEMPORY FUNCTION - REMOVE LATER */
   const modifyStreams = (add) => {
@@ -45,11 +44,16 @@ const VideoSection = ({ socket, streams }) => {
       setStreams(streams.slice())
     }
 
-    console.log(determineVideoHeight(streams.slice()))
+    console.log(height)
   }
 
-
-
+  useEffect(() => {
+    if (videoContainer && videoContainer.current && !containerWidth) {
+      // Intialise container width and height once video container has been rendered
+      setWidth(videoContainer.current.clientWidth)
+      setHeight(videoContainer.current.clientHeight)
+    }
+  }, [videoContainer])
 
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
@@ -223,8 +227,6 @@ const VideoSection = ({ socket, streams }) => {
     }
   }, 100);
 
-
-
   return (
     <div className="video_section_container">
       {/* Render the control buttons at the top of the screen */}
@@ -235,7 +237,7 @@ const VideoSection = ({ socket, streams }) => {
       />
 
       {/* Create video frames for each user in the list of streams */}
-      <div className="video-stream-container" >
+      <div className="video-stream-container" ref={videoContainer}>
         {streamsState.map((user, index) => {
             return (
                 <VideoFrame
@@ -245,7 +247,7 @@ const VideoSection = ({ socket, streams }) => {
                 muted={user.muted}
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}
-                height={400}
+                height={height - (10 * rows)}
                 />
             )
         })}
