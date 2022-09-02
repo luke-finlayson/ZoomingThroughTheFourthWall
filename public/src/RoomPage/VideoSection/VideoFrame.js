@@ -72,7 +72,7 @@ const VideoFrame = ({
   // Display message until the stream is ready
   return (
     <div className={selectedUser !== userId ? "video-frame-container" : "video-frame-container selected_video"} 
-      style={{height: height}}
+      style={selectedUser !== userId ? {height: height + "px"} : {height: height + "px", zIndex: 2}}
       onClick={showPopup}>
       {renderVideo}
     </div>

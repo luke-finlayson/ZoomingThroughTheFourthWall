@@ -7,6 +7,7 @@ import { store } from '../../store/store';
 import { useInterval } from '../../Utilities/useInterval';
 import { Peer } from 'peerjs';
 import SocketEvents from '../../Utilities/socketevents';
+import determineVideoHeight from '../../Utilities/determineVideoHeight';
 
 const VideoSection = ({ socket, streams }) => {
 
@@ -43,6 +44,8 @@ const VideoSection = ({ socket, streams }) => {
       streams.pop();
       setStreams(streams.slice())
     }
+
+    console.log(determineVideoHeight(streams.slice()))
   }
 
 
@@ -54,7 +57,6 @@ const VideoSection = ({ socket, streams }) => {
     const call = peer.call(newUserId, stream);
     // Set second user stream on call answered
     call.on("stream", (newStream) => {
-      console.log("[c]Added stream from " + newUserId);
       // Add new stream to the list of streams
       addVideoStream(newUserId, newStream, false, call);
     });
@@ -154,7 +156,6 @@ const VideoSection = ({ socket, streams }) => {
 
           // Setup peer event to receive media streams
           call.on("stream", (newStream) => {
-            console.log("[a]Added stream from " + call.peer);
             addVideoStream(call.peer, newStream, false, call);
           });
         });
@@ -213,9 +214,8 @@ const VideoSection = ({ socket, streams }) => {
       }
     }
 
-    // Check socket connection
+    // Update state to display an error message when the socket is disconnected
     if (socketConnected && !socket.connected) {
-      console.log("socket disconnected")
       setSocketConnected(false);
     }
     if (!socketConnected && socket.connected) {
@@ -245,7 +245,7 @@ const VideoSection = ({ socket, streams }) => {
                 muted={user.muted}
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}
-                height={"400px"}
+                height={400}
                 />
             )
         })}

@@ -8,6 +8,7 @@
     "peer": "^0.6.1",
     "peerjs": "^1.4.6",
     "pg": "^8.7.3",
+    "rect-scaler": "^1.1.0",
     "simplex-noise": "^3.0.1",
     "socket.io": "^4.5.1"
   },
