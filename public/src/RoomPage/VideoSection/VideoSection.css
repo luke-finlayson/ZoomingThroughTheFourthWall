@@ -17,6 +17,7 @@
     left: 0;
     margin: 10px;
     padding: 10px;
+    z-index: 2;
 }
 
 /* .video-frame-container is defeind in RoomPage.css as just 'relative' */
