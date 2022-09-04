@@ -47,10 +47,6 @@ const JoinPage = ({ socket }) => {
       // Update global value
       setRoomName(event.target.value);
 
-      setFormMessage("Looks like that room doesn't exists, we'll create it for you..");
-      // Disable possible button paths
-      setFormError(true);
-
       // Check room name
       socket.emit(SocketEvents.CheckRoomId, event.target.value, (response) => {
         // If the room doesn't exist, notify user that it'll be created
