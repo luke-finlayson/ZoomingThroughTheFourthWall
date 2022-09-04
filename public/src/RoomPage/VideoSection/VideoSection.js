@@ -43,8 +43,6 @@ const VideoSection = ({ socket, streams }) => {
       streams.pop();
       setStreams(streams.slice())
     }
-
-    console.log(height)
   }
 
   useEffect(() => {
@@ -247,7 +245,7 @@ const VideoSection = ({ socket, streams }) => {
                 muted={user.muted}
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}
-                height={height - (10 * rows)}
+                height={height - 10}
                 />
             )
         })}

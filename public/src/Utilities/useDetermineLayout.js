@@ -27,6 +27,7 @@ const useDetermineLayout = (streams, screenWidth, screenHeight) => {
         let averageHeight = totalHeight / numStreams;
 
         console.log("W: " + screenWidth + "\nH: " + screenHeight)
+        console.log(largestRect(screenWidth, screenHeight, numStreams, averageWidth, averageHeight))
 
         // Determine number of rows required
         return largestRect(screenWidth, screenHeight, numStreams, averageWidth, averageHeight);

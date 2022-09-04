@@ -11,9 +11,8 @@ const VideoFrame = ({
 
   const video = createRef();
 
-  // Changes the video elements source to a given media stream.
+  // Attaches source media to a given video element
   const setVideoSource = (source, video) => {
-    // Attach stream to video element
     video.srcObject = source;
 
     // Add event listener to play video once stream has loaded
