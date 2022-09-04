@@ -32,18 +32,7 @@ const VideoSection = ({ socket, streams }) => {
   const [isScreenSharing, setScreenSharing] = useState(false);
   const [socketConnected, setSocketConnected] = useState(true);
   const { rows, cols, width, height, area } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
-
-  /* TEMPORY FUNCTION - REMOVE LATER */
-  const modifyStreams = (add) => {
-    // Add or remove dummy streams to simulate multiple users
-    if (add) {
-      addVideoStream(userId + streams.length, userStream, true, null);
-    }
-    else if(streams.length > 1) {
-      streams.pop();
-      setStreams(streams.slice())
-    }
-  }
+  
 
   useEffect(() => {
     if (videoContainer && videoContainer.current && !containerWidth) {
@@ -256,12 +245,6 @@ const VideoSection = ({ socket, streams }) => {
         user_id={selectedUser}
         setShowPopup={setShowPopup}
         socket={socket} />}
-
-      {/* Temporary buttons to easily add or remove video streams to test grid layouts */}
-      <div className='temp_buttons'>
-        <button onClick={() => modifyStreams(true)}>Add</button>
-        <button onClick={() => modifyStreams(false)}>Remove</button>
-      </div>
 
       {/* Display an error message if conection to the server is lost */}
       {!socketConnected && <div className='disconnected_section'>
