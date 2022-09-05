@@ -38,27 +38,3 @@
 .video-frame-elem {
     height: 100%;
 }
-
-.temp_buttons {
-    position: absolute;
-    left: 0;
-    bottom: 10px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.temp_buttons button {
-    background: #f5f5f5;
-    border: none;
-    padding: 10px 35px;
-    font-size: 19px;
-    border-radius: 7px;
-    margin-left: 10px;
-    font-family: 'Poppins';
-    transition: 0.2s;
-}
-.temp_buttons button:hover {
-    background: #dddddd;
-}
