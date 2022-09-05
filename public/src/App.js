@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import RoomPage from "./RoomPage/RoomPage";
 import JoinPage from "./JoinPage/JoinPage";
-import './App.css';
 import io from 'socket.io-client';
 
 

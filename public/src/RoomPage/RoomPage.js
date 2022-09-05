@@ -18,12 +18,17 @@ const RoomPage = ({ socket }) => {
       // Send the user back to the landing page
       window.location.replace(window.location.protocol + "//" + window.location.host);
     }
-  })
+  }, [store.getState().username])
 
   return (
     <div className="room_container">
       <VideoSection socket={socket} streams={streams} />
       <ChatSection socket={socket}/>
+
+      {/* Display an error message if conection to the server is lost */}
+      {!socket.connected && <div className='disconnected_section'>
+        <p>Connection lost...</p>
+      </div>}
     </div>
   )
 }

@@ -3,13 +3,14 @@ import { useInterval } from '../../Utilities/useInterval';
 import SocketEvents from '../../Utilities/socketevents';
 
 // Displays the current frame of a video in a pop up window in the video section
-const ImagePopup = ({ socket, user_id, setShowPopup }) => {
+const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
 
   const [gotImage, setGotImage] = useState(false);
   const [imageText, setImageText] = useState("Getting text...");
 
   // Disables the popup
   const closePopup = () => {
+    setSelectedUser(null)
     // Disable the pop up
     setShowPopup(false);
   }
@@ -45,14 +46,24 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
   }, 100);
 
   return(
-    <div className="popup-container" onClick={closePopup}>
-      <div className="popup">
-        <canvas id="snapshot" hidden />
+    <div className="popup-container">
+
+      <div className="popup" onClick={() => {return}}>
+
+
+          <div>
+          <canvas id="snapshot" />
+          <div></div>
+          </div>
+
+
         <div className="textfield">
           <p id="imageText">{imageText}</p>
         </div>
         <button onClick={closePopup}>Close</button>
       </div>
+
+      <div className='popup_background' onClick={closePopup}></div>
     </div>
   );
 }

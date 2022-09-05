@@ -30,9 +30,9 @@
   position: absolute;
   right: 21px;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
-  border-radius: 11px;
+  border-radius: 7px;
   bottom: 10px;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .collapsed_section {
@@ -40,15 +40,76 @@
   width: 240px;
 }
 
+.disconnected_section {
+  position: absolute;
+  text-align: center;
+  padding: 0px 40px;
+  background: #ae3333;
+  border-radius: 7px;
+  box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.16);
+  bottom: 10px;
+  left: 10px;
+  font-family: 'Poppins';
+  color: white;
+}
+
 .expanded_section {
   height: 450px;
   width: 380px;
 }
 
+.icon_text_button {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins';
+  color: #AFAFAF;
+  font-size: 17px;
+  font-weight: bold;
+  padding: 13px 20px;
+}
+.icon_text_button:hover {
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+.icon_text_button:active {
+  box-shadow: 0px 0px 0px rgba(0,0,0,0.0);
+}
+
+.icon_text_button p {
+  margin: 0;
+}
+
+.cancel_edit_button {
+  background: #DEDEDE;
+  font-family: 'Poppins';
+  color: #8B8B8B;
+  border: none;
+  border-radius: 7px;
+  padding: 13px 21px;
+  font-size: 17px;
+  margin-left: 10px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
+  transition: 0.2s;
+}
+
+.cancel_edit_button:hover {
+  background-color: #c3c3c3;
+  cursor: pointer;
+}
+
+.edit_icon {
+  margin-right: 9px;
+  height: 25px;
+  fill: #AFAFAF;
+}
+
 .chat_collapse_button {
   position: absolute;
   right: 21px;
-  transition: 0.3s;
+  transition: 0.2s;
   padding: 3px;
   border-radius: 8px;
   width: 28px;
@@ -99,7 +160,7 @@
 
 .copy_icon_img {
   padding: 0px 25px 0px 13px;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 .copy_icon_img:hover {
   cursor: pointer;
@@ -121,7 +182,7 @@
 
 .new_message_input {
   border: none;
-  border-radius: 11px;
+  border-radius: 7px;
   padding: 0 20px;
   height: 47px;
   font-size: 16px;
@@ -140,10 +201,10 @@
 
 .new_message_button {
   background-color: #6d90b9;
-  border-radius: 11px;
+  border-radius: 7px;
   margin-left: 10px;
   padding: 10px;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .new_message_button:hover {
@@ -160,14 +221,11 @@
 
 .control_button_container {
   background: #F5F5F5;
-  border-radius: 11px;
+  border-radius: 7px;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
 }
 
 .management_buttons {
-  right: 10px;
-  top: 10px;
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -179,13 +237,10 @@
   justify-content: center;
 }
 
-.toggle_buttons {
-  position: absolute;
+.control_buttons {
   display: flex;
   align-items: center;
   justify-content: center;
-  left: 10px;
-  top: 10px;
 }
 
 .messages_container {
@@ -232,7 +287,7 @@
 }
 
 .message_content {
-  border-radius: 11px;
+  border-radius: 7px;
   display: inline-block;
   font-size: 14px;
   margin: 0 10px;
@@ -346,11 +401,14 @@
 }
 
 .video_buttons_container {
-  width: 100vw;
-  height: 10%;
   position: absolute;
-  top: 0;
-  z-index: 2;
+  top: 10px;
+  z-index: 5;
+  display: flex;
+  left: 10px;
+  align-items: center;
+  justify-content: space-between;
+  right: 10px;
 }
 
 .video_button_container {
@@ -359,7 +417,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .video_button_image {
@@ -384,24 +442,24 @@
   margin-bottom: 3px;
 }
 
-.video_button_end {
+.leave_button {
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: none;
   color: white;
   background: #ae3333;
-  transition: 0.3s;
+  transition: 0.2s;
   font-family: 'Poppins';
   padding: 8px 23px;
   font-weight: bold;
   margin: 8px 14px 8px 11px;
 }
 
-.video_button_end:hover {
+.leave_button:hover {
   background: #d73d3d;
 }
 
-.video_button_end:active {
+.leave_button:active {
   background: #ae3333;
 }
 
@@ -470,9 +528,18 @@ video {
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 6;
+}
+
+.popup_background {
+  height: 100%;
+  width: 100%;
+  position: absolute;
   background-color: rgba(0, 0, 0, 0.8);
-  padding: 0% 10%;
-  width: 80%;
+  z-index: 6;
 }
 
 .popup {
@@ -480,16 +547,12 @@ video {
   padding: 5%;
   border-radius: 11px;
   position: relative;
+  z-index: 7;
 }
 
 .popup button {
   position: absolute;
   top: 20px;
-}
-
-video {
-  border-radius: 11px;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
 }
 
 .room_label {
@@ -515,64 +578,11 @@ video {
   border-radius: 0px 0px 15px 15px;
 }
 
-.video_track_container:first-child:nth-last-child(1) {
-  width: 100%;
-  height: 100%;
-}
-
-.video_track_container:first-child:nth-last-child(2),
-.video_track_container:first-child:nth-last-child(2)~.video_track_container {
-  width: 50%;
-  height: 50%;
-}
-
-.video_track_container:first-child:nth-last-child(3),
-.video_track_container:first-child:nth-last-child(3)~.video_track_container {
-  width: 50%;
-  height: 50%;
-}
-
-.video_track_container:first-child:nth-last-child(4),
-.video_track_container:first-child:nth-last-child(4)~.video_track_container {
-  width: 50%;
-  height: 50%;
-}
-
-.video_track_container:first-child:nth-last-child(5),
-.video_track_container:first-child:nth-last-child(5)~.video_track_container {
-  width: 33%;
-  height: 33%;
-}
-
-.video_track_container:first-child:nth-last-child(6),
-.video_track_container:first-child:nth-last-child(6)~.video_track_container {
-  width: 33%;
-  height: 33%;
-}
-
-.video_track_container:first-child:nth-last-child(7),
-.video_track_container:first-child:nth-last-child(7)~.video_track_container {
-  width: 33%;
-  height: 33%;
-}
-
-.video_track_container:first-child:nth-last-child(8),
-.video_track_container:first-child:nth-last-child(8)~.video_track_container {
-  width: 33%;
-  height: 33%;
-}
-
-.video_track_container:first-child:nth-last-child(9),
-.video_track_container:first-child:nth-last-child(9)~.video_track_container {
-  width: 33%;
-  height: 33%;
-}
-
 .video_section_container {
-  height: 100%;
-  width: 80%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  padding: 20px;
 }
 
 @keyframes upDownUp {

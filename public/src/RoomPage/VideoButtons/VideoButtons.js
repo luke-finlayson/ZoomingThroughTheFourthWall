@@ -6,6 +6,7 @@ import LeaveRoomButton from './LeaveRoomButton';
 import { store } from '../../store/store';
 import CopyIcon from '../../resources/images/copy.svg';
 import { useInterval } from '../../Utilities/useInterval';
+import EditVideo from './EditVideo';
 
 // Renders a 25px high vertical bar
 const VerticalSeparator = () => {
@@ -15,7 +16,7 @@ const VerticalSeparator = () => {
 }
 
 // Renders a row of control buttons at the top of the room page
-const VideoButtons = ({ socket, peer, stream }) => {
+const VideoButtons = ({ socket, peer, stream, selectedUser, setSelectedUser, setShowPopup }) => {
 
   // Counter to hide 'copied!' message after 3 seconds
   const [hideCounter, setHideCounter] = useState(0);
@@ -29,7 +30,7 @@ const VideoButtons = ({ socket, peer, stream }) => {
   return (
     <div className="video_buttons_container">
       
-      <div className="toggle_buttons control_button_container">
+      <div className="control_buttons control_button_container">
 
         {/* Don't show mic and camera buttons if user stream doesn't exist*/}
         {stream &&
@@ -43,6 +44,8 @@ const VideoButtons = ({ socket, peer, stream }) => {
 
         <SwitchToScreenSharingButton />
       </div>
+
+      {selectedUser && <EditVideo setSelectedUser={setSelectedUser} setShowPopup={setShowPopup} />}
       
       <div className="management_buttons">
         <div class="mgb_main control_button_container">
