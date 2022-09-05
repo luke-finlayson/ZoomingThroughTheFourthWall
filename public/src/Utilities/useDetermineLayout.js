@@ -14,22 +14,15 @@ const useDetermineLayout = (streams, screenWidth, screenHeight) => {
         var totalWidth = 0
         var totalHeight = 0
 
-        for (const i in streams) {
-            if (streams[i].stream) {
-                const streamSettings = streams[i].stream.getVideoTracks()[0].getSettings()
-
-                console.log(streamSettings)
-
-                totalWidth += streamSettings.width;
-                totalHeight += streamSettings.height;
+        streams.forEach((stream) => {
+            if (stream.stream) {
+                totalWidth += stream.width;
+                totalHeight += stream.height;
             }
-        }
+        });
 
         let averageWidth = totalWidth / numStreams;
         let averageHeight = totalHeight / numStreams;
-
-        console.log("Streams: " + numStreams)
-        console.log(largestRect(screenWidth, screenHeight, numStreams, averageWidth, averageHeight))
 
         // Determine number of rows required
         return largestRect(screenWidth, screenHeight, numStreams, averageWidth, averageHeight);

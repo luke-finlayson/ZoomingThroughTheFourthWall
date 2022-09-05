@@ -30,7 +30,7 @@ const VideoSection = ({ socket, streams }) => {
 
   // Current value of screen sharing.
   const [isScreenSharing, setScreenSharing] = useState(false);
-  const { rows, cols, width, height, area } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
+  const { height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
 
 
   useEffect(() => {
@@ -60,11 +60,26 @@ const VideoSection = ({ socket, streams }) => {
         userId: newUserId,
         stream: newStream,
         muted: muted,
-        call: call
+        call: call,
+        width: 640,
+        height: 480
       });
       // Update the streams state
       setStreams(streams.slice());
     }
+  }
+
+  const updateStreamDimensions = (id, width, height) => {
+    streams.forEach((user) => {
+      // Locate the stream to update
+      if (user.userId === id) {
+        user.width = width
+        user.height = height
+      }
+    });
+
+    // Update the streams state
+    setStreams(streams.slice());
   }
 
   // Replaces the stream in the peer connection with the given stream
@@ -241,6 +256,7 @@ const VideoSection = ({ socket, streams }) => {
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}
                 height={height - 10}
+                updateStreamDimensions={updateStreamDimensions}
                 />
             )
         })}
