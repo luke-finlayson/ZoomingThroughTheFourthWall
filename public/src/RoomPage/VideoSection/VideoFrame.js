@@ -7,7 +7,8 @@ const VideoFrame = ({
     selectedUser,
     setSelectedUser,
     height,
-    updateStreamDimensions
+    updateStreamDimensions,
+    aspectRatio
   }) => {
 
   const video = createRef();
@@ -73,7 +74,7 @@ const VideoFrame = ({
   // Display message until the stream is ready
   return (
     <div className={selectedUser !== userId ? "video-frame-container" : "video-frame-container selected_video"} 
-      style={{height: height}}
+      style={{height: height, aspectRatio: aspectRatio}}
       onClick={selectFrame}>
       {renderVideo}
     </div>

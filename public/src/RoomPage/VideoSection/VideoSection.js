@@ -30,7 +30,7 @@ const VideoSection = ({ socket, streams }) => {
 
   // Current value of screen sharing.
   const [isScreenSharing, setScreenSharing] = useState(false);
-  const { height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
+  const { width, height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
 
 
   useEffect(() => {
@@ -61,8 +61,8 @@ const VideoSection = ({ socket, streams }) => {
         stream: newStream,
         muted: muted,
         call: call,
-        width: 740,
-        height: 480
+        width: 400,
+        height: 400
       });
       // Update the streams state
       setStreams(streams.slice());
@@ -109,7 +109,8 @@ const VideoSection = ({ socket, streams }) => {
     });
   }
 
-  useEffect(() => {
+  // Need to use polling to ensure only single instances of connections are created
+  useInterval(() => {
     // Establish the peer connection if it hasn't already
     if (peer === null && socket !== null && socket.connected) {
       // Attempt main peerjs connection
@@ -132,10 +133,6 @@ const VideoSection = ({ socket, streams }) => {
 
       addVideoStream(userId, null, true, null);
     }
-  }, [socket])
-
-  // Need to use polling to ensure only single instances of connections are created
-  useInterval(() => {
 
     // Request user media, but add an object to list of streams regardless of 
     // result so that blank element is displayed
@@ -247,6 +244,7 @@ const VideoSection = ({ socket, streams }) => {
                 setSelectedUser={setSelectedUser}
                 height={height - 10}
                 updateStreamDimensions={updateStreamDimensions}
+                aspectRatio={user.width + " / " + user.height}
                 />
             )
         })}
