@@ -205,6 +205,18 @@ const VideoSection = ({ socket, streams }) => {
     }
   }, 100);
 
+  /* TEMPORY FUNCTION - REMOVE LATER */
+  const modifyStreams = (add) => {
+    // Add or remove dummy streams to simulate multiple users
+    if (add) {
+      addVideoStream(userId + streams.length, userStream, true, null);
+    }
+    else if(streams.length > 1) {
+      streams.pop();
+      setStreams(streams.slice())
+    }
+  }
+
   return (
     <div className="video_section_container">
       {/* Render the control buttons at the top of the screen */}
@@ -240,6 +252,12 @@ const VideoSection = ({ socket, streams }) => {
         setShowPopup={setShowPopup}
         socket={socket}
         setSelectedUser={setSelectedUser} />}
+
+      {/* Temporary buttons to easily add or remove video streams to test grid layouts */}
+      <div className='temp_buttons'>
+        <button onClick={() => modifyStreams(true)}>Add</button>
+        <button onClick={() => modifyStreams(false)}>Remove</button>
+      </div>
     </div>
   )
 }
