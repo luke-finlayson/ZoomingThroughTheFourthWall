@@ -18,7 +18,7 @@ const useDetermineLayout = (streams, screenWidth, screenHeight) => {
             if (streams[i].stream) {
                 const streamSettings = streams[i].stream.getVideoTracks()[0].getSettings()
 
-                console.log("Stream Config: " + streamSettings)
+                console.log(streamSettings)
 
                 totalWidth += streamSettings.width;
                 totalHeight += streamSettings.height;
