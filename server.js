@@ -72,7 +72,6 @@ io.on(SocketEvents.Connection, (socket) => {
 
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
     
-    console.log("Checking room name: " + roomId)
     // Get array of existing rooms
     var rooms = io.of("/").adapter.rooms;
 
