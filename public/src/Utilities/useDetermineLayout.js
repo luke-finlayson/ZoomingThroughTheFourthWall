@@ -18,6 +18,8 @@ const useDetermineLayout = (streams, screenWidth, screenHeight) => {
             if (streams[i].stream) {
                 const streamSettings = streams[i].stream.getVideoTracks()[0].getSettings()
 
+                console.log("Stream Config: " + streamSettings)
+
                 totalWidth += streamSettings.width;
                 totalHeight += streamSettings.height;
             }
@@ -25,8 +27,6 @@ const useDetermineLayout = (streams, screenWidth, screenHeight) => {
 
         let averageWidth = totalWidth / numStreams;
         let averageHeight = totalHeight / numStreams;
-
-        console.log(streams)
 
         console.log("Streams: " + numStreams)
         console.log(largestRect(screenWidth, screenHeight, numStreams, averageWidth, averageHeight))
