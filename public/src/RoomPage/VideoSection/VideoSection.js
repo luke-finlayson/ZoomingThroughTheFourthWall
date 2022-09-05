@@ -32,7 +32,6 @@ const VideoSection = ({ socket, streams }) => {
   const [isScreenSharing, setScreenSharing] = useState(false);
   const { width, height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
 
-
   useEffect(() => {
     if (videoContainer && videoContainer.current && !containerWidth) {
       // Intialise container width and height once video container has been rendered
@@ -121,6 +120,8 @@ const VideoSection = ({ socket, streams }) => {
         secure: true,
       });
       setPeer(peer);
+
+      console.log("Peer connected")
 
       // Open peer connection, and join the room once connected
       peer.on('open', (id) => {
