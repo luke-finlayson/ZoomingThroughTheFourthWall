@@ -19,7 +19,6 @@ const VideoFrame = ({
     // Add event listener to play video once stream has loaded
     video.addEventListener('loadedmetadata', () => {
       updateStreamDimensions(userId, video.videoWidth, video.videoHeight)
-
       video.play();
     });
   }
