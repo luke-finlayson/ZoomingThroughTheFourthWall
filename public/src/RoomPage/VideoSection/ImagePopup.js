@@ -45,7 +45,20 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
           if (result.response instanceof Array) {
             // Join all text elements into one string
             text = result.response.map(textAndBounds => textAndBounds.text).join('');
-            result.response.slice(0, 5).forEach(textAndBounds => console.log(`${textAndBounds.text}`));
+
+            result.response.forEach(textAndBounds => {
+              let boundingBox = textAndBounds.boundingBox;
+              let left = boundingBox[0].x * canvas.width;
+              let top = boundingBox[0].y * canvas.height;
+              let width = (boundingBox[1].x - boundingBox[0].x) * canvas.width;
+              let height = (boundingBox[1].y - boundingBox[0].y) * canvas.height;
+
+              context.beginPath();
+              context.lineWidth = "3";
+              context.strokeStyle = "red";
+              context.rect(left, top, width, height);
+              context.stroke();
+            })
           }
           else
             text = "No text found."
@@ -65,16 +78,15 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
   return(
     <div className="popup-container">
       <div className="popup" onClick={() => {return}}>
-          <div>
-            <canvas id="snapshot" />
-            <div></div>
-          </div>
+        <div className="snapshot-container">
+          <canvas className="snapshot-canvas" id="snapshot" />
+        </div>
 
-        <div className="textfield">
+        <div className="popup-text-field">
           <p id="imageText">{imageText}</p>
         </div>
         
-        <button onClick={closePopup}>Close</button>
+        <button className='leave_button' onClick={closePopup}>Close</button>
       </div>
 
       <div className='popup_background' onClick={closePopup}></div>
