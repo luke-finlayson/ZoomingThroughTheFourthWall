@@ -205,8 +205,6 @@ const VideoSection = ({ socket, streams }) => {
     }
   }, 100);
 
-
-
   return (
     <div className="video_section_container">
       {/* Render the control buttons at the top of the screen */}

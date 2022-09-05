@@ -3,9 +3,7 @@ api keys -- smoother setup
 
 smaller video window, let user shift around
 
-general tidy up of UI -- [Done]
-
-adaptive grid -- [In Progress]
+focus view for screen sharing/single speaker
 
 ocr positional layout
 

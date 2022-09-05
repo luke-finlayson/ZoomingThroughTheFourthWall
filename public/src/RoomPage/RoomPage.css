@@ -545,7 +545,7 @@ video {
 .popup {
   background-color: white;
   padding: 5%;
-  border-radius: 11px;
+  border-radius: 7px;
   position: relative;
   z-index: 7;
 }
