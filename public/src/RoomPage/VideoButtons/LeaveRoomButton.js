@@ -24,7 +24,7 @@ const LeaveRoomButton = ({ socket, peer, stream }) => {
   }
 
   return (
-    <button className='video_button_end'
+    <button className='leave_button'
     onClick={handleRoomDisconnection}>
       Leave
     </button>

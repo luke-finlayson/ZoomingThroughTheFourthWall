@@ -4,11 +4,10 @@
 /* the row! */
 .video-stream-container {
     display: flex;
-    flex-flow: row;
-    height: 100vh;
-    justify-content: center;
-    width: 100vw;
-    align-items: center;
+    flex-flow: row wrap;
+    height: 100%;
+    width: 100%;
+    place-content: center;
 }
 
 .text_button {
@@ -25,31 +24,25 @@
     margin: 5px;
     position: relative;
     overflow: hidden;
-    border-radius: 11px;
+    border-radius: 7px;
     box-shadow: 0 2px 6px 0 rgba(0,0,0,.16);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.3s;
+    transition: 0.2s;
     background: black;
-    height: 74vh;
     max-width: 60vw;
+    aspect-ratio: 4 / 3;
 }
 
-.solo {
-    max-width: 60vw;
+.video-frame-container:hover {
+    cursor: pointer;
 }
 
-.lots {
-    max-width: 30vw;
+.selected_video {
+    box-shadow: 0 2px 50px 0 rgba(0,0,0,0.7);
 }
 
 .video-frame-elem {
     height: 100%;
-}
-
-.temp_buttons {
-    position: absolute;
-    left: 0;
-    bottom: 0;
 }
