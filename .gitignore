@@ -9,3 +9,4 @@ image_cache/*
 *~
 keys
 launch.json
+package-lock.json
