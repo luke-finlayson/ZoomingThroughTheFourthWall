@@ -26,8 +26,7 @@ const useDetermineLayout = (streams, screenWidth, screenHeight) => {
         let averageWidth = totalWidth / numStreams;
         let averageHeight = totalHeight / numStreams;
 
-        console.log("Avg. W: " + averageWidth)
-        console.log("Avg. H: " + averageHeight)
+        console.log(streams)
 
         console.log("Streams: " + numStreams)
         console.log(largestRect(screenWidth, screenHeight, numStreams, averageWidth, averageHeight))
