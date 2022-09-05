@@ -36,7 +36,24 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
       // Send the image to the server
       socket.emit(SocketEvents.FindImageText, image64, (result) => {
         // Append returned text to html element
-        setImageText(result.response.replace('\n', '<br>'));
+        console.log(result);
+
+        if (result && result.status === "Success") {
+          var text;
+
+          if (result.response instanceof Array) {
+            // Join all text elements into one string
+            text = result.response.map(textAndBounds => textAndBounds.text).join('');
+            result.response.slice(0, 5).forEach(textAndBounds => console.log(`${textAndBounds.text}`));
+          }
+          else
+            text = "No text found."
+        }
+
+        else
+          text = "Failed to extract text from image."
+        
+        setImageText(text);
       });
 
       // Image has now been retrieved
@@ -47,7 +64,7 @@ const ImagePopup = ({ socket, user_id, setShowPopup }) => {
   return(
     <div className="popup-container" onClick={closePopup}>
       <div className="popup">
-        <canvas id="snapshot" hidden />
+        <canvas id="snapshot" />
         <div className="textfield">
           <p id="imageText">{imageText}</p>
         </div>
