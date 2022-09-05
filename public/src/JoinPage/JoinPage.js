@@ -47,6 +47,8 @@ const JoinPage = ({ socket }) => {
       // Update global value
       setRoomName(event.target.value);
 
+      console.log("Checking room name...")
+
       // Check room name
       socket.emit(SocketEvents.CheckRoomId, event.target.value, (response) => {
         // If the room doesn't exist, notify user that it'll be created
@@ -60,6 +62,8 @@ const JoinPage = ({ socket }) => {
           setIsRoomHost(false);
           setFormError("")
         }
+
+        console.log("Response received: " + response);
 
         store.dispatch({ type: 'SET_ROOM_HOST', payload: isRoomHost });
       });
