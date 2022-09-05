@@ -71,7 +71,7 @@ io.on(SocketEvents.Connection, (socket) => {
   console.log(`Socket with ID ${socket.id} has connected`)
 
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
-
+    
     // Get array of existing rooms
     var rooms = io.of("/").adapter.rooms;
 

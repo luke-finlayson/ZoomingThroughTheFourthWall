@@ -32,14 +32,16 @@ const JoinPage = ({ socket }) => {
 
   // Set form position to 0
   const goTo = (position) => {
-    // Don't move onto the room name input if the name field is blank
-    if (formPosition <= 1 && username.trim() !== "") {
-      return;
+    // Don't go anywhere if there is a form error
+    if (!formError) {
+      if (formPosition <= 1 && username.trim() !== "") {
+        return;
+      }
+      // Go to the specified section
+      setFormPosition(position);
+      // Reset form message
+      setFormMessage("");
     }
-    // Go to the specified section
-    setFormPosition(position);
-    // Reset form message
-    setFormMessage("");
   }
 
   // Change Handlers
@@ -53,12 +55,18 @@ const JoinPage = ({ socket }) => {
         if (response === 'Does Not Exist') {
           // User is host
           setIsRoomHost(true);
-          setFormError("Looks like that room doesn't exists, we'll create it for you..")
+          setFormMessage("Looks like that room doesn't exists, we'll create it for you..")
+          setFormError(false)
         }
-        if (response === 'Exists' || response === 'Null') {
+        if (response === 'Exists') {
           // User won't be host
           setIsRoomHost(false);
-          setFormError("")
+          setFormMessage("")
+          setFormError(false)
+        }
+        if (response === 'Null') {
+          setFormMessage("You must enter a room name to join")
+          setFormError(true)
         }
 
         store.dispatch({ type: 'SET_ROOM_HOST', payload: isRoomHost });
