@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 import './VideoSection.css';
 import VideoButtons from '../VideoButtons/VideoButtons';
 import VideoFrame from './VideoFrame';
@@ -7,8 +7,12 @@ import { store } from '../../store/store';
 import { useInterval } from '../../Utilities/useInterval';
 import { Peer } from 'peerjs';
 import SocketEvents from '../../Utilities/socketevents';
+import useDetermineLayout from '../../Utilities/useDetermineLayout';
 
 const VideoSection = ({ socket, streams }) => {
+  const videoContainer = createRef()
+  const [containerWidth, setWidth] = useState()
+  const [containerHeight, setHeight] = useState()
 
   // Holds the peer connection object
   const [peer, setPeer] = useState(null);
@@ -25,27 +29,17 @@ const VideoSection = ({ socket, streams }) => {
   const [selectedUser, setSelectedUser] = useState();
 
   // Current value of screen sharing.
-  // (For some weird reason this will actually be the opposite of the true value idk whats up)
   const [isScreenSharing, setScreenSharing] = useState(false);
+  const { rows, cols, width, height, area } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
 
 
-
-
-
-  /* TEMPORY FUNCTION - REMOVE LATER */
-  const modifyStreams = (add) => {
-    // Add or remove dummy streams to simulate multiple users
-    if (add) {
-      addVideoStream(userId + streams.length, userStream, true, null);
+  useEffect(() => {
+    if (videoContainer && videoContainer.current && !containerWidth) {
+      // Intialise container width and height once video container has been rendered
+      setWidth(videoContainer.current.clientWidth)
+      setHeight(videoContainer.current.clientHeight)
     }
-    else if(streams.length > 1) {
-      streams.pop();
-      setStreams(streams.slice())
-    }
-  }
-
-
-
+  }, [videoContainer])
 
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
@@ -53,7 +47,6 @@ const VideoSection = ({ socket, streams }) => {
     const call = peer.call(newUserId, stream);
     // Set second user stream on call answered
     call.on("stream", (newStream) => {
-      console.log("[c]Added stream from " + newUserId);
       // Add new stream to the list of streams
       addVideoStream(newUserId, newStream, false, call);
     });
@@ -102,8 +95,6 @@ const VideoSection = ({ socket, streams }) => {
   }
 
 
-
-
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
     // Establish the peer connection if it hasn't already
@@ -140,7 +131,7 @@ const VideoSection = ({ socket, streams }) => {
       }).then((stream) => {
         // Update user object in the list of streams to include the user's media stream
         for (const i in streams) {
-          if (streams[i].userId == userId) {
+          if (streams[i].userId === userId) {
             streams[i].stream = stream;
           }
         }
@@ -155,7 +146,6 @@ const VideoSection = ({ socket, streams }) => {
 
           // Setup peer event to receive media streams
           call.on("stream", (newStream) => {
-            console.log("[a]Added stream from " + call.peer);
             addVideoStream(call.peer, newStream, false, call);
           });
         });
@@ -215,39 +205,41 @@ const VideoSection = ({ socket, streams }) => {
     }
   }, 100);
 
-
-
   return (
     <div className="video_section_container">
-    <VideoButtons
-    socket={socket}
-    peer={peer}
-    stream={userStream}
-    />
-    <div className="video-stream-container">
-      {streamsState.map((user, index) => {
-          return (
-              <VideoFrame
-              key={index}
-              stream={user.stream}
-              userId={user.userId}
-              muted={user.muted}
-              setShowPopup={setShowPopup}
-              setSelectedUser={setSelectedUser}
-              numStreams={streamsState.length}
-              />
-          )
-      })}
-    </div>
-    {showPopup && <ImagePopup
-      user_id={selectedUser}
+      {/* Render the control buttons at the top of the screen */}
+      <VideoButtons
+      socket={socket}
+      peer={peer}
+      stream={userStream}
+      selectedUser={selectedUser}
+      setSelectedUser={setSelectedUser}
       setShowPopup={setShowPopup}
-      socket={socket} />}
+      />
 
-      {/*<div className='temp_buttons'>
-        <button onClick={() => modifyStreams(true)}>Add</button>
-        <button onClick={() => modifyStreams(false)}>Remove</button>
-    </div>*/}
+      {/* Create video frames for each user in the list of streams */}
+      <div className="video-stream-container" ref={videoContainer}>
+        {streamsState.map((user, index) => {
+            return (
+                <VideoFrame
+                key={index}
+                stream={user.stream}
+                userId={user.userId}
+                muted={user.muted}
+                selectedUser={selectedUser}
+                setSelectedUser={setSelectedUser}
+                height={height - 10}
+                />
+            )
+        })}
+      </div>
+
+      {/* Display a popup with the text found in an image */}
+      {showPopup && <ImagePopup
+        user_id={selectedUser}
+        setShowPopup={setShowPopup}
+        socket={socket}
+        setSelectedUser={setSelectedUser} />}
     </div>
   )
 }
