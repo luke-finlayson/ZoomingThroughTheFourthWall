@@ -16,7 +16,7 @@ const VerticalSeparator = () => {
 }
 
 // Renders a row of control buttons at the top of the room page
-const VideoButtons = ({ socket, peer, stream, selectedUser, setSelectedUser, setShowPopup }) => {
+const VideoButtons = ({ socket, peer, stream, selectedUser, setSelectedUser, setShowPopup, toggleScreenSharing }) => {
 
   // Counter to hide 'copied!' message after 3 seconds
   const [hideCounter, setHideCounter] = useState(0);
@@ -42,7 +42,7 @@ const VideoButtons = ({ socket, peer, stream, selectedUser, setSelectedUser, set
         {stream &&
           <VerticalSeparator />}
 
-        <SwitchToScreenSharingButton />
+        <SwitchToScreenSharingButton toggleScreenSharing={toggleScreenSharing} />
       </div>
 
       {selectedUser && <EditVideo setSelectedUser={setSelectedUser} setShowPopup={setShowPopup} />}

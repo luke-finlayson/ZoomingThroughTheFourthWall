@@ -15,6 +15,14 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
     setShowPopup(false);
   }
 
+  // Handle enter key press
+  const handleKeyPress = (e) => {
+    // If enter key was press, call the given function
+    if (e.key === "Escape") {
+      closePopup();
+    }
+  }
+
   useInterval(() => {
     if (!gotImage) {
       // Get the video element to get the image from
@@ -48,15 +56,8 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
   return(
     <div className="popup-container">
 
-      <div className="popup" onClick={() => {return}}>
-
-
-          <div>
-          <canvas id="snapshot" />
-          <div></div>
-          </div>
-
-
+      <div className="popup" onKeyPress={handleKeyPress} onClick={() => {return}}>
+        <canvas id="snapshot" />
         <div className="textfield">
           <p id="imageText">{imageText}</p>
         </div>

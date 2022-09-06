@@ -68,7 +68,6 @@ app.get('/room', (_request, response) => {
 })
 
 io.on(SocketEvents.Connection, (socket) => {
-  console.log(`Socket with ID ${socket.id} has connected`)
 
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
     

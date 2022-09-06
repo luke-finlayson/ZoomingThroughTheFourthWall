@@ -21,6 +21,7 @@ const VideoSection = ({ socket, streams }) => {
   const userId = store.getState().userId;
   const [getStream, setStream] = useState(true);
   const [userStream, setUserStream] = useState();
+  const [displayStream, setDisplayStream] = useState();
   // Stores the list of streams as a state so that UI updates with new streams
   const [streamsState, setStreams] = useState(streams.slice());
   
@@ -29,7 +30,6 @@ const VideoSection = ({ socket, streams }) => {
   const [selectedUser, setSelectedUser] = useState();
 
   // Current value of screen sharing.
-  const [isScreenSharing, setScreenSharing] = useState(false);
   const { width, height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
 
   useEffect(() => {
@@ -47,12 +47,12 @@ const VideoSection = ({ socket, streams }) => {
     // Set second user stream on call answered
     call.on("stream", (newStream) => {
       // Add new stream to the list of streams
-      addVideoStream(newUserId, newStream, false, call);
+      addVideoStream(newUserId, newStream, false, call, false);
     });
   }
 
   // Adds a video stream to the list of video streams
-  const addVideoStream = (newUserId, newStream, muted, call) => {
+  const addVideoStream = (newUserId, newStream, muted, call, isDisplayMedia) => {
     // Add new stream to list of streams if it isn't already
     if(!streams.some(e => e.userId === newUserId)) {
       streams.push({
@@ -60,12 +60,19 @@ const VideoSection = ({ socket, streams }) => {
         stream: newStream,
         muted: muted,
         call: call,
+        isDisplayMedia: isDisplayMedia,
         width: 400,
         height: 400
       });
       // Update the streams state
       setStreams(streams.slice());
     }
+  }
+
+  const removeVideoStream = (userId) => {
+    streams = streams.filter(user => user.userId !== userId)
+    // Update the streams state
+    setStreams(streams.slice());
   }
 
   const updateStreamDimensions = (id, width, height) => {
@@ -108,6 +115,46 @@ const VideoSection = ({ socket, streams }) => {
     });
   }
 
+  const toggleScreenSharing = () => {
+    if (!displayStream) {
+      // Get stream from screen
+      navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: true 
+      }).then((displayStream) => {
+        // Replace other users streams
+        replacePeerStreams(displayStream);
+
+        // Add display stream
+        addVideoStream("DISP:" + userId, displayStream, true, null, true);
+        setStreams(streams.slice());
+        setDisplayStream(displayStream)
+
+        console.log("added stream:")
+        console.log(displayStream)
+
+        // Toggle value of screen sharing
+        store.dispatch({ type: 'SET_SCREEN_SHARING', payload: true })
+      });
+    }
+    else {
+      // Change video source back to webcam
+      replacePeerStreams(userStream);
+      // Replace clients stream
+      removeVideoStream("DISP:" + userId)
+      setStreams(streams.slice());
+
+      // Stop display stream
+      displayStream.getTracks().forEach(track => track.stop());
+      setDisplayStream(null);
+
+      console.log("removed stream")
+
+      // Toggle value of screen sharing
+      store.dispatch({ type: 'SET_SCREEN_SHARING', payload: false })
+    }
+  }
+
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
     // Establish the peer connection if it hasn't already
@@ -121,8 +168,6 @@ const VideoSection = ({ socket, streams }) => {
       });
       setPeer(peer);
 
-      console.log("Peer connected")
-
       // Open peer connection, and join the room once connected
       peer.on('open', (id) => {
         // Get the state of the store
@@ -132,7 +177,7 @@ const VideoSection = ({ socket, streams }) => {
         });
       });
 
-      addVideoStream(userId, null, true, null);
+      addVideoStream(userId, null, true, null, false);
     }
 
     // Request user media, but add an object to list of streams regardless of 
@@ -161,7 +206,7 @@ const VideoSection = ({ socket, streams }) => {
 
           // Setup peer event to receive media streams
           call.on("stream", (newStream) => {
-            addVideoStream(call.peer, newStream, false, call);
+            addVideoStream(call.peer, newStream, false, call, false);
           });
         });
 
@@ -188,36 +233,6 @@ const VideoSection = ({ socket, streams }) => {
       // Ensure media stream isn't requested again
       setStream(false);
     }
-
-    // Get the state of the store
-    const state = store.getState();
-
-    // Only do something if the state of screen sharing has changed and this is the user's stream
-    if (isScreenSharing !== state.isScreenSharing && streams[0] !== null) {
-      // Toggle screen sharing
-      setScreenSharing(state.isScreenSharing);
-
-      if(!isScreenSharing) {
-        // Get stream from screen
-        navigator.mediaDevices.getDisplayMedia({
-          video: true,
-          audio: true
-        }).then((displayStream) => {
-          // Replace other users streams
-          replacePeerStreams(displayStream);
-          // Replace clients stream
-          streams[0].stream = displayStream;
-          setStreams(streams.slice());
-        });
-      }
-      else {
-        // Change video source back to webcam
-        replacePeerStreams(userStream);
-        // Replace clients stream
-        streams[0].stream = userStream;
-        setStreams(streams.slice());
-      }
-    }
   }, 100);
 
   return (
@@ -230,6 +245,7 @@ const VideoSection = ({ socket, streams }) => {
       selectedUser={selectedUser}
       setSelectedUser={setSelectedUser}
       setShowPopup={setShowPopup}
+      toggleScreenSharing={toggleScreenSharing}
       />
 
       {/* Create video frames for each user in the list of streams */}
@@ -238,14 +254,11 @@ const VideoSection = ({ socket, streams }) => {
             return (
                 <VideoFrame
                 key={index}
-                stream={user.stream}
-                userId={user.userId}
-                muted={user.muted}
+                user={user}
+                height={height - 10}
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}
-                height={height - 10}
                 updateStreamDimensions={updateStreamDimensions}
-                aspectRatio={user.width + " / " + user.height}
                 />
             )
         })}
