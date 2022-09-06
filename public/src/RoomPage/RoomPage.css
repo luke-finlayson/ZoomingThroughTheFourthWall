@@ -591,3 +591,35 @@ video {
   70% { bottom: 0px }
   100% { bottom: 35px; }
 }
+
+@media only screen and (max-width: 400px) {
+  
+  .expanded_section {
+    height: 80%;
+    width: auto;
+  }
+
+  .chat_section_container {
+    right: auto;
+    bottom: 0;
+    border-radius: 7px 7px 0px 0px;
+  }
+
+  .collapsed_section {
+    width: 100%;
+  }
+
+  .room_name {
+    display: none;
+  }
+
+  .copy_icon_img {
+    display: none;
+  }
+
+  .leave_button {
+    padding: 16px 34px;
+    margin: 0;
+  }
+
+}
