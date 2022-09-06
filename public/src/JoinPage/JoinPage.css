@@ -210,4 +210,8 @@
     font-size: 30px;
     width: 90vw;
   }
+
+  .progressTimeline {
+    display: none;
+  }
 }
