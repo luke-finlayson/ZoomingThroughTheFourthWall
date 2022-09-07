@@ -29,6 +29,8 @@ const VideoSection = ({ socket, streams }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
 
+  const [index, setIndex] = useState(0)
+
   // Current value of screen sharing.
   const { width, height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
 
@@ -56,6 +58,7 @@ const VideoSection = ({ socket, streams }) => {
     // Add new stream to list of streams if it isn't already
     if(!streams.some(e => e.userId === newUserId)) {
       streams.push({
+        index: index,
         userId: newUserId,
         stream: newStream,
         muted: muted,
@@ -66,11 +69,17 @@ const VideoSection = ({ socket, streams }) => {
       });
       // Update the streams state
       setStreams(streams.slice());
+      setIndex(index + 1)
     }
   }
 
   const removeVideoStream = (userId) => {
-    streams = streams.filter(user => user.userId !== userId)
+    // Locate and delete the stream matching the given user id
+    for( var i = 0; i < streams.length; i++) { 
+      if ( streams[i].userId === userId) { 
+        streams.splice(i, 1); 
+      }
+    }
     // Update the streams state
     setStreams(streams.slice());
   }
@@ -121,17 +130,20 @@ const VideoSection = ({ socket, streams }) => {
       navigator.mediaDevices.getDisplayMedia({
         video: true,
         audio: true 
-      }).then((displayStream) => {
+      }).then((newDisplayStream) => {
         // Replace other users streams
-        replacePeerStreams(displayStream);
+        replacePeerStreams(newDisplayStream);
+
+        console.log(displayStream)
 
         // Add display stream
-        addVideoStream("DISP:" + userId, displayStream, true, null, true);
+        addVideoStream("DISP:" + userId, newDisplayStream, true, null, true);
+        setIndex(index + 1)
         setStreams(streams.slice());
-        setDisplayStream(displayStream)
+        setDisplayStream(newDisplayStream)
 
-        console.log("added stream:")
-        console.log(displayStream)
+        console.log(newDisplayStream)
+        console.log(streams)
 
         // Toggle value of screen sharing
         store.dispatch({ type: 'SET_SCREEN_SHARING', payload: true })
@@ -141,14 +153,15 @@ const VideoSection = ({ socket, streams }) => {
       // Change video source back to webcam
       replacePeerStreams(userStream);
       // Replace clients stream
+      setDisplayStream(null);
       removeVideoStream("DISP:" + userId)
       setStreams(streams.slice());
 
       // Stop display stream
       displayStream.getTracks().forEach(track => track.stop());
-      setDisplayStream(null);
 
-      console.log("removed stream")
+      console.log(displayStream)
+      console.log(streams)
 
       // Toggle value of screen sharing
       store.dispatch({ type: 'SET_SCREEN_SHARING', payload: false })
@@ -221,12 +234,7 @@ const VideoSection = ({ socket, streams }) => {
 
         // Setup socket event to remove disconnected room members
         socket.on(SocketEvents.UserLeftRoom, (disconnectedUser) => {
-          // Filter out streams matching disconnected id
-          streams = streams.filter((e) => {
-            return e.userId !== disconnectedUser;
-          });
-          // Update the streams state
-          setStreams(streams.slice())
+          removeVideoStream(disconnectedUser)
         });
       })
 
