@@ -129,6 +129,11 @@ io.on(SocketEvents.Connection, (socket) => {
       socket.to(roomID).emit(SocketEvents.UserLeftRoom, newUserId);
     })
 
+    // Catch any unhandled disconnects
+    peerServer.on('disconnect', (client) => {
+      socket.to(roomID).emit(SocketEvents.UserLeftRoom, client.getId());
+    });
+
     // Save message to database and notify all other clients in room
     socket.on(SocketEvents.NewMessage, (content) => {
       // Create a new message object
@@ -238,11 +243,6 @@ io.of("/").adapter.on(SocketEvents.CreateRoom, async (room) => {
     else
       console.log(`room ${room} was created`);
   });
-});
-
-// Catch any unhandled disconnects
-peerServer.on('disconnect', (client) => {
-  socket.to(roomID).emit(SocketEvents.UserLeftRoom, client.getId());
 });
 
 /**

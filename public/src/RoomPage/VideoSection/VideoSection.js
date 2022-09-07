@@ -112,6 +112,10 @@ const VideoSection = ({ socket, streams }) => {
         // Setup socket event to connect to new room members
         socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
           connectToNewUser(newUserId, stream);
+
+          if (displayStream) {
+            const call = peer2.call(newUserId, displayStream);
+          }
         });
 
         // Setup socket event to remove disconnected room members
