@@ -9,13 +9,17 @@ import { Peer } from 'peerjs';
 import SocketEvents from '../../Utilities/socketevents';
 import useDetermineLayout from '../../Utilities/useDetermineLayout';
 
+let peer;
+let peer2;
+
 const VideoSection = ({ socket, streams }) => {
   const videoContainer = createRef()
   const [containerWidth, setWidth] = useState()
   const [containerHeight, setHeight] = useState()
 
-  // Holds the peer connection object
-  const [peer, setPeer] = useState(null);
+  // Holds the peer connection objects
+  //const [peer, setPeer] = useState(null);
+  //const [peer2, setPeer2]  = useState(null);
 
   // Unique id of this user
   const userId = store.getState().userId;
@@ -38,13 +42,13 @@ const VideoSection = ({ socket, streams }) => {
     // Establish the peer connection if it hasn't already
     if (peer === null && socket !== null && socket.connected) {
       // Attempt main peerjs connection
-      const peer = new Peer(userId, {
+      peer = new Peer(userId, {
         host: "/",
         port: 443,
         path: '/peerjs',
         secure: true
       });
-      setPeer(peer);
+      //setPeer(peer);
 
       // Open peer connection, and join the room once connected
       peer.on('open', (id) => {
@@ -56,6 +60,19 @@ const VideoSection = ({ socket, streams }) => {
       });
 
       addVideoStream(userId, null, true, null, false);
+    }
+
+    if (peer2 === null && socket !== null && socket.connected) {
+      // Attempt second peerjs connection for screen sharing etc...
+      peer2 = new Peer("DISP:" + userId, {
+        host: '/',
+        port: 443,
+        path: '/peerjs',
+        secure: true
+      })
+
+      console.log("Second peer connected")
+      //setPeer2(peer2);
     }
   }, 100);
 
@@ -128,7 +145,6 @@ const VideoSection = ({ socket, streams }) => {
     // Add new stream to list of streams if it isn't already
     if(!streams.some(e => e.userId === newUserId)) {
       streams.push({
-        index: index,
         userId: newUserId,
         stream: newStream,
         muted: muted,
@@ -139,7 +155,6 @@ const VideoSection = ({ socket, streams }) => {
       });
       // Update the streams state
       setStreams(streams.slice());
-      setIndex(index + 1)
     }
   }
 
