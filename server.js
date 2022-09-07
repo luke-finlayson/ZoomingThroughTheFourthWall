@@ -240,8 +240,11 @@ io.of("/").adapter.on(SocketEvents.CreateRoom, async (room) => {
   });
 });
 
-peerServer.on('connection', (client) => {
-  console.log(client.getId() + " connected!")
+peerServer.on('disconnect', (client) => {
+  console.log("Disconnected!")
+})
+peerServer.on('destroy', (client) => {
+  console.log("Destroyed!")
 })
 
 /**

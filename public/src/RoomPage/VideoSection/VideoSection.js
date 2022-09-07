@@ -65,7 +65,7 @@ const VideoSection = ({ socket, streams }) => {
 
     if (!peer2 && socket !== null && socket.connected) {
       // Attempt second peerjs connection for screen sharing etc...
-      peer2 = new Peer("DISP:" + userId, {
+      peer2 = new Peer("DISP" + userId, {
         host: '/',
         port: 443,
         path: '/peerjs',
@@ -193,7 +193,7 @@ const VideoSection = ({ socket, streams }) => {
         audio: true 
       }).then((newDisplayStream) => {
         // Add display stream
-        addVideoStream("DISP:" + userId, newDisplayStream, true, null, true);
+        addVideoStream("DISP" + userId, newDisplayStream, true, null, true);
         setIndex(index + 1)
         setStreams(streams.slice());
         setDisplayStream(newDisplayStream);
@@ -208,7 +208,7 @@ const VideoSection = ({ socket, streams }) => {
           // });
         });
 
-        socket.emit(SocketEvents.NewStream, "DISP:" + userId, store.getState().username + "'s Screen Share")
+        socket.emit(SocketEvents.NewStream, "DISP" + userId, store.getState().username + "'s Screen Share")
 
         // Toggle value of screen sharing
         store.dispatch({ type: 'SET_SCREEN_SHARING', payload: true })
@@ -216,13 +216,13 @@ const VideoSection = ({ socket, streams }) => {
     }
     else {
       setDisplayStream(null);
-      removeVideoStream("DISP:" + userId)
+      removeVideoStream("DISP" + userId)
       setStreams(streams.slice());
 
       // Stop display stream
       displayStream.getTracks().forEach(track => track.stop());
 
-      socket.emit(SocketEvents.RemoveStream, "DISP:" + userId)
+      socket.emit(SocketEvents.RemoveStream, "DISP" + userId)
 
       // Toggle value of screen sharing
       store.dispatch({ type: 'SET_SCREEN_SHARING', payload: false })
