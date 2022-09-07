@@ -19,7 +19,6 @@ const VideoSection = ({ socket, streams }) => {
 
   // Unique id of this user
   const userId = store.getState().userId;
-  const [getStream, setStream] = useState(true);
   const [userStream, setUserStream] = useState();
   const [displayStream, setDisplayStream] = useState();
   // Stores the list of streams as a state so that UI updates with new streams
@@ -211,7 +210,7 @@ const VideoSection = ({ socket, streams }) => {
         setStreams(streams.slice());
         setDisplayStream(newDisplayStream)
 
-        socket.emit(SocketEvents.NewStream, "DISP:" + userId, username + "'s Screen Share")
+        socket.emit(SocketEvents.NewStream, "DISP:" + userId, store.getState().username + "'s Screen Share")
 
         // Toggle value of screen sharing
         store.dispatch({ type: 'SET_SCREEN_SHARING', payload: true })
