@@ -40,7 +40,7 @@ const VideoSection = ({ socket, streams }) => {
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
     // Establish the peer connection if it hasn't already
-    if (peer === null && socket !== null && socket.connected) {
+    if (peer && socket !== null && socket.connected) {
       // Attempt main peerjs connection
       peer = new Peer(userId, {
         host: "/",
@@ -62,7 +62,7 @@ const VideoSection = ({ socket, streams }) => {
       addVideoStream(userId, null, true, null, false);
     }
 
-    if (peer2 === null && socket !== null && socket.connected) {
+    if (peer2 && socket !== null && socket.connected) {
       // Attempt second peerjs connection for screen sharing etc...
       peer2 = new Peer("DISP:" + userId, {
         host: '/',
@@ -70,6 +70,7 @@ const VideoSection = ({ socket, streams }) => {
         path: '/peerjs',
         secure: true
       })
+      //setPeer2(peer2)
 
       console.log("Second peer connected")
       //setPeer2(peer2);
