@@ -9,6 +9,7 @@ import { Peer } from 'peerjs';
 import SocketEvents from '../../Utilities/socketevents';
 import useDetermineLayout from '../../Utilities/useDetermineLayout';
 
+// Peer connection references, for main streaming and screen sharing
 let peer;
 let peer2;
 
@@ -16,10 +17,6 @@ const VideoSection = ({ socket, streams }) => {
   const videoContainer = createRef()
   const [containerWidth, setWidth] = useState()
   const [containerHeight, setHeight] = useState()
-
-  // Holds the peer connection objects
-  //const [peer, setPeer] = useState(null);
-  //const [peer2, setPeer2]  = useState(null);
 
   // Unique id of this user
   const userId = store.getState().userId;
@@ -35,7 +32,7 @@ const VideoSection = ({ socket, streams }) => {
   const [index, setIndex] = useState(0)
 
   // Current value of screen sharing.
-  const { width, height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
+  const { height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
 
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
@@ -48,7 +45,6 @@ const VideoSection = ({ socket, streams }) => {
         path: '/peerjs',
         secure: true
       });
-      //setPeer(peer);
 
       // Open peer connection, and join the room once connected
       peer.on('open', (id) => {
@@ -59,6 +55,7 @@ const VideoSection = ({ socket, streams }) => {
         });
       });
 
+      // Display a blank video frame before requesting media
       addVideoStream(userId, null, true, null, false);
     }
 
@@ -70,10 +67,6 @@ const VideoSection = ({ socket, streams }) => {
         path: '/peerjs',
         secure: true
       })
-      //setPeer2(peer2)
-
-      console.log("Second peer connected")
-      //setPeer2(peer2);
     }
   }, 100);
 
@@ -108,9 +101,8 @@ const VideoSection = ({ socket, streams }) => {
         // Announce to server that this client is ready to recieve peer calls
         socket.emit(SocketEvents.PeerReady);
 
-        // Setup socket event to connect new room members
+        // Setup socket event to connect to new room members
         socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
-          // Connect to new user
           connectToNewUser(newUserId, stream);
         });
 
@@ -218,13 +210,24 @@ const VideoSection = ({ socket, streams }) => {
         audio: true 
       }).then((newDisplayStream) => {
         // Replace other users streams
-        replacePeerStreams(newDisplayStream);
+        //replacePeerStreams(newDisplayStream);
 
         // Add display stream
         addVideoStream("DISP:" + userId, newDisplayStream, true, null, true);
         setIndex(index + 1)
         setStreams(streams.slice());
-        setDisplayStream(newDisplayStream)
+        setDisplayStream(newDisplayStream);
+
+        // Setup peer event to receive calls
+        peer2.on("call", (call) => {
+          // Otherwise answer the call with the stream and userId
+          call.answer(newDisplayStream);
+
+          // Setup peer event to receive media streams
+          // call.on("stream", (newStream) => {
+          //   addVideoStream(call.peer, newStream, false, call, false);
+          // });
+        });
 
         socket.emit(SocketEvents.NewStream, "DISP:" + userId, store.getState().username + "'s Screen Share")
 
@@ -234,7 +237,7 @@ const VideoSection = ({ socket, streams }) => {
     }
     else {
       // Change video source back to webcam
-      replacePeerStreams(userStream);
+      //replacePeerStreams(userStream);
       // Replace clients stream
       setDisplayStream(null);
       removeVideoStream("DISP:" + userId)
