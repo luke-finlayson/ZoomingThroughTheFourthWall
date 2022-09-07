@@ -240,12 +240,10 @@ io.of("/").adapter.on(SocketEvents.CreateRoom, async (room) => {
   });
 });
 
+// Catch any unhandled disconnects
 peerServer.on('disconnect', (client) => {
-  console.log("Disconnected!")
-})
-peerServer.on('destroy', (client) => {
-  console.log("Destroyed!")
-})
+  socket.to(roomID).emit(SocketEvents.UserLeftRoom, client.getId());
+});
 
 /**
  * Checks whether the given room ID corresponds to a socket's default room
