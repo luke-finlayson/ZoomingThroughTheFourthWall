@@ -19,4 +19,4 @@ class SocketEvents {
     static RemoveStream = "remove-stream"
 }
 
-module.exports = SocketEvents;
+export default SocketEvents;

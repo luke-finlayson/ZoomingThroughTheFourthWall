@@ -6,7 +6,7 @@ import ImagePopup from './ImagePopup';
 import { store } from '../../store/store';
 import { useInterval } from '../../Utilities/useInterval';
 import { Peer } from 'peerjs';
-import SocketEvents from '../../Utilities/socketevents';
+import { SocketEvents } from '../../Utilities/socketevents';
 import useDetermineLayout from '../../Utilities/useDetermineLayout';
 
 const VideoSection = ({ socket, streams }) => {
