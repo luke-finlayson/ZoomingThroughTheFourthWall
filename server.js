@@ -30,7 +30,8 @@ else {
 }
 
 const peerServer = ExpressPeerServer(server, {
-  debug: true
+  debug: true,
+  secure: true
 });
 
 const io = new Server(server, {

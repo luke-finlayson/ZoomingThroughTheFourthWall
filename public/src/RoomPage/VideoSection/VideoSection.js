@@ -42,7 +42,8 @@ const VideoSection = ({ socket, streams }) => {
       const peer = new Peer(userId, {
         host: "/",
         port: 443,
-        path: '/peerjs'
+        path: '/peerjs',
+        secure: true
       });
       setPeer(peer);
 
