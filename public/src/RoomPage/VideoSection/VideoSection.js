@@ -225,7 +225,7 @@ const VideoSection = ({ socket, streams }) => {
       // Stop display stream
       displayStream.getTracks().forEach(track => track.stop());
 
-      socket.emit(SocketEvents.RemoveStream, "DISP" + userId)
+      socket.emit(SocketEvents.RemoveStream, "DISP" + userId);
 
       // Toggle value of screen sharing
       store.dispatch({ type: 'SET_SCREEN_SHARING', payload: false })
