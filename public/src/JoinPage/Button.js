@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { spline } from '@georgedoescode/spline';
-import SimplexNoise from 'simplex-noise';
 
 const Button = ({ socketConnected, goTo}) => {
 

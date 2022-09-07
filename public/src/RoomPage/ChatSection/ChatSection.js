@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, createRef } from 'react';
 import ChatLabel from './ChatLabel';
 import Messages from './Messages';
 import NewMessage from './NewMessage';
@@ -10,6 +10,8 @@ import SocketEvents from '../../Utilities/socketevents';
 const messages = [];
 
 const ChatSection = ({ socket }) => {
+
+  const messageInput = createRef();
 
   // Store messages as a state so that new messages are rendered as they are added
   const [messagesState, setMessages] = useState(messages.slice());
@@ -83,11 +85,11 @@ const ChatSection = ({ socket }) => {
     <div 
     className={collapsed ? "chat_section_container collapsed_section" 
     : "chat_section_container expanded_section"}>
-        <ChatLabel socket={socket} collapsed={collapsed} setCollapsed={setCollapsed}/>
+        <ChatLabel socket={socket} collapsed={collapsed} setCollapsed={setCollapsed} messageInput={messageInput}/>
         {!collapsed && 
           <Messages socket={socket} messages={messagesState} />}
         {!collapsed && 
-          <NewMessage socket={socket} />}
+          <NewMessage socket={socket} messageInput={messageInput} />}
     </div>
   )
 }

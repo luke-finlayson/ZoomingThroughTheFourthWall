@@ -15,6 +15,8 @@ class SocketEvents {
     static GetRoomParticipants = "get-room-participants";
     static GetMessageHistory = "get-message-history";
     static ClearMessages = "clear-messages";
+    static NewStream = "new-stream";
+    static RemoveStream = "remove-stream"
 }
 
 module.exports = SocketEvents;

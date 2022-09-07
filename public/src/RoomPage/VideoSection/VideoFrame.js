@@ -71,7 +71,7 @@ const VideoFrame = ({
   // Display message until the stream is ready
   return (
     <div className={selectedUser !== user.userId ? "video-frame-container" : "video-frame-container selected_video"} 
-      style={{height: height, aspectRatio: user.aspectRatio}}
+      style={{height: height, aspectRatio: user.width + " / " + user.height}}
       onClick={selectFrame}>
       {renderVideo}
     </div>
