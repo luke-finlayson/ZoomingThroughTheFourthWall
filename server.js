@@ -240,6 +240,10 @@ io.of("/").adapter.on(SocketEvents.CreateRoom, async (room) => {
   });
 });
 
+peerServer.on('connection', (client) => {
+  console.log(client.getId() + " connected!")
+})
+
 /**
  * Checks whether the given room ID corresponds to a socket's default room
  * @param {string} room The room ID to check

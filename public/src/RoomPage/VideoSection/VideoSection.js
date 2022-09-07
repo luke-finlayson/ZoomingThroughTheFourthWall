@@ -55,6 +55,10 @@ const VideoSection = ({ socket, streams }) => {
         });
       });
 
+      peer.on('error', (err) => {
+        console.log(err)
+      })
+
       // Display a blank video frame before requesting media
       addVideoStream(userId, null, true, null, false);
     }
@@ -66,6 +70,10 @@ const VideoSection = ({ socket, streams }) => {
         port: 443,
         path: '/peerjs',
         secure: true
+      })
+
+      peer2.on('error', (err) => {
+        console.log(err)
       })
     }
   }, 100);
@@ -177,33 +185,6 @@ const VideoSection = ({ socket, streams }) => {
     setStreams(streams.slice());
   }
 
-  // Replaces the stream in the peer connection with the given stream
-  const replacePeerStreams = (mediaStream) => {
-
-    streams.forEach((user) => {
-      // Only replace stream if call exists
-      if (user.call !== null) {
-        // Get tracks being streamed
-        var senders = user.call.peerConnection.getSenders();
-
-        senders.forEach((sender) => {
-          // Replace audio track
-          if (sender.track.kind === "audio") {
-            if (mediaStream.getAudioTracks().length > 0) {
-              sender.replaceTrack(mediaStream.getAudioTracks()[0]);
-            }
-          }
-          // Replace video track
-          if (sender.track.kind === "video") {
-            if (mediaStream.getVideoTracks().length > 0) {
-              sender.replaceTrack(mediaStream.getVideoTracks()[0]);
-            }
-          }
-        });
-      }
-    });
-  }
-
   const toggleScreenSharing = () => {
     if (!displayStream) {
       // Get stream from screen
@@ -211,9 +192,6 @@ const VideoSection = ({ socket, streams }) => {
         video: true,
         audio: true 
       }).then((newDisplayStream) => {
-        // Replace other users streams
-        //replacePeerStreams(newDisplayStream);
-
         // Add display stream
         addVideoStream("DISP:" + userId, newDisplayStream, true, null, true);
         setIndex(index + 1)
@@ -224,7 +202,6 @@ const VideoSection = ({ socket, streams }) => {
         peer2.on("call", (call) => {
           // Otherwise answer the call with the stream and userId
           call.answer(newDisplayStream);
-
           // Setup peer event to receive media streams
           // call.on("stream", (newStream) => {
           //   addVideoStream(call.peer, newStream, false, call, false);
@@ -238,9 +215,6 @@ const VideoSection = ({ socket, streams }) => {
       });
     }
     else {
-      // Change video source back to webcam
-      //replacePeerStreams(userStream);
-      // Replace clients stream
       setDisplayStream(null);
       removeVideoStream("DISP:" + userId)
       setStreams(streams.slice());

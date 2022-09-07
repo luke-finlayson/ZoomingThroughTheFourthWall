@@ -11,9 +11,9 @@ const LeaveRoomButton = ({ socket, peer, stream }) => {
 
     socket.emit(SocketEvents.LeaveRoom);
     // Disconnect from the socket
-    socket.disconnect();
+    socket.destroy();
     // Disconnect from the peer connection
-    peer.disconnect();
+    peer.destroy();
   }
 
   const handleRoomDisconnection = () => {
