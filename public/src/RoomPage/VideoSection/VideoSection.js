@@ -116,7 +116,7 @@ const VideoSection = ({ socket, streams }) => {
 
         // Setup socket event to remove disconnected room members
         socket.on(SocketEvents.UserLeftRoom, (disconnectedUser) => {
-          removeVideoStream(disconnectedUser)
+          removeVideoStream(disconnectedUser);
         });
       })
     }
@@ -133,8 +133,6 @@ const VideoSection = ({ socket, streams }) => {
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
     const call = peer.call(newUserId, stream);
-
-    console.log("Connecting to " + newUserId)
 
     // Set second user stream on call answered
     call.on("stream", (newStream) => {
@@ -165,6 +163,11 @@ const VideoSection = ({ socket, streams }) => {
     // Locate and delete the stream matching the given user id
     for( var i = 0; i < streams.length; i++) { 
       if ( streams[i].userId === userId) { 
+        // End the peerjs call if it exists
+        if(streams[i].call) {
+          streams[i].call.close();
+        }
+
         streams.splice(i, 1); 
       }
     }
@@ -202,10 +205,6 @@ const VideoSection = ({ socket, streams }) => {
         peer2.on("call", (call) => {
           // Otherwise answer the call with the stream and userId
           call.answer(newDisplayStream);
-          // Setup peer event to receive media streams
-          // call.on("stream", (newStream) => {
-          //   addVideoStream(call.peer, newStream, false, call, false);
-          // });
         });
 
         socket.emit(SocketEvents.NewStream, "DISP" + userId, store.getState().username + "'s Screen Share")
