@@ -205,16 +205,13 @@ const VideoSection = ({ socket, streams }) => {
         // Replace other users streams
         replacePeerStreams(newDisplayStream);
 
-        console.log(displayStream)
-
         // Add display stream
         addVideoStream("DISP:" + userId, newDisplayStream, true, null, true);
         setIndex(index + 1)
         setStreams(streams.slice());
         setDisplayStream(newDisplayStream)
 
-        console.log(newDisplayStream)
-        console.log(streams)
+        socket.emit(SocketEvents.NewStream, "DISP:" + userId, username + "'s Screen Share")
 
         // Toggle value of screen sharing
         store.dispatch({ type: 'SET_SCREEN_SHARING', payload: true })
@@ -231,8 +228,7 @@ const VideoSection = ({ socket, streams }) => {
       // Stop display stream
       displayStream.getTracks().forEach(track => track.stop());
 
-      console.log(displayStream)
-      console.log(streams)
+      socket.emit(SocketEvents.RemoveStream, "DISP:" + userId)
 
       // Toggle value of screen sharing
       store.dispatch({ type: 'SET_SCREEN_SHARING', payload: false })
