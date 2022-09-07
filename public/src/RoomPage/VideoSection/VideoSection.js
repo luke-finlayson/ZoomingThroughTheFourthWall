@@ -124,8 +124,10 @@ const VideoSection = ({ socket, streams }) => {
 
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
-    // Call second user
     const call = peer.call(newUserId, stream);
+
+    console.log("Connecting to " + newUserId)
+
     // Set second user stream on call answered
     call.on("stream", (newStream) => {
       // Add new stream to the list of streams
