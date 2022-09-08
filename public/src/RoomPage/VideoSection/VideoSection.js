@@ -127,7 +127,9 @@ const VideoSection = ({ socket, streams }) => {
 
     // Send screen share to new user if sharing
     if (displayStream) {
+      console.log("calling...")
       peer2.call(newUserId, displayStream)
+      console.log("called")
     }
   }
 

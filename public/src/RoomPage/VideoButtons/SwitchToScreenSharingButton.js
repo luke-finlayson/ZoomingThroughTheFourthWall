@@ -1,25 +1,11 @@
-import React, {useState} from 'react'
-import ShareOnImg from '../../resources/images/shareOn.svg';
-import ShareOffImg from '../../resources/images/shareOff.svg'
 import {store} from '../../store/store';
-import TextOnOff from './TextOnOff';
+import IconWithTextButton from '../../resources/images/IconWithTextButton';
+
+let screenShareSvg = ["M7.7,23.4c-1.4,0-2.8,0-4.1,0c-1.6,0-2.9-1.1-3.1-2.7c0-0.2,0-0.4,0-0.6c0-4.4,0-8.9,0-13.3c0-2,1.3-3.3,3.3-3.3c7.6,0,15.1,0,22.7,0c2,0,3.3,1.3,3.3,3.3c0,4.4,0,8.9,0,13.3c0,2-1.3,3.3-3.3,3.3c-1.2,0-2.4,0-3.6,0c-0.1,0-0.2,0-0.4,0c0,0.3,0,0.5,0,0.8c0,1.3-1,2.3-2.3,2.3c-3.3,0-6.6,0-9.9,0c-1.3,0-2.3-1-2.4-2.3C7.7,23.9,7.7,23.7,7.7,23.4L7.7,23.4z M16,12.4C16.1,12.4,16.1,12.4,16,12.4c0.5,0.3,0.8,0.7,1.2,1.1c0.4,0.4,1.1,0.4,1.4,0c0.4-0.4,0.4-1,0-1.4c-1-1-2-2-3-3c-0.4-0.4-1-0.4-1.4,0c-1,1-2.1,2-3.1,3.1c-0.5,0.6-0.2,1.5,0.6,1.7c0.4,0.1,0.7,0,1-0.3c0.3-0.4,0.7-0.7,1.1-1.1c0,0.2,0,0.3,0,0.4c0,1.4,0,2.9,0,4.3c0,0.6,0.4,1.1,1,1.1c0.6,0,1.1-0.5,1.1-1.2c0-1.4,0-2.8,0-4.2C16,12.6,16,12.5,16,12.4L16,12.4z M9.8,23.4c0,0.2,0,0.3,0,0.5c0,0.5,0,0.5,0.6,0.5c3.1,0,6.2,0,9.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2-0.1,0.2-0.2c0-0.3,0-0.5,0-0.8L9.8,23.4L9.8,23.4z"]
 
 const SwitchToScreenSharingButton = ({ toggleScreenSharing }) => {
-
-  // const handleScreenSharingEnable = () => {
-  //   // Get states from store
-  //   const state = store.getState();
-  //   // Toggle value of screen sharing
-  //   store.dispatch({ type: 'SET_SCREEN_SHARING', payload: !state.isScreenSharing })
-  // }
-
   return (
-    <div className='video_button_container' onClick={toggleScreenSharing}>
-      <img src={store.getState().isScreenSharing ? ShareOnImg : ShareOffImg} alt=""
-      className='video_button_image'/>
-
-      <TextOnOff on={store.getState().isScreenSharing} />
-    </div>
+    <IconWithTextButton svgPaths={screenShareSvg} enabled={store.getState().isScreenSharing} onClick={toggleScreenSharing} viewBox="0 0 30 30" />
   )
 }
 

@@ -5,14 +5,12 @@
 .video_grid_container {
     display: flex;
     flex-flow: row wrap;
-    height: 100%;
-    width: 100%;
     place-content: center;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: 5px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
 }
 
 .video_focus_container {

@@ -436,6 +436,14 @@
   user-select: none;
 }
 
+.toggle_on {
+  fill: #767676;
+}
+
+.toggle_off {
+  fill: #D8D8D8;
+}
+
 .video_button_container:hover {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
 }
