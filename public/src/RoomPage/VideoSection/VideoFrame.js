@@ -64,7 +64,13 @@ const VideoFrame = ({
   // Return the video and its container via the useMemo function to prevent flickering on state updates
   const renderVideo = useMemo(() => {
     return (
-      <video className="video-frame-elem" id={user.userId} muted={user.muted} ref={video} />
+      <video 
+        className="video-frame-elem" 
+        id={user.userId} 
+        muted={user.muted} 
+        ref={video} 
+        style={user.isDisplayMedia ? {transform: "scaleX(1)"} : {transform: "scaleX(-1)"}}
+      />
     );
   }, [user.userId, user.muted, user.stream])
 

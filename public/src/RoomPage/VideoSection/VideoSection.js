@@ -28,6 +28,7 @@ const VideoSection = ({ socket, streams }) => {
   // Varioud UI toggles
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
+  const [displayGrid, setDisplayGrid] = useState(true);
 
   const [index, setIndex] = useState(0)
 
@@ -112,12 +113,6 @@ const VideoSection = ({ socket, streams }) => {
         // Setup socket event to connect to new room members
         socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
           connectToNewUser(newUserId, stream);
-
-          if (displayStream !== null) {
-            console.log("Calling " + newUserId + "...")
-            const call = peer2.call(newUserId, displayStream);
-            console.log("Called " + newUserId + ".");
-          }
         });
 
         // Setup socket event to remove disconnected room members
@@ -145,6 +140,11 @@ const VideoSection = ({ socket, streams }) => {
       // Add new stream to the list of streams
       addVideoStream(newUserId, newStream, false, call, false);
     });
+
+    // Send screen share to new user if sharing
+    if (displayStream) {
+      peer2.call(newUserId, displayStream)
+    }
   }
 
   // Adds a video stream to the list of video streams
@@ -156,7 +156,7 @@ const VideoSection = ({ socket, streams }) => {
         stream: newStream,
         muted: muted,
         call: call,
-        isDisplayMedia: isDisplayMedia,
+        isDisplayMedia: newUserId.startsWith("DISP"),
         width: 400,
         height: 400
       });
@@ -211,6 +211,7 @@ const VideoSection = ({ socket, streams }) => {
         peer2.on("call", (call) => {
           // Otherwise answer the call with the stream and userId
           call.answer(newDisplayStream);
+          console.log("Answered call from " + call.peer)
         });
 
         socket.emit(SocketEvents.NewStream, "DISP" + userId, store.getState().username + "'s Screen Share")
