@@ -113,8 +113,10 @@ const VideoSection = ({ socket, streams }) => {
         socket.on(SocketEvents.UserJoinedRoom, (newUserId) => {
           connectToNewUser(newUserId, stream);
 
-          if (displayStream) {
+          if (displayStream !== null) {
+            console.log("Calling " + newUserId + "...")
             const call = peer2.call(newUserId, displayStream);
+            console.log("Called " + newUserId + ".");
           }
         });
 
