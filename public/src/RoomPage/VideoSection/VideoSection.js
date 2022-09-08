@@ -146,6 +146,11 @@ const VideoSection = ({ socket, streams }) => {
         width: 400,
         height: 400
       });
+
+      if (newUserId.startsWith("DISP")) {
+        setUserDisplayMode("focus")
+      }
+
       // Update the streams state
       setStreams(streams.slice());
     }
@@ -243,13 +248,14 @@ const VideoSection = ({ socket, streams }) => {
         setSelectedUser={setSelectedUser}
         setShowPopup={setShowPopup}
         toggleScreenSharing={toggleScreenSharing}
+        displayMode={userDisplayMode}
+        setDisplayMode={setUserDisplayMode}
       />
 
       {/* Render the video elements as a grid */}
       {
       
-      userDisplayMode === "focus" ||  
-      streams.some(e => e.isDisplayMedia) ? 
+      userDisplayMode === "focus" ? 
 
         <FocusView
           streamsState={streamsState}

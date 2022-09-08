@@ -179,6 +179,14 @@
   font-size: 15px;
 }
 
+.left_control_button_container {
+  display: flex;
+}
+
+.left_margin {
+  margin-left: 15px;
+}
+
 .new_message_container {
   display: flex;
   align-items: stretch;
