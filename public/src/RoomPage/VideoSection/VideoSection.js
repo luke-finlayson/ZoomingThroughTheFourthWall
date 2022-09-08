@@ -1,22 +1,18 @@
 import React, { useState, createRef, useEffect } from 'react';
 import './VideoSection.css';
 import VideoButtons from '../VideoButtons/VideoButtons';
-import VideoFrame from './VideoFrame';
 import ImagePopup from './ImagePopup';
 import { store } from '../../store/store';
 import { useInterval } from '../../Utilities/useInterval';
 import { Peer } from 'peerjs';
 import SocketEvents from '../../Utilities/socketevents';
-import useDetermineLayout from '../../Utilities/useDetermineLayout';
+import GridView from './GridView';
 
 // Peer connection references, for main streaming and screen sharing
 let peer;
 let peer2;
 
 const VideoSection = ({ socket, streams }) => {
-  const videoContainer = createRef()
-  const [containerWidth, setWidth] = useState()
-  const [containerHeight, setHeight] = useState()
 
   // Unique id of this user
   const userId = store.getState().userId;
@@ -28,12 +24,7 @@ const VideoSection = ({ socket, streams }) => {
   // Varioud UI toggles
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
-  const [displayGrid, setDisplayGrid] = useState(true);
-
-  const [index, setIndex] = useState(0)
-
-  // Current value of screen sharing.
-  const { height } = useDetermineLayout(streams.slice(), containerWidth, containerHeight);
+  const [userDisplayMode, setUserDisplayMode] = useState("grid")
 
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {
@@ -123,14 +114,6 @@ const VideoSection = ({ socket, streams }) => {
     }
   }, [peer])
 
-  useEffect(() => {
-    if (videoContainer && videoContainer.current && !containerWidth) {
-      // Intialise container width and height once video container has been rendered
-      setWidth(videoContainer.current.clientWidth)
-      setHeight(videoContainer.current.clientHeight)
-    }
-  }, [videoContainer])
-
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
     const call = peer.call(newUserId, stream);
@@ -181,19 +164,6 @@ const VideoSection = ({ socket, streams }) => {
     setStreams(streams.slice());
   }
 
-  const updateStreamDimensions = (id, width, height) => {
-    streams.forEach((user) => {
-      // Locate the stream to update
-      if (user.userId === id) {
-        user.width = width
-        user.height = height
-      }
-    });
-
-    // Update the streams state
-    setStreams(streams.slice());
-  }
-
   const toggleScreenSharing = () => {
     if (!displayStream) {
       // Get stream from screen
@@ -203,7 +173,6 @@ const VideoSection = ({ socket, streams }) => {
       }).then((newDisplayStream) => {
         // Add display stream
         addVideoStream("DISP" + userId, newDisplayStream, true, null, true);
-        setIndex(index + 1)
         setStreams(streams.slice());
         setDisplayStream(newDisplayStream);
 
@@ -235,34 +204,39 @@ const VideoSection = ({ socket, streams }) => {
     }
   }
 
+  const updateStreamDimensions = (id, width, height) => {
+    streams.forEach((user) => {
+        // Locate the stream to update
+        if (user.userId === id) {
+        user.width = width
+        user.height = height
+        }
+    });
+
+    // Update the streams state
+    setStreams(streams.slice());
+  }
+
   return (
     <div className="video_section_container">
       {/* Render the control buttons at the top of the screen */}
       <VideoButtons
-      socket={socket}
-      peer={peer}
-      stream={userStream}
-      selectedUser={selectedUser}
-      setSelectedUser={setSelectedUser}
-      setShowPopup={setShowPopup}
-      toggleScreenSharing={toggleScreenSharing}
+        socket={socket}
+        peer={peer}
+        stream={userStream}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
+        setShowPopup={setShowPopup}
+        toggleScreenSharing={toggleScreenSharing}
       />
 
-      {/* Create video frames for each user in the list of streams */}
-      <div className="video-stream-container" ref={videoContainer}>
-        {streamsState.map((user, index) => {
-            return (
-                <VideoFrame
-                key={index}
-                user={user}
-                height={height - 10}
-                selectedUser={selectedUser}
-                setSelectedUser={setSelectedUser}
-                updateStreamDimensions={updateStreamDimensions}
-                />
-            )
-        })}
-      </div>
+      {userDisplayMode === "grid" && <GridView 
+        streams={streams}
+        streamsState={streamsState}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
+        updateStreamDimensions={updateStreamDimensions}
+      />}
 
       {/* Display a popup with the text found in an image */}
       {showPopup && <ImagePopup

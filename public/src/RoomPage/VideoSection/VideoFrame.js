@@ -41,26 +41,6 @@ const VideoFrame = ({
     }
   }, [user.stream]);
 
-  // function handleKeyDown(event) {
-
-  // 	if (event.key === 'a') {
-  // 	    console.log(`Move video id=${userId} Left`);
-
-  // 	    video.current.style.visibility = "hidden";
-  // 	    //video.style.transform = "rotateY(180deg) scale(1.2,1.2) translate(12%,0%);";
-  // 	}
-  // 	else if (event.key === 'd') {
-  // 	    console.log(`Move video id=${userId} Right`);
-  // 	    video.current.style.visibility = "visible";
-  // 	}
-  // 	else if (event.key ==='w') {
-  // 	    console.log(`Move video id=${userId} Up`);
-  // 	}
-  // 	else if (event.key === 's') {
-  // 	    console.log(`Move video id=${userId} Down`);
-  // 	}
-  // }
-
   // Return the video and its container via the useMemo function to prevent flickering on state updates
   const renderVideo = useMemo(() => {
     return (
