@@ -7,6 +7,7 @@ import { useInterval } from '../../Utilities/useInterval';
 import { Peer } from 'peerjs';
 import SocketEvents from '../../Utilities/socketevents';
 import GridView from './GridView';
+import FocusView from './FocusView';
 
 // Peer connection references, for main streaming and screen sharing
 let peer;
@@ -199,6 +200,18 @@ const VideoSection = ({ socket, streams }) => {
 
       socket.emit(SocketEvents.RemoveStream, "DISP" + userId);
 
+      peer2.destroy();
+      peer2 = new Peer("DISP" + userId, {
+        host: '/',
+        port: 443,
+        path: '/peerjs',
+        secure: true
+      })
+
+      peer2.on('error', (err) => {
+        console.log(err)
+      })
+
       // Toggle value of screen sharing
       store.dispatch({ type: 'SET_SCREEN_SHARING', payload: false })
     }
@@ -230,13 +243,28 @@ const VideoSection = ({ socket, streams }) => {
         toggleScreenSharing={toggleScreenSharing}
       />
 
-      {userDisplayMode === "grid" && <GridView 
-        streams={streams}
-        streamsState={streamsState}
-        selectedUser={selectedUser}
-        setSelectedUser={setSelectedUser}
-        updateStreamDimensions={updateStreamDimensions}
-      />}
+      {/* Render the video elements as a grid */}
+      {
+      
+      userDisplayMode === "focus" ||  
+      streams.some(e => e.isDisplayMedia) ? 
+
+        <FocusView
+          streamsState={streamsState}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          updateStreamDimensions={updateStreamDimensions}
+          /> 
+        :    
+        <GridView 
+          streams={streams}
+          streamsState={streamsState}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          updateStreamDimensions={updateStreamDimensions}
+        />
+      
+      }
 
       {/* Display a popup with the text found in an image */}
       {showPopup && <ImagePopup

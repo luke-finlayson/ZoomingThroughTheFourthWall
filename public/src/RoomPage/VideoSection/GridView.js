@@ -26,7 +26,7 @@ const GridView = ({
       }, [videoContainerRef])
 
     return (
-        <div className="video-stream-container" ref={videoContainerRef}>
+        <div className="video_grid_container" ref={videoContainerRef}>
             {streamsState.map((user, index) => {
                 return (
                     <VideoFrame

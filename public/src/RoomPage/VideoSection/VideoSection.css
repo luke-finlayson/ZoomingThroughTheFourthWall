@@ -2,7 +2,20 @@
 /* https://stackoverflow.com/questions/49237597/force-equal-width-columns-in-css-flexbox */
 
 /* the row! */
-.video-stream-container {
+.video_grid_container {
+    display: flex;
+    flex-flow: row wrap;
+    height: 100%;
+    width: 100%;
+    place-content: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.video_focus_container {
     display: flex;
     flex-flow: row wrap;
     height: 100%;
