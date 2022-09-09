@@ -34,11 +34,11 @@ const FocusView = ({
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             frames.push(canvas.toDataURL())
-            setFrames(frames.slice())
-        }
-        else {
-            // Otherwise clear the previous frames
-            frames = []
+
+            // Remove oldest frame
+            if (frames.length > 20) {
+                frames.shift()
+            }
             setFrames(frames.slice())
         }
     }, 5000)
