@@ -125,6 +125,34 @@
   cursor: pointer;
 }
 
+.carousel_collapse_button {
+  position: absolute;
+  right: -41px;
+  transition: 0.2s;
+  border-radius: 0px 50px 50px 0px;
+  background: #f5f5f5;
+  padding: 16px 11px 13px 36px;
+  top: 73px;
+}
+
+.carousel_collapse_button:hover {
+  cursor: pointer;
+  right: -50px;
+}
+
+.carousel_collapse_button img {
+  width: 25px;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.flipped_X {
+  transform: rotate(90deg);
+}
+.not_flipped_X {
+  transform: rotate(270deg);
+}
+
 .flipped_y {
   transform: rotate(0deg);
 }
@@ -171,6 +199,21 @@
 
 .copy_icon_img:hover {
   cursor: pointer;
+}
+
+.video_small_carousel {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 230px;
+  background: #F5F5F5;
+  border-radius: 7px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  transition: 0.2s;
+  max-height: 80vh;
 }
 
 .room_name {
