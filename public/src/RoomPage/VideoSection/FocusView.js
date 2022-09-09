@@ -7,14 +7,14 @@ const FocusView = ({
     streamsState,
     selectedUser, 
     setSelectedUser,
-    updateStreamDimensions
+    updateStreamDimensions,
+    pinnedUser
 }) => {
-
     const [collapsed, setCollapsed] = useState(false);
 
     return (
         <div className="video_focus_container">
-            {streamsState.filter(user => user.isDisplayMedia || user.isPinned).map((screenShare, index) => {
+            {streamsState.filter(user => user.userId === pinnedUser).map((screenShare, index) => {
                 return (
                     <VideoFrame
                     key={index}
@@ -33,7 +33,7 @@ const FocusView = ({
                     className={collapsed ? "flipped_X" : "not_flipped_X"}
                     src={CollapseIcon} />
                 </div>
-                {streamsState.filter(user => !user.isDisplayMedia && !user.isPinned).map((screenShare, index) => {
+                {streamsState.filter(user => user.userId !== pinnedUser).map((screenShare, index) => {
                     return (
                         <VideoFrame
                         key={index}
@@ -45,6 +45,11 @@ const FocusView = ({
                         />
                     )
                 })}
+            </div>
+
+            <div className="none_pinned_message">
+                <h1>No Pinned Video</h1>
+                <p>Select a video to pin it</p>
             </div>
         </div>
     )

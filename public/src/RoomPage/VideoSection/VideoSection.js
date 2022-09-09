@@ -25,6 +25,7 @@ const VideoSection = ({ socket, streams }) => {
   // Varioud UI toggles
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
+  const [pinnedUser, setPinnedUser] = useState();
   const [userDisplayMode, setUserDisplayMode] = useState("grid")
 
   // Need to use polling to ensure only single instances of connections are created
@@ -133,25 +134,6 @@ const VideoSection = ({ socket, streams }) => {
     }
   }
 
-  const pinVideo = () => {
-    // Locate selected user
-    streams.forEach(user => {
-      if (user.userId === selectedUser) {
-        user.isPinned = !user.isPinned
-      }
-    })
-    setStreams(streams.slice())
-  }
-
-  const userIsPinned = () => {
-    // Locate selected user
-    streamsState.forEach(user => {
-      if (user.userId === selectedUser) {
-        console.log(user.isPinned)
-      }
-    })
-  }
-
   // Adds a video stream to the list of video streams
   const addVideoStream = (newUserId, newStream, muted, call, isDisplayMedia) => {
     // Add new stream to list of streams if it isn't already
@@ -163,12 +145,12 @@ const VideoSection = ({ socket, streams }) => {
         call: call,
         isDisplayMedia: newUserId.startsWith("DISP"),
         width: 400,
-        height: 400,
-        isPinned: false
+        height: 400
       });
 
       if (newUserId.startsWith("DISP")) {
         setUserDisplayMode("focus")
+        setPinnedUser(newUserId)
       }
 
       // Update the streams state
@@ -270,8 +252,8 @@ const VideoSection = ({ socket, streams }) => {
         toggleScreenSharing={toggleScreenSharing}
         displayMode={userDisplayMode}
         setDisplayMode={setUserDisplayMode}
-        pinVideo={pinVideo}
-        userIsPinned={userIsPinned}
+        setPinnedUser={setPinnedUser}
+        pinnedUser={pinnedUser}
       />
 
       {userDisplayMode === "focus" ? 
@@ -281,6 +263,7 @@ const VideoSection = ({ socket, streams }) => {
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
           updateStreamDimensions={updateStreamDimensions}
+          pinnedUser={pinnedUser}
           /> 
         :    
         <GridView 

@@ -12,17 +12,37 @@ let pinIcon =
     </svg>
 
 // Renders a edit menu for video element specific functions
-const EditVideo = ({ setSelectedUser, setShowPopup, pinVideo, userIsPinned }) => {
+const EditVideo = ({ selectedUser, setSelectedUser, setShowPopup, pinnedUser, setPinnedUser }) => {
     const showPopup = () => {
         setShowPopup(true)
+    }
+
+    const pinUser = () => {
+        // Unpin user if they are already pinned
+        if (pinnedUser === selectedUser) {
+            setPinnedUser(null)
+        }
+        else {
+            // Otherwise pin the selected user
+            setPinnedUser(selectedUser)
+        }
+
+        setSelectedUser(null)
     }
 
     return(
         <div className='control_buttons'>
             <div className="control_button_container edit_buttons">
-                <IconAndTextButton text="Pin" icon={pinIcon} onClick={pinVideo} enabled={userIsPinned} />
+
+                <IconAndTextButton 
+                    text={pinnedUser === selectedUser ? "Unpin": "Pin"} 
+                    icon={pinIcon} 
+                    onClick={pinUser} />
+
                 <VerticalSeparator />
-                <IconAndTextButton text="Scan for Text" icon={scanIcon} onClick={showPopup} enabled={true} />
+
+                <IconAndTextButton text="Scan for Text" icon={scanIcon} onClick={showPopup} />
+
             </div>
 
             <button className='cancel_edit_button' onClick={() => setSelectedUser(null)}>Cancel</button>

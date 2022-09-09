@@ -222,6 +222,13 @@
   justify-content: center;
 }
 
+.none_pinned_message {
+  text-align: center;
+  color: #426084;
+  position: absolute;
+  z-index: -1;
+}
+
 .room_name {
   color: #AFAFAF;
   font-family: 'Poppins';

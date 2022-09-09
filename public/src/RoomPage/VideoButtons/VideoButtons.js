@@ -31,8 +31,8 @@ const VideoButtons = ({
   toggleScreenSharing,
   displayMode,
   setDisplayMode,
-  pinVideo,
-  userIsPinned
+  pinnedUser,
+  setPinnedUser
 }) => {
 
   // Counter to hide 'copied!' message after 3 seconds
@@ -77,8 +77,9 @@ const VideoButtons = ({
       {selectedUser && 
         <EditVideo setSelectedUser={setSelectedUser} 
           setShowPopup={setShowPopup} 
-          pinVideo={pinVideo}
-          userIsPinned={userIsPinned} />}
+          pinnedUser={pinnedUser}
+          selectedUser={selectedUser}
+          setPinnedUser={setPinnedUser} />}
       
       <div className="management_buttons">
         <div class="mgb_main control_button_container">
