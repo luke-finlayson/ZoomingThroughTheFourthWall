@@ -16,8 +16,8 @@
 .video_focus_container {
     display: flex;
     flex-flow: row wrap;
-    height: 100%;
     width: 100%;
+    height: calc(100% - 100px);
     place-content: center;
     position: absolute;
     top: 0;
@@ -63,10 +63,49 @@
 
 .frames {
     position: absolute;
-    bottom: 0;
+    bottom: -100px;
     display: flex;
     height: 100px;
+    z-index: 5;
+    background-color: black;
+    width: 100%;
 }
 .frames img {
     height: 100%;
+}
+
+.selectedFrame {
+    position: absolute;
+    height: 100%;
+    z-index: 4;
+}
+
+.close_frame_button {
+    position: absolute;
+    top: 0;
+    z-index: 5;
+    background: #DEDEDE;
+    font-family: 'Poppins';
+    color: #8B8B8B;
+    border: none;
+    border-radius: 7px;
+    padding: 13px 21px;
+    font-size: 17px;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
+    transition: 0.2s;
+}
+
+.close_frame_button:hover {
+    background-color: #d73d3d;
+    color: white;
+    cursor: pointer;
+}
+
+.selectedFrameContainer {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './RoomPage.css';
 import VideoSection from './VideoSection/VideoSection';
 import ChatSection from './ChatSection/ChatSection';
@@ -9,6 +9,7 @@ var streams = [];
 
 // Entry point and interface of our room page
 const RoomPage = ({ socket }) => {
+  const [userDisplayMode, setUserDisplayMode] = useState("grid")
 
   useEffect(() => {
     // Get the state of the store
@@ -22,8 +23,8 @@ const RoomPage = ({ socket }) => {
 
   return (
     <div className="room_container">
-      <VideoSection socket={socket} streams={streams} />
-      <ChatSection socket={socket}/>
+      <VideoSection socket={socket} streams={streams} userDisplayMode={userDisplayMode} setUserDisplayMode={setUserDisplayMode} />
+      <ChatSection socket={socket} userDisplayMode={userDisplayMode} />
 
       {/* Display an error message if conection to the server is lost */}
       {!socket.connected && <div className='disconnected_section'>

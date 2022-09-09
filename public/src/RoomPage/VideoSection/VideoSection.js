@@ -13,7 +13,7 @@ import FocusView from './FocusView';
 let peer;
 let peer2;
 
-const VideoSection = ({ socket, streams }) => {
+const VideoSection = ({ socket, streams, userDisplayMode, setUserDisplayMode }) => {
 
   // Unique id of this user
   const userId = store.getState().userId;
@@ -26,7 +26,6 @@ const VideoSection = ({ socket, streams }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [pinnedUser, setPinnedUser] = useState();
-  const [userDisplayMode, setUserDisplayMode] = useState("grid")
 
   // Need to use polling to ensure only single instances of connections are created
   useInterval(() => {

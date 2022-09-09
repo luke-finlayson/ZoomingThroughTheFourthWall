@@ -9,7 +9,7 @@ import SocketEvents from '../../Utilities/socketevents';
 // Holds a list of all the messages
 const messages = [];
 
-const ChatSection = ({ socket }) => {
+const ChatSection = ({ socket, userDisplayMode }) => {
 
   const messageInput = createRef();
 
@@ -83,8 +83,8 @@ const ChatSection = ({ socket }) => {
 
   return (
     <div 
-    className={collapsed ? "chat_section_container collapsed_section" 
-    : "chat_section_container expanded_section"}>
+    className={collapsed ? "chat_section_container collapsed_section" : "chat_section_container expanded_section"}
+    style={userDisplayMode === 'focus' ? {bottom: "110px"} : {bottom: "10px"}}>
         <ChatLabel socket={socket} collapsed={collapsed} setCollapsed={setCollapsed} messageInput={messageInput}/>
         {!collapsed && 
           <Messages socket={socket} messages={messagesState} />}
