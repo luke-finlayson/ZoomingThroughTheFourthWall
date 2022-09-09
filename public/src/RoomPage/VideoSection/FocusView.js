@@ -14,7 +14,7 @@ const FocusView = ({
 
     return (
         <div className="video_focus_container">
-            {streamsState.filter(user => user.isDisplayMedia).map((screenShare, index) => {
+            {streamsState.filter(user => user.isDisplayMedia || user.isPinned).map((screenShare, index) => {
                 return (
                     <VideoFrame
                     key={index}
@@ -33,7 +33,7 @@ const FocusView = ({
                     className={collapsed ? "flipped_X" : "not_flipped_X"}
                     src={CollapseIcon} />
                 </div>
-                {streamsState.filter(user => !user.isDisplayMedia).map((screenShare, index) => {
+                {streamsState.filter(user => !user.isDisplayMedia && !user.isPinned).map((screenShare, index) => {
                     return (
                         <VideoFrame
                         key={index}

@@ -216,6 +216,12 @@
   max-height: 80vh;
 }
 
+.edit_buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .room_name {
   color: #AFAFAF;
   font-family: 'Poppins';

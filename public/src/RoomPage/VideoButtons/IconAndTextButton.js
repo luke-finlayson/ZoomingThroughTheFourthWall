@@ -1,5 +1,5 @@
 // Return a button that contains an icon and some text
-const IconAndTextButton = ({ onClick, text, icon }) => {
+const IconAndTextButton = ({ onClick, text, icon, enabled }) => {
     return (
         <div onClick={onClick} className="icon_text_button">
             {icon}

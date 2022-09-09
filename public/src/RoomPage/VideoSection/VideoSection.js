@@ -133,6 +133,25 @@ const VideoSection = ({ socket, streams }) => {
     }
   }
 
+  const pinVideo = () => {
+    // Locate selected user
+    streams.forEach(user => {
+      if (user.userId === selectedUser) {
+        user.isPinned = !user.isPinned
+      }
+    })
+    setStreams(streams.slice())
+  }
+
+  const userIsPinned = () => {
+    // Locate selected user
+    streamsState.forEach(user => {
+      if (user.userId === selectedUser) {
+        console.log(user.isPinned)
+      }
+    })
+  }
+
   // Adds a video stream to the list of video streams
   const addVideoStream = (newUserId, newStream, muted, call, isDisplayMedia) => {
     // Add new stream to list of streams if it isn't already
@@ -144,7 +163,8 @@ const VideoSection = ({ socket, streams }) => {
         call: call,
         isDisplayMedia: newUserId.startsWith("DISP"),
         width: 400,
-        height: 400
+        height: 400,
+        isPinned: false
       });
 
       if (newUserId.startsWith("DISP")) {
@@ -250,12 +270,11 @@ const VideoSection = ({ socket, streams }) => {
         toggleScreenSharing={toggleScreenSharing}
         displayMode={userDisplayMode}
         setDisplayMode={setUserDisplayMode}
+        pinVideo={pinVideo}
+        userIsPinned={userIsPinned}
       />
 
-      {/* Render the video elements as a grid */}
-      {
-      
-      userDisplayMode === "focus" ? 
+      {userDisplayMode === "focus" ? 
 
         <FocusView
           streamsState={streamsState}
