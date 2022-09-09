@@ -20,6 +20,7 @@ const FocusView = ({
                     key={index}
                     user={screenShare}
                     height={"100%"}
+                    focused={true}
                     selectedUser={selectedUser}
                     setSelectedUser={setSelectedUser}
                     updateStreamDimensions={updateStreamDimensions}
@@ -47,10 +48,10 @@ const FocusView = ({
                 })}
             </div>
 
-            <div className="none_pinned_message">
+            {!pinnedUser && <div className="none_pinned_message">
                 <h1>No Pinned Video</h1>
                 <p>Select a video to pin it</p>
-            </div>
+            </div>}
         </div>
     )
 }

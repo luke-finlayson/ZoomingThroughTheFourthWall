@@ -5,10 +5,18 @@ const VideoFrame = ({
     selectedUser,
     setSelectedUser,
     updateStreamDimensions,
-    height
+    height,
+    focused
   }) => {
 
   const video = createRef();
+  const focusedStyle = {
+    maxWidth: "100%", 
+    maxHeight: "100%", 
+    aspectRatio: user.width + " / " + user.height,
+    minHeight: "80%"  
+  }
+  const defaultStyle = {height: height, aspectRatio: user.width + " / " + user.height}
 
   // Attaches source media to a given video element
   const setVideoSource = (source, video) => {
@@ -42,7 +50,7 @@ const VideoFrame = ({
   }, [user.stream]);
 
   // Return the video and its container via the useMemo function to prevent flickering on state updates
-  const renderVideo = useMemo(() => {
+  const renderVideo = useMemo(() => { 
     return (
       <video 
         className="video-frame-elem" 
@@ -57,7 +65,7 @@ const VideoFrame = ({
   // Display message until the stream is ready
   return (
     <div className={selectedUser !== user.userId ? "video-frame-container" : "video-frame-container selected_video"} 
-      style={{height: height, aspectRatio: user.width + " / " + user.height}}
+      style={focused ? focusedStyle : defaultStyle}
       onClick={selectFrame}>
       {renderVideo}
     </div>
