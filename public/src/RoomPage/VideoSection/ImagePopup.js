@@ -25,7 +25,7 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
 
   useInterval(() => {
     if (!gotImage) {
-      // Get the video element to get the image from
+      // Locate the video element to get the image from
       const video = document.getElementById(user_id);
       // Get the canvas element to display the image on
       const canvas = document.getElementById('snapshot');

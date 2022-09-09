@@ -116,6 +116,12 @@ const VideoSection = ({ socket, streams }) => {
     }
   }, [peer])
 
+  useEffect(() => {
+    if (!streams.some(e => e.userId === pinnedUser)) {
+      setPinnedUser(null)
+    }
+  }, [streamsState])
+
   // When a new user joins the room, attempt to connect
   const connectToNewUser = (newUserId, stream) => {
     const call = peer.call(newUserId, stream);

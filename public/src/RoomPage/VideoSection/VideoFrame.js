@@ -1,22 +1,15 @@
-import { useEffect, useMemo, createRef } from 'react';
+import { useEffect, useMemo, createRef, useState } from 'react';
+import { useInterval } from '../../Utilities/useInterval';
 
 const VideoFrame = ({ 
     user, 
     selectedUser,
     setSelectedUser,
     updateStreamDimensions,
-    height,
-    focused
+    height
   }) => {
 
   const video = createRef();
-  const focusedStyle = {
-    maxWidth: "100%", 
-    maxHeight: "100%", 
-    aspectRatio: user.width + " / " + user.height,
-    minHeight: "80%"  
-  }
-  const defaultStyle = {height: height, aspectRatio: user.width + " / " + user.height}
 
   // Attaches source media to a given video element
   const setVideoSource = (source, video) => {
@@ -28,6 +21,13 @@ const VideoFrame = ({
       video.play();
     });
   }
+
+  useInterval(() => {
+    if (video && video.current) {
+      updateStreamDimensions(user.userId, video.videoWidth, video.videoHeight)
+      console.log("UI Update")
+    }
+  }, 100)
 
   // Select this video frame when the user clicks on it
   const selectFrame = () => {
@@ -65,7 +65,7 @@ const VideoFrame = ({
   // Display message until the stream is ready
   return (
     <div className={selectedUser !== user.userId ? "video-frame-container" : "video-frame-container selected_video"} 
-      style={focused ? focusedStyle : defaultStyle}
+      style={{height: height}}
       onClick={selectFrame}>
       {renderVideo}
     </div>

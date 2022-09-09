@@ -1,6 +1,9 @@
 import VideoFrame from "./VideoFrame"
 import CollapseIcon from '../../resources/images/collapse.svg'
-import { useState } from "react"
+import { createRef, useState } from "react"
+import { useInterval } from "../../Utilities/useInterval";
+
+let frames = []
 
 // Renders the streams with the screen shares displayed front and centre
 const FocusView = ({ 
@@ -11,16 +14,43 @@ const FocusView = ({
     pinnedUser
 }) => {
     const [collapsed, setCollapsed] = useState(false);
+    const videoContainerRef = createRef()
+    const [framesState, setFrames] = useState(frames.slice())
+
+    useInterval(() => {
+        // Capture frames from pinned video at regular intervals
+        if (pinnedUser) {
+            // Locate the video element to get the image from
+            const video = document.getElementById(pinnedUser);
+            // Get the canvas element to display the image on
+            const canvas = document.getElementById('previous_frame');
+
+            // Match size of canvas with size of video
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Put the current frame of the video on the canvas
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            frames.push(canvas.toDataURL())
+            setFrames(frames.slice())
+        }
+        else {
+            // Otherwise clear the previous frames
+            frames = []
+            setFrames(frames.slice())
+        }
+    }, 5000)
 
     return (
-        <div className="video_focus_container">
+        <div className="video_focus_container" ref={videoContainerRef}>
             {streamsState.filter(user => user.userId === pinnedUser).map((screenShare, index) => {
                 return (
                     <VideoFrame
                     key={index}
                     user={screenShare}
                     height={"100%"}
-                    focused={true}
                     selectedUser={selectedUser}
                     setSelectedUser={setSelectedUser}
                     updateStreamDimensions={updateStreamDimensions}
@@ -28,6 +58,16 @@ const FocusView = ({
                 )
             })}
             
+            <canvas className="previousFrame" id="previous_frame" hidden></canvas>
+
+            <div class="frames">
+                {framesState.map((frame, index) => {
+                    return (
+                        <img src={frame} alt={index} />
+                    )
+                })}
+            </div>
+
             <div className="video_small_carousel" style={collapsed ? {left: "-242px"} : {left: "10px"}}>
                 <div className="carousel_collapse_button" onClick={() => setCollapsed(!collapsed)}>
                     <img 

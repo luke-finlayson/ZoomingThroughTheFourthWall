@@ -51,4 +51,22 @@
 
 .video-frame-elem {
     height: 100%;
+    width: 100%;
+}
+
+.previousFrame {
+    position: absolute;
+    z-index: 5;
+    bottom: 0;
+    height: 160px;
+}
+
+.frames {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    height: 100px;
+}
+.frames img {
+    height: 100%;
 }

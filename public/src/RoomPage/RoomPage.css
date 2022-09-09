@@ -214,6 +214,7 @@
   flex-direction: column;
   transition: 0.2s;
   max-height: 80vh;
+  z-index: 5;
 }
 
 .edit_buttons {
