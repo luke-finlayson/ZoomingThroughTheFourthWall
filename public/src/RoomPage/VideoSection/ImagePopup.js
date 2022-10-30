@@ -98,7 +98,7 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
   const handleClick = (event) => {
     // Retrieve the context of the canvas from the reference
     let canvas = canvasRef.current;
-    let context = canvas.getContext('2d');
+    //let context = canvas.getContext('2d');
 
     // Determine the current canvas bounding box
     const rect = canvas.getBoundingClientRect();
