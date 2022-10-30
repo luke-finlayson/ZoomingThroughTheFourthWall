@@ -30,10 +30,11 @@ const useCanvas = () => {
 const drawBoundingBox = (context, boundingBox) => {
     console.log("Drawing bounding box...");
 
-    context.strokeStyle = "White";
+    context.strokeStyle = "Black";
+    context.lineWidth = 0.5;
     context.fillStyle = "rgba(255, 255, 255, 0.15)";
     context.save();
-    roundRect(context, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height, 3, true, true);
+    roundRect(context, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height, 2, true, true);
     context.restore();
 }
 

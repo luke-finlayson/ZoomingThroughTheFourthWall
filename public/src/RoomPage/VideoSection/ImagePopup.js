@@ -88,7 +88,23 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
   }, 100);
 
   const handleClick = (event) => {
-    console.log(event);
+    // Retrieve the context of the canvas from the reference
+    let canvas = canvasRef.current;
+    let context = canvas.getContext('2d');
+
+    // Determine the current canvas bounding box
+    const rect = canvas.getBoundingClientRect();
+    // Determine the coordinates of the mouse click relative to the canvas
+    const xPos = event.clientX - rect.left;
+    const yPos = event.clientY - rect.top;
+
+    // Draw a square to test mouse click position
+    context.fillStyle = "Red";
+    context.save();
+    context.fillRect(xPos-5, yPos-5, 10, 10);
+    context.restore();
+
+    console.log("X: " + event.clientX + ", Y: " + event.clientY);
   }
 
   return(
