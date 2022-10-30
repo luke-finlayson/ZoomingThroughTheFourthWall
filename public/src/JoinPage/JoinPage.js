@@ -55,7 +55,7 @@ const JoinPage = ({ socket }) => {
         if (response === 'Does Not Exist') {
           // User is host
           setIsRoomHost(true);
-          setFormMessage("Looks like that room doesn't exists, we'll create it for you..")
+          setFormMessage("Looks like that room doesn't exist, we'll create it for you..")
           setFormError(false)
         }
         if (response === 'Exists') {
@@ -65,7 +65,7 @@ const JoinPage = ({ socket }) => {
           setFormError(false)
         }
         if (response === 'Null') {
-          setFormMessage("You must enter a room name to join")
+          setFormMessage("You must enter a room name")
           setFormError(true)
         }
 

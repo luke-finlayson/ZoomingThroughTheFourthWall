@@ -23,7 +23,7 @@
     transition: 0.2s;
     background: black;
     max-width: 60vw;
-    aspect-ratio: 4 / 3;
+    /* aspect-ratio: 4 / 3; */
 }
 
 .video-frame-container:hover {

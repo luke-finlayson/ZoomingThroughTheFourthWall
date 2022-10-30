@@ -8,27 +8,25 @@ import { largestRect } from "rect-scaler";
 const useDetermineLayout = (streams, screenWidth, screenHeight) => {
     let numStreams = streams.length;
 
+    console.log("Recalculating layout...")
+
     if (numStreams > 0 && screenWidth && screenHeight) {
 
         // Calculate the average width and height of the streams
         var totalWidth = 0
         var totalHeight = 0
 
-        for (const i in streams) {
-            if (streams[i].stream) {
-                const streamSettings = streams[i].stream.getVideoTracks()[0].getSettings()
+        streams.forEach((stream) => {
+            totalWidth += stream.width;
+            totalHeight += stream.height;
 
-                totalWidth += streamSettings.width;
-                totalHeight += streamSettings.height;
-            }
-        }
+            console.log("\t" + stream.width + ", " + stream.height)
+        });
 
         let averageWidth = totalWidth / numStreams;
         let averageHeight = totalHeight / numStreams;
 
-        console.log("W: " + screenWidth + "\nH: " + screenHeight)
         console.log(largestRect(screenWidth, screenHeight, numStreams, averageWidth, averageHeight))
-
         // Determine number of rows required
         return largestRect(screenWidth, screenHeight, numStreams, averageWidth, averageHeight);
     }
