@@ -232,14 +232,14 @@ const VideoSection = ({ socket, streams }) => {
                 />
             )
         })}
+        
+        {/* Display a popup with the text found in an image */}
+        {showPopup && <ImagePopup
+          user_id={selectedUser}
+          setShowPopup={setShowPopup}
+          socket={socket}
+          setSelectedUser={setSelectedUser} />}
       </div>
-
-      {/* Display a popup with the text found in an image */}
-      {showPopup && <ImagePopup
-        user_id={selectedUser}
-        setShowPopup={setShowPopup}
-        socket={socket}
-        setSelectedUser={setSelectedUser} />}
     </div>
   )
 }
