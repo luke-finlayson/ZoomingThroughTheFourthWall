@@ -8,5 +8,3 @@ image_cache/*
 !image_cache/.gitkeep
 *~
 keys
-launch.json
-package-lock.json

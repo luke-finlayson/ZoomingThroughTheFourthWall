@@ -260,32 +260,33 @@ const VideoSection = ({ socket, streams, userDisplayMode, setUserDisplayMode }) 
         setPinnedUser={setPinnedUser}
         pinnedUser={pinnedUser}
       />
+
+      {userDisplayMode === "focus" ? 
+
+        <FocusView
+          streamsState={streamsState}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          updateStreamDimensions={updateStreamDimensions}
+          pinnedUser={pinnedUser}
+          /> 
+        :    
+        <GridView 
+          streams={streams}
+          streamsState={streamsState}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          updateStreamDimensions={updateStreamDimensions}
+        />
       
-      {/* Create video frames for each user in the list of streams */}
-      <div className="video-stream-container" ref={videoContainer}>
-        {streamsState.map((user, index) => {
-            return (
-                <VideoFrame
-                key={index}
-                stream={user.stream}
-                userId={user.userId}
-                muted={user.muted}
-                selectedUser={selectedUser}
-                setSelectedUser={setSelectedUser}
-                height={height - 10}
-                updateStreamDimensions={updateStreamDimensions}
-                aspectRatio={user.width + " / " + user.height}
-                />
-            )
-        })}
-        
-        {/* Display a popup with the text found in an image */}
-        {showPopup && <ImagePopup
-          user_id={selectedUser}
-          setShowPopup={setShowPopup}
-          socket={socket}
-          setSelectedUser={setSelectedUser} />}
-      </div>
+      }
+
+      {/* Display a popup with the text found in an image */}
+      {showPopup && <ImagePopup
+        user_id={selectedUser}
+        setShowPopup={setShowPopup}
+        socket={socket}
+        setSelectedUser={setSelectedUser} />}
     </div>
   )
 }
