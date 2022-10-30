@@ -4,6 +4,7 @@ class BoundingBox {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.text = text
     }
 }
 

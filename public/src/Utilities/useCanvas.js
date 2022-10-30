@@ -18,7 +18,7 @@ const useCanvas = () => {
         });
     });
 
-    return [ setBoundingBoxes, snapshotRef, canvasRef ];
+    return [ boundingBoxes, setBoundingBoxes, snapshotRef, canvasRef ];
 }
 
 /**

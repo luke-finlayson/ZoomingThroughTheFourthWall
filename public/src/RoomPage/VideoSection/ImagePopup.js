@@ -9,7 +9,9 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
 
   const [gotImage, setGotImage] = useState(false);
   const [imageText, setImageText] = useState("Getting text...");
-  const [ setBoundingBoxes, snapshotRef, canvasRef ] = useCanvas();
+  const [ boundingBoxes, setBoundingBoxes, snapshotRef, canvasRef ] = useCanvas();
+  const [hideCounter, setHideCounter] = useState(0);
+  const [copiedText, setCopiedText] = useState("");
 
   // Disables the popup
   const closePopup = () => {
@@ -17,6 +19,12 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
     // Disable the pop up
     setShowPopup(false);
   }
+
+  useInterval(() => {
+    if (hideCounter !== 0) {
+      setHideCounter(hideCounter - 1);
+    }
+  }, 500)
 
   useInterval(() => {
     if (!gotImage) {
@@ -94,31 +102,42 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
 
     // Determine the current canvas bounding box
     const rect = canvas.getBoundingClientRect();
-    // Determine the coordinates of the mouse click relative to the canvas
-    const xPos = event.clientX - rect.left;
-    const yPos = event.clientY - rect.top;
+    // Calculate the coordinates of the mouse click relative to the canvas
+    const xPos = ((event.clientX - rect.left) / rect.width) * canvas.width;
+    const yPos = ((event.clientY - rect.top) / rect.height) * canvas.height;
 
-    // Draw a square to test mouse click position
-    context.fillStyle = "Red";
-    context.save();
-    context.fillRect(xPos-5, yPos-5, 10, 10);
-    context.restore();
+    // Search bounding boxes backwards to prioritise boxes rendered on top
+    for (let i = boundingBoxes.length - 1; i >= 0; i--) {
+      const left = boundingBoxes[i].x;
+      const right = boundingBoxes[i].width + left;
+      const top = boundingBoxes[i].y;
+      const bottom = boundingBoxes[i].height + top;
 
-    console.log("X: " + event.clientX + ", Y: " + event.clientY);
+      if (xPos > left && xPos < right && yPos > top && yPos < bottom) {
+        console.log("Selected: " + boundingBoxes[i].text);
+        
+        // Copy room name to client clipboard
+        navigator.clipboard.writeText(boundingBoxes[i].text);
+        setHideCounter(3);
+        setCopiedText(boundingBoxes[i].text.substring(0, 20))
+      }
+    }
   }
 
-  return(
+  return (
     <div className="popup-container">
-    <div className="popup">
-      <div className="snapshot-container" onClick={() => {return}}>
-        <canvas className="snapshot-canvas" id="snapshot" ref={canvasRef} onClick={handleClick} />
-        <canvas id="snapshot" ref={snapshotRef} hidden />
+      <div className="popup">
+        <div className="snapshot-container" onClick={() => {return}}>
+          <canvas className="snapshot-canvas" id="snapshot" ref={canvasRef} onClick={handleClick} />
+          <canvas id="snapshot" ref={snapshotRef} hidden />
+        </div>
+        
+        <button className='leave_button' onClick={closePopup}>Close</button>
       </div>
-      
-      <button className='leave_button' onClick={closePopup}>Close</button>
-    </div>
 
       <div className='popup_background' onClick={closePopup}></div>
+
+      {(hideCounter !== 0) && <p class="popup_copied_message">Copied: {copiedText}</p>}
     </div>
   );
 }
