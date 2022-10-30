@@ -20,6 +20,14 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
     setShowPopup(false);
   }
 
+  // Handle enter key press
+  const handleKeyPress = (e) => {
+    // If enter key was press, call the given function
+    if (e.key === "Escape") {
+      closePopup();
+    }
+  }
+
   useInterval(() => {
     if (hideCounter !== 0) {
       setHideCounter(hideCounter - 1);
@@ -28,7 +36,7 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
 
   useInterval(() => {
     if (!gotImage) {
-      // Get the video element to get the image from
+      // Locate the video element to get the image from
       const video = document.getElementById(user_id);
       // Get the canvas element to display the image on
       // const canvas = document.getElementById('snapshot');

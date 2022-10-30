@@ -11,6 +11,7 @@ const { ExpressPeerServer } = require('peer');
 const TextRecognition = require("./textRecognition");
 const { DataService, User, Message } = require("./dataService");
 const cors = require('cors');
+const { SocketAddress } = require("net");
 app.use(cors());
 
 // Create an HTTPS server with the given credentials and Express instance
@@ -68,7 +69,6 @@ app.get('/room', (_request, response) => {
 })
 
 io.on(SocketEvents.Connection, (socket) => {
-  console.log(`Socket with ID ${socket.id} has connected`)
 
   socket.on(SocketEvents.CheckRoomId, (roomId, callback) => {
     
@@ -119,6 +119,20 @@ io.on(SocketEvents.Connection, (socket) => {
       // Broadcast new member to members of room
       socket.to(roomID).emit(SocketEvents.UserJoinedRoom, userId, username);
     })
+
+    // Allow clients to add new streams into the room, pretending they are new users
+    socket.on(SocketEvents.NewStream, (newUserId, newUsername) => {
+      socket.to(roomID).emit(SocketEvents.UserJoinedRoom, newUserId, newUsername);
+    })
+
+    socket.on(SocketEvents.RemoveStream, (newUserId, newUsername) => {
+      socket.to(roomID).emit(SocketEvents.UserLeftRoom, newUserId);
+    })
+
+    // Catch any unhandled disconnects
+    peerServer.on('disconnect', (client) => {
+      socket.to(roomID).emit(SocketEvents.UserLeftRoom, client.getId());
+    });
 
     // Save message to database and notify all other clients in room
     socket.on(SocketEvents.NewMessage, (content) => {

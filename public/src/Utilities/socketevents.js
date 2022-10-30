@@ -6,6 +6,8 @@ class SocketEvents {
     static CheckRoomId = "check-room-id";
     static JoinRoom = "join-room";
     static LeaveRoom = "leave-room";
+    static CreateRoom = "create-room";
+    static DeleteRoom = "delete-room";
     static UserJoinedRoom = "user-joined-room";
     static UserLeftRoom = "user-left-room";
     static FindImageText = "find-image-text";
@@ -13,6 +15,8 @@ class SocketEvents {
     static GetRoomParticipants = "get-room-participants";
     static GetMessageHistory = "get-message-history";
     static ClearMessages = "clear-messages";
+    static NewStream = "new-stream";
+    static RemoveStream = "remove-stream"
 }
 
 export default SocketEvents;

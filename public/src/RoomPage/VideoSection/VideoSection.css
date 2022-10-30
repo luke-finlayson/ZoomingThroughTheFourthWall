@@ -2,12 +2,28 @@
 /* https://stackoverflow.com/questions/49237597/force-equal-width-columns-in-css-flexbox */
 
 /* the row! */
-.video-stream-container {
+.video_grid_container {
     display: flex;
     flex-flow: row wrap;
-    height: 100%;
-    width: 100%;
     place-content: center;
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+}
+
+.video_focus_container {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    height: calc(100% - 100px);
+    place-content: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 /* .video-frame-container is defeind in RoomPage.css as just 'relative' */
@@ -22,8 +38,6 @@
     justify-content: center;
     transition: 0.2s;
     background: black;
-    max-width: 60vw;
-    /* aspect-ratio: 4 / 3; */
 }
 
 .video-frame-container:hover {
@@ -37,4 +51,61 @@
 
 .video-frame-elem {
     height: 100%;
+    width: 100%;
+}
+
+.previousFrame {
+    position: absolute;
+    z-index: 5;
+    bottom: 0;
+    height: 160px;
+}
+
+.frames {
+    position: absolute;
+    bottom: -100px;
+    display: flex;
+    height: 100px;
+    z-index: 5;
+    background-color: black;
+    width: 100%;
+}
+.frames img {
+    height: 100%;
+}
+
+.selectedFrame {
+    position: absolute;
+    height: 100%;
+    z-index: 4;
+}
+
+.close_frame_button {
+    position: absolute;
+    top: 0;
+    z-index: 5;
+    background: #DEDEDE;
+    font-family: 'Poppins';
+    color: #8B8B8B;
+    border: none;
+    border-radius: 7px;
+    padding: 13px 21px;
+    font-size: 17px;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
+    transition: 0.2s;
+}
+
+.close_frame_button:hover {
+    background-color: #d73d3d;
+    color: white;
+    cursor: pointer;
+}
+
+.selectedFrameContainer {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

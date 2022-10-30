@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { createRef, useState } from 'react'
 import SendMessageButton from "../../resources/images/rightArrow.svg";
 import SocketEvents from '../../Utilities/socketevents';
 
-const NewMessage = ({ socket }) => {
+const NewMessage = ({ socket, messageInput }) => {
 
     const [message, setMessage] = useState("");
 
@@ -28,6 +28,7 @@ const NewMessage = ({ socket }) => {
   return (
     <div className="new_message_container">
       <input
+      ref={messageInput}
       className="new_message_input"
       value={message}
       onChange={handleTextChange}

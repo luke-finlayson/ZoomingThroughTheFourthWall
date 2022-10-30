@@ -1,3 +1,4 @@
+import { store } from '../../store/store';
 import SocketEvents from '../../Utilities/socketevents';
 
 const LeaveRoomButton = ({ socket, peer, stream }) => {
@@ -9,11 +10,12 @@ const LeaveRoomButton = ({ socket, peer, stream }) => {
       stream.getTracks().forEach(track => track.stop());
     }
 
-    socket.emit(SocketEvents.LeaveRoom);
     // Disconnect from the socket
-    socket.disconnect();
+    socket.emit(SocketEvents.LeaveRoom);
+    socket.emit(SocketEvents.RemoveStream, "DISP" + store.getState().userId);
+    socket.destroy();
     // Disconnect from the peer connection
-    peer.disconnect();
+    peer.destroy();
   }
 
   const handleRoomDisconnection = () => {

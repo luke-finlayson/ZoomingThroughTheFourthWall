@@ -2,7 +2,7 @@
   width: 100%;
   height: 100vh;
   display: flex;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .copied_message {
@@ -29,6 +29,7 @@
   flex-direction: column;
   position: absolute;
   right: 21px;
+  z-index: 5;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
   border-radius: 7px;
   bottom: 10px;
@@ -46,7 +47,7 @@
   padding: 0px 40px;
   background: #ae3333;
   border-radius: 7px;
-  box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.16);
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
   bottom: 10px;
   left: 10px;
   font-family: 'Poppins';
@@ -69,13 +70,16 @@
   font-weight: bold;
   padding: 13px 20px;
 }
+
 .icon_text_button:hover {
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.15);
+  background-color: white;
+  border-radius: 7px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
   cursor: pointer;
 }
 
 .icon_text_button:active {
-  box-shadow: 0px 0px 0px rgba(0,0,0,0.0);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
 }
 
 .icon_text_button p {
@@ -96,7 +100,8 @@
 }
 
 .cancel_edit_button:hover {
-  background-color: #c3c3c3;
+  background-color: #d73d3d;
+  color: white;
   cursor: pointer;
 }
 
@@ -120,6 +125,34 @@
   cursor: pointer;
 }
 
+.carousel_collapse_button {
+  position: absolute;
+  right: -41px;
+  transition: 0.2s;
+  border-radius: 0px 50px 50px 0px;
+  background: #f5f5f5;
+  padding: 16px 11px 13px 36px;
+  top: 0px;
+}
+
+.carousel_collapse_button:hover {
+  cursor: pointer;
+  right: -50px;
+}
+
+.carousel_collapse_button img {
+  width: 25px;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.flipped_X {
+  transform: rotate(90deg);
+}
+.not_flipped_X {
+  transform: rotate(270deg);
+}
+
 .flipped_y {
   transform: rotate(0deg);
 }
@@ -134,6 +167,7 @@
   font-weight: 700;
   color: #AFAFAF;
   margin-left: 21px;
+  user-select: none;
   font-size: 16px;
   font-family: 'Poppins';
 }
@@ -162,14 +196,52 @@
   padding: 0px 25px 0px 13px;
   transition: 0.2s;
 }
+
 .copy_icon_img:hover {
   cursor: pointer;
+}
+
+.video_small_carousel {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 230px;
+  background: #F5F5F5;
+  border-radius: 7px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  transition: 0.2s;
+  max-height: 80vh;
+  z-index: 5;
+}
+
+.edit_buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.none_pinned_message {
+  text-align: center;
+  color: #426084;
+  position: absolute;
+  z-index: -1;
 }
 
 .room_name {
   color: #AFAFAF;
   font-family: 'Poppins';
   font-size: 15px;
+}
+
+.left_control_button_container {
+  display: flex;
+}
+
+.left_margin {
+  margin-left: 15px;
 }
 
 .new_message_container {
@@ -208,7 +280,8 @@
 }
 
 .new_message_button:hover {
-  background-color: linear-gradient(10deg, #6d90b9, #bbc7dc);;
+  background-color: linear-gradient(10deg, #6d90b9, #bbc7dc);
+  ;
 }
 
 .new_message_button:active {
@@ -241,6 +314,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  animation: slideDown 0.2s;
 }
 
 .messages_container {
@@ -426,12 +501,20 @@
   user-select: none;
 }
 
+.toggle_on {
+  fill: #767676;
+}
+
+.toggle_off {
+  fill: #D8D8D8;
+}
+
 .video_button_container:hover {
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.15);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
 }
 
 .video_button_container:active {
-  box-shadow: 0px 0px 0px rgba(0,0,0,0.0);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
 }
 
 .vertical_separator {
@@ -506,11 +589,6 @@
   width: 100%;
   height: 100%;
 }
-
-video {
-  border-radius: 5px;
-}
-
 .video-frame-container {
   position: relative;
 }
@@ -620,14 +698,34 @@ video {
 }
 
 @keyframes upDownUp {
-  0% { bottom: 35px; }
-  50% { bottom: 0px; }
-  70% { bottom: 0px }
-  100% { bottom: 35px; }
+  0% {
+    bottom: 35px;
+  }
+
+  50% {
+    bottom: 0px;
+  }
+
+  70% {
+    bottom: 0px
+  }
+
+  100% {
+    bottom: 35px;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    bottom: 100px;
+  }
+  100% {
+    bottom: 0px;
+  }
 }
 
 @media only screen and (max-width: 400px) {
-  
+
   .expanded_section {
     height: 80%;
     width: auto;

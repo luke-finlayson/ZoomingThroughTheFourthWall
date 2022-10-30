@@ -3,22 +3,35 @@ import { store } from '../../store/store';
 import SocketEvents from '../../Utilities/socketevents';
 import CollapseIcon from '../../resources/images/collapse.svg';
 
-const ChatLabel = ({ socket, collapsed, setCollapsed }) => {
+const ChatLabel = ({ socket, collapsed, setCollapsed, messageInput }) => {
 
   // Clears the messages from the database
   const clearMessages = () => {
+    console.log("cleared")
     // Tell the server to remove the messages
     socket.emit(SocketEvents.ClearMessages);
   }
 
+  const toggleMessageSection = () => {
+    setCollapsed(!collapsed)
+
+    // Focus on the new message text box if expanded
+    if (messageInput && messageInput.current) {
+      messageInput.current.focus()
+    }
+  }
+
   return (
-    <div className="chat_label_container">
+    <div className="chat_label_container" onClick={toggleMessageSection}>
         <p className="chat_label_paragraph">Messages</p>
+
         {(store.getState().isRoomHost && !collapsed)
           && <button onClick={clearMessages} >Clear</button>}
-        <img className={collapsed ? "chat_collapse_button flipped_y" : "chat_collapse_button"} 
-             onClick={() => setCollapsed(!collapsed)}
-             src={CollapseIcon} />
+
+        <img 
+          className={collapsed ? "chat_collapse_button flipped_y" : "chat_collapse_button"}
+          src={CollapseIcon} 
+        />
     </div>
   )
 }
