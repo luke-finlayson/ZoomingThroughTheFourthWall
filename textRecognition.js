@@ -1,6 +1,7 @@
 const vision = require("@google-cloud/vision");
 const files = require("fs");
 const crypto = require('crypto');
+const sizeOf = require('image-size')
 
 class TextRecognition{
     constructor() {
