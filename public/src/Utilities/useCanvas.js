@@ -28,13 +28,11 @@ const useCanvas = () => {
  * @param {BoundingBox} boundingBox An instance of BoundingBox
  */
 const drawBoundingBox = (context, boundingBox) => {
-    console.log("Drawing bounding box...");
-
-    context.strokeStyle = "Black";
-    context.lineWidth = 0.5;
+    context.strokeStyle = "Red";
+    context.lineWidth = 1;
     context.fillStyle = "rgba(255, 255, 255, 0.15)";
     context.save();
-    roundRect(context, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height, 2, true, true);
+    roundRect(context, boundingBox.x - 5, boundingBox.y - 5, boundingBox.width + 10, boundingBox.height + 10, 5, true, true);
     context.restore();
 }
 

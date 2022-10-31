@@ -135,6 +135,7 @@ const ImagePopup = ({ socket, user_id, setShowPopup, setSelectedUser }) => {
         <button className='leave_button' onClick={closePopup}>Close</button>
       </div>
 
+      {/* Apply background to child element to prevent exit click event registering on image */}
       <div className='popup_background' onClick={closePopup}></div>
 
       {(hideCounter !== 0) && <p class="popup_copied_message">Copied: {copiedText}</p>}
